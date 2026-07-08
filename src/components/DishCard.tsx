@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { getCountry, getRegion } from '../data/countries';
 import type { Dish } from '../data/types';
 import { useProgress } from '../state/ProgressContext';
@@ -16,10 +17,18 @@ interface Props {
 
 export function DishCard({ dish, showRank = false, showCountry = true }: Props) {
   const { user, signIn } = useSession();
-  const { isTried, toggleTried } = useProgress();
+  const { isTried, toggleTried, get } = useProgress();
   const tried = isTried(dish.id);
+  const entry = get(dish.id);
+  const hasReview = !!(entry?.rating || entry?.note);
+  const [editing, setEditing] = useState(false);
   const country = getCountry(dish.countryId);
   const region = dish.regionId ? getRegion(dish.regionId) : undefined;
+
+  // Collapse the editor whenever the dish is un-tried.
+  useEffect(() => {
+    if (!tried) setEditing(false);
+  }, [tried]);
 
   const onToggle = () => {
     if (!user) {
@@ -67,7 +76,47 @@ export function DishCard({ dish, showRank = false, showCountry = true }: Props) 
           {tried ? "I've tried this" : 'Mark as tried'}
         </button>
         {!user && <div className={styles.signInHint}>Sign in to track & review</div>}
-        {user && tried && <NoteEditor dishId={dish.id} />}
+
+        {user && tried && !editing && (
+          <button
+            type="button"
+            className={styles.reviewToggle}
+            onClick={() => setEditing(true)}
+            aria-expanded={false}
+          >
+            {hasReview ? (
+              <span className={styles.reviewSummary}>
+                {entry?.rating != null && (
+                  <span className={styles.summaryStars} aria-hidden="true">
+                    {'★'.repeat(entry.rating)}
+                    {'☆'.repeat(5 - entry.rating)}
+                  </span>
+                )}
+                {entry?.note ? (
+                  <span className={styles.summaryNote}>{entry.note}</span>
+                ) : (
+                  <span className={styles.summaryNote}>Add a note…</span>
+                )}
+                <span className={styles.summaryEdit}>Edit</span>
+              </span>
+            ) : (
+              <span className={styles.reviewAdd}>＋ Write a review</span>
+            )}
+          </button>
+        )}
+
+        {user && tried && editing && (
+          <div>
+            <NoteEditor dishId={dish.id} />
+            <button
+              type="button"
+              className={styles.reviewDone}
+              onClick={() => setEditing(false)}
+            >
+              Done
+            </button>
+          </div>
+        )}
       </div>
     </article>
   );

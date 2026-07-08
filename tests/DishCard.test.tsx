@@ -36,12 +36,17 @@ describe('DishCard', () => {
     await user.click(button);
     expect(screen.queryByText(/sign in to track/i)).not.toBeInTheDocument();
 
-    // Second click marks it tried and reveals the note editor.
+    // Second click marks it tried. The editor is collapsed by default — only a
+    // compact "Write a review" affordance shows, keeping the card small.
     await user.click(screen.getByRole('button', { name: /mark as tried/i }));
     expect(screen.getByRole('button', { name: /tried this/i })).toHaveAttribute(
       'aria-pressed',
       'true',
     );
+    expect(screen.queryByLabelText(/note or review/i)).not.toBeInTheDocument();
+
+    // Clicking "Write a review" expands the note editor + rating.
+    await user.click(screen.getByRole('button', { name: /write a review/i }));
     expect(screen.getByLabelText(/note or review/i)).toBeInTheDocument();
     expect(screen.getByRole('radiogroup', { name: /your rating/i })).toBeInTheDocument();
   });

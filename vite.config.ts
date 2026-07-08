@@ -11,5 +11,11 @@ export default defineConfig(({ mode }) => ({
     environment: 'jsdom',
     setupFiles: './tests/setup.ts',
     css: false,
+    // Force mock auth in tests regardless of a local .env.local, so the suite is
+    // deterministic and never hits real Supabase/OAuth (which can't run in jsdom).
+    env: {
+      VITE_SUPABASE_URL: '',
+      VITE_SUPABASE_ANON_KEY: '',
+    },
   },
 }));

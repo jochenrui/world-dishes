@@ -124,3 +124,72 @@
   text-align: center;
   margin-top: 6px;
 }
+
+/* Collapsed review affordance — keeps tried cards compact */
+.reviewToggle {
+  width: 100%;
+  margin-top: 8px;
+  padding: 7px 10px;
+  border: 1px dashed var(--c-border);
+  background: transparent;
+  border-radius: var(--radius-sm);
+  color: var(--c-text-muted);
+  font-size: 13px;
+  text-align: left;
+  transition: border-color 0.12s ease, color 0.12s ease;
+}
+
+.reviewToggle:hover {
+  border-color: var(--c-accent);
+  color: var(--c-text);
+}
+
+.reviewAdd {
+  font-weight: 600;
+  color: var(--c-primary);
+}
+
+.reviewSummary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.summaryStars {
+  flex: 0 0 auto;
+  color: var(--c-accent);
+  letter-spacing: 1px;
+}
+
+.summaryNote {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-style: italic;
+}
+
+.summaryEdit {
+  flex: 0 0 auto;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--c-primary);
+}
+
+.reviewDone {
+  margin-top: 8px;
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--c-border);
+  background: var(--c-surface);
+  color: var(--c-text);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.reviewDone:hover {
+  border-color: var(--c-primary);
+  color: var(--c-primary);
+}
