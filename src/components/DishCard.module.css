@@ -55,6 +55,15 @@
   line-height: 1.25;
 }
 
+.nameLink {
+  color: inherit;
+}
+
+.nameLink:hover {
+  color: var(--c-primary);
+  text-decoration: underline;
+}
+
 .localName {
   font-size: 12px;
   color: var(--c-text-muted);

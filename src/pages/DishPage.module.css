@@ -1,0 +1,118 @@
+.hero {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  margin-bottom: 18px;
+}
+
+.spriteTile {
+  flex: 0 0 auto;
+  width: 92px;
+  height: 92px;
+  display: grid;
+  place-items: center;
+  border-radius: 20px;
+  background: var(--c-surface-2);
+  color: var(--c-primary);
+}
+
+.headInfo {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.rank {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--c-text-muted);
+}
+
+.name {
+  font-size: clamp(26px, 4vw, 36px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 2px 0 2px;
+}
+
+.localName {
+  font-size: 15px;
+  color: var(--c-text-muted);
+  margin-bottom: 8px;
+}
+
+.origin {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--c-text);
+}
+
+.origin:hover {
+  color: var(--c-primary);
+}
+
+.panel {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 20px 22px;
+  max-width: 720px;
+}
+
+.description {
+  font-size: 17px;
+  line-height: 1.6;
+  margin: 0 0 16px;
+}
+
+.originNote {
+  font-size: 14px;
+  color: var(--c-text-muted);
+  margin: 0 0 18px;
+}
+
+.originNote strong {
+  color: var(--c-text);
+}
+
+.badgesRow {
+  padding: 14px 0;
+  border-top: 1px solid var(--c-border);
+  border-bottom: 1px solid var(--c-border);
+  margin-bottom: 18px;
+}
+
+.tryBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 20px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--c-border);
+  background: var(--c-surface);
+  color: var(--c-text);
+  font-weight: 600;
+  font-size: 15px;
+  transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+}
+
+.tryBtn:hover {
+  border-color: var(--c-success);
+}
+
+.tryBtnOn {
+  background: var(--c-success);
+  border-color: var(--c-success);
+  color: #fff;
+}
+
+.signInHint {
+  font-size: 13px;
+  color: var(--c-text-muted);
+  margin-top: 10px;
+}

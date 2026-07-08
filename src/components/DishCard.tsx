@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { getCountry, getRegion } from '../data/countries';
 import type { Dish } from '../data/types';
 import { useProgress } from '../state/ProgressContext';
@@ -42,12 +43,16 @@ export function DishCard({ dish, showRank = false, showCountry = true }: Props) 
   return (
     <article className={`${styles.card} ${tried ? styles.tried : ''}`}>
       <div className={styles.header}>
-        <div className={styles.sprite}>
+        <Link to={`/dish/${dish.id}`} className={styles.sprite} aria-label={`View ${dish.name}`}>
           <DishSprite category={dish.category} size={34} />
-        </div>
+        </Link>
         <div className={styles.titleWrap}>
           {showRank && <div className={styles.rank}>#{dish.popularityRank} worldwide</div>}
-          <h3 className={styles.name}>{dish.name}</h3>
+          <h3 className={styles.name}>
+            <Link to={`/dish/${dish.id}`} className={styles.nameLink}>
+              {dish.name}
+            </Link>
+          </h3>
           {dish.localName && <div className={styles.localName}>{dish.localName}</div>}
           {showCountry && country && (
             <div className={styles.origin}>

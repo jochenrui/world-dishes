@@ -1,0 +1,102 @@
+import { Link, useParams } from 'react-router-dom';
+import { getDish } from '../data/dishes';
+import { getCountry, getRegion } from '../data/countries';
+import { DishBadges } from '../components/DishBadges';
+import { DishSprite } from '../components/DishSprites';
+import { Flag } from '../components/Flag';
+import { NoteEditor } from '../components/NoteEditor';
+import { useProgress } from '../state/ProgressContext';
+import { useSession } from '../state/SessionContext';
+import pageStyles from './pages.module.css';
+import collStyles from './CollectionPage.module.css';
+import styles from './DishPage.module.css';
+
+export function DishPage() {
+  const { dishId = '' } = useParams();
+  const dish = getDish(dishId);
+  const { user, signIn } = useSession();
+  const { isTried, toggleTried } = useProgress();
+
+  if (!dish) {
+    return (
+      <>
+        <Link to="/" className={pageStyles.backLink}>
+          ← All dishes
+        </Link>
+        <div className={collStyles.notFound}>
+          <span className={collStyles.notFoundEmoji} aria-hidden="true">
+            🍽️
+          </span>
+          <p>We don't have that dish yet.</p>
+          <Link to="/" className={collStyles.regionChip}>
+            Browse all dishes
+          </Link>
+        </div>
+      </>
+    );
+  }
+
+  const country = getCountry(dish.countryId);
+  const region = dish.regionId ? getRegion(dish.regionId) : undefined;
+  const tried = isTried(dish.id);
+
+  const onToggle = () => {
+    if (!user) {
+      signIn();
+      return;
+    }
+    toggleTried(dish.id);
+  };
+
+  return (
+    <>
+      <Link to="/" className={pageStyles.backLink}>
+        ← All dishes
+      </Link>
+
+      <div className={styles.hero}>
+        <div className={styles.spriteTile}>
+          <DishSprite category={dish.category} size={60} />
+        </div>
+        <div className={styles.headInfo}>
+          <div className={styles.rank}>#{dish.popularityRank} most popular worldwide</div>
+          <h1 className={styles.name}>{dish.name}</h1>
+          {dish.localName && <div className={styles.localName}>{dish.localName}</div>}
+          {country && (
+            <Link to={`/collection/${country.id}`} className={styles.origin}>
+              <Flag countryId={country.id} width={22} title={country.name} />
+              {country.name}
+              {region && ` · ${region.name}`}
+            </Link>
+          )}
+        </div>
+      </div>
+
+      <div className={styles.panel}>
+        <p className={styles.description}>{dish.description}</p>
+        <p className={styles.originNote}>
+          <strong>Origin:</strong> {dish.origin}
+        </p>
+
+        <div className={styles.badgesRow}>
+          <DishBadges dish={dish} variant="full" />
+        </div>
+
+        <button
+          type="button"
+          className={`${styles.tryBtn} ${tried ? styles.tryBtnOn : ''}`}
+          onClick={onToggle}
+          aria-pressed={tried}
+        >
+          <span aria-hidden="true">{tried ? '✓' : '＋'}</span>
+          {tried ? "I've tried this" : 'Mark as tried'}
+        </button>
+
+        {!user && (
+          <div className={styles.signInHint}>Sign in to track this dish and save a review.</div>
+        )}
+        {user && tried && <NoteEditor dishId={dish.id} />}
+      </div>
+    </>
+  );
+}

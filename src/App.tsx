@@ -4,6 +4,7 @@ import { DishSpriteSheet } from './components/DishSprites';
 import { PopularPage } from './pages/PopularPage';
 import { CollectionPage } from './pages/CollectionPage';
 import { CountryPage } from './pages/CountryPage';
+import { DishPage } from './pages/DishPage';
 import { AboutPage } from './pages/AboutPage';
 import { SessionProvider } from './state/SessionContext';
 import { ProgressProvider } from './state/ProgressContext';
@@ -18,6 +19,7 @@ export function App() {
             <Route index element={<PopularPage />} />
             <Route path="collection" element={<CollectionPage />} />
             <Route path="collection/:countryId" element={<CountryPage />} />
+            <Route path="dish/:dishId" element={<DishPage />} />
             <Route path="about" element={<AboutPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Route>
