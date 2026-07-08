@@ -6,8 +6,9 @@ import type { Category } from '../data/types';
 import { CountryProgressRing } from '../components/CountryProgressRing';
 import { DishGrid } from '../components/DishGrid';
 import { FilterBar } from '../components/FilterBar';
-import { applyFilters, defaultFilters } from '../lib/filters';
+import { applyFilters, defaultFilters, filterByTried } from '../lib/filters';
 import { useProgress } from '../state/ProgressContext';
+import { useSession } from '../state/SessionContext';
 import pageStyles from './pages.module.css';
 import styles from './CollectionPage.module.css';
 
@@ -16,13 +17,19 @@ export function CountryPage() {
   const country = getCountry(countryId);
   const [regionId, setRegionId] = useState<string | undefined>(undefined);
   const [filters, setFilters] = useState(defaultFilters);
-  const { triedCount } = useProgress();
+  const { triedCount, isTried } = useProgress();
+  const { user } = useSession();
 
   const regions = useMemo(() => regionsForCountry(countryId), [countryId]);
   const countryDishes = useMemo(() => dishesForCountry(countryId), [countryId]);
   const visible = useMemo(
-    () => applyFilters(dishesForCountryRegion(countryId, regionId), filters),
-    [countryId, regionId, filters],
+    () =>
+      filterByTried(
+        applyFilters(dishesForCountryRegion(countryId, regionId), filters),
+        filters.triedFilter,
+        isTried,
+      ),
+    [countryId, regionId, filters, isTried],
   );
   const availableCategories = useMemo(() => {
     const present = new Set(countryDishes.map((d) => d.category));
@@ -100,6 +107,7 @@ export function CountryPage() {
           onChange={setFilters}
           resultCount={visible.length}
           availableCategories={availableCategories}
+          showTriedFilter={!!user}
         />
       </div>
 

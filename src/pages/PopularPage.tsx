@@ -3,7 +3,7 @@ import { dishes } from '../data/dishes';
 import type { Category } from '../data/types';
 import { DishGrid } from '../components/DishGrid';
 import { FilterBar } from '../components/FilterBar';
-import { applyFilters, defaultFilters } from '../lib/filters';
+import { applyFilters, defaultFilters, filterByTried } from '../lib/filters';
 import { useProgress } from '../state/ProgressContext';
 import { useSession } from '../state/SessionContext';
 import styles from './pages.module.css';
@@ -16,9 +16,12 @@ const CATEGORY_ORDER: Category[] = [
 export function PopularPage() {
   const [filters, setFilters] = useState(defaultFilters);
   const { user } = useSession();
-  const { triedCount } = useProgress();
+  const { triedCount, isTried } = useProgress();
 
-  const filtered = useMemo(() => applyFilters(dishes, filters), [filters]);
+  const filtered = useMemo(
+    () => filterByTried(applyFilters(dishes, filters), filters.triedFilter, isTried),
+    [filters, isTried],
+  );
   const availableCategories = useMemo(() => {
     const present = new Set(dishes.map((d) => d.category));
     return CATEGORY_ORDER.filter((c) => present.has(c));
@@ -48,6 +51,7 @@ export function PopularPage() {
           onChange={setFilters}
           resultCount={filtered.length}
           availableCategories={availableCategories}
+          showTriedFilter={!!user}
         />
       </div>
 

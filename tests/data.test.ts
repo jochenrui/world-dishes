@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { validateDataset } from '../src/data/validate';
 import { dishes, dishesForCountryRegion } from '../src/data/dishes';
-import { applyFilters, defaultFilters } from '../src/lib/filters';
+import { applyFilters, defaultFilters, filterByTried } from '../src/lib/filters';
 
 describe('dataset', () => {
   it('passes integrity validation', () => {
@@ -46,5 +46,42 @@ describe('applyFilters', () => {
     const out = applyFilters(dishes, { ...defaultFilters, sort: 'name' });
     const names = out.map((d) => d.name);
     expect(names).toEqual([...names].sort((a, b) => a.localeCompare(b)));
+  });
+
+  it('search matches dish name', () => {
+    const out = applyFilters(dishes, { ...defaultFilters, search: 'sushi' });
+    expect(out.some((d) => d.id === 'jp-sushi')).toBe(true);
+    expect(out.every((d) => /sushi/i.test([d.name, d.localName, d.origin].join(' ')))).toBe(true);
+  });
+
+  it('search matches by country name', () => {
+    const out = applyFilters(dishes, { ...defaultFilters, search: 'japan' });
+    expect(out.length).toBeGreaterThan(3);
+    expect(out.every((d) => d.countryId === 'jp')).toBe(true);
+  });
+
+  it('multi-term search is AND', () => {
+    const out = applyFilters(dishes, { ...defaultFilters, search: 'japan noodles' });
+    expect(out.every((d) => d.countryId === 'jp' && d.category === 'noodles')).toBe(true);
+  });
+});
+
+describe('filterByTried', () => {
+  const tried = new Set(['jp-sushi', 'it-pizza']);
+  const isTried = (id: string) => tried.has(id);
+
+  it('all → unchanged', () => {
+    expect(filterByTried(dishes, 'all', isTried)).toHaveLength(dishes.length);
+  });
+  it('tried → only tried dishes', () => {
+    expect(filterByTried(dishes, 'tried', isTried).map((d) => d.id).sort()).toEqual([
+      'it-pizza',
+      'jp-sushi',
+    ]);
+  });
+  it('untried → excludes tried dishes', () => {
+    const out = filterByTried(dishes, 'untried', isTried);
+    expect(out.some((d) => tried.has(d.id))).toBe(false);
+    expect(out).toHaveLength(dishes.length - 2);
   });
 });

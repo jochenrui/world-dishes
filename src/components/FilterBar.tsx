@@ -4,6 +4,7 @@ import { allergenLabels, categoryLabels, dietLabels, spiceLabels } from '../data
 import {
   type DishFilters,
   type SortKey,
+  type TriedFilter,
   defaultFilters,
   isFilterActive,
   toggleInArray,
@@ -16,7 +17,15 @@ interface Props {
   resultCount: number;
   /** Categories present in the current dataset slice (keeps the list relevant). */
   availableCategories: Category[];
+  /** Show the Tried / Not-tried control (only when signed in). */
+  showTriedFilter?: boolean;
 }
+
+const TRIED_OPTIONS: { key: TriedFilter; label: string }[] = [
+  { key: 'all', label: 'All' },
+  { key: 'untried', label: 'Not tried' },
+  { key: 'tried', label: 'Tried' },
+];
 
 const DIETS: DietBase[] = ['vegan', 'vegetarian', 'pescatarian', 'meat'];
 const ALLERGENS: Allergen[] = ['gluten', 'dairy', 'egg', 'nuts', 'shellfish', 'soy'];
@@ -26,12 +35,32 @@ const SORTS: { key: SortKey; label: string }[] = [
   { key: 'spice', label: 'Spiciest' },
 ];
 
-export function FilterBar({ filters, onChange, resultCount, availableCategories }: Props) {
+export function FilterBar({
+  filters,
+  onChange,
+  resultCount,
+  availableCategories,
+  showTriedFilter = false,
+}: Props) {
   const [showMore, setShowMore] = useState(false);
   const set = (patch: Partial<DishFilters>) => onChange({ ...filters, ...patch });
 
   return (
     <div className={styles.bar}>
+      <div className={styles.searchRow}>
+        <span className={styles.searchIcon} aria-hidden="true">
+          🔍
+        </span>
+        <input
+          className={styles.search}
+          type="search"
+          value={filters.search}
+          placeholder="Search dishes — name, country, category…"
+          aria-label="Search dishes"
+          onChange={(e) => set({ search: e.target.value })}
+        />
+      </div>
+
       <div className={styles.row}>
         <div className={styles.group}>
           <span className={styles.label}>Diet</span>
@@ -77,6 +106,23 @@ export function FilterBar({ filters, onChange, resultCount, availableCategories 
             ))}
           </select>
         </div>
+
+        {showTriedFilter && (
+          <div className={styles.group}>
+            <span className={styles.label}>Show</span>
+            {TRIED_OPTIONS.map((o) => (
+              <button
+                key={o.key}
+                type="button"
+                className={`${styles.chip} ${filters.triedFilter === o.key ? styles.chipOn : ''}`}
+                aria-pressed={filters.triedFilter === o.key}
+                onClick={() => set({ triedFilter: o.key })}
+              >
+                {o.label}
+              </button>
+            ))}
+          </div>
+        )}
 
         <div className={styles.spacer} />
         <span className={styles.count}>{resultCount} dishes</span>
