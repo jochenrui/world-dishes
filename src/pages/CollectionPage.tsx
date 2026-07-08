@@ -4,6 +4,7 @@ import { countries } from '../data/countries';
 import { dishesForCountry } from '../data/dishes';
 import type { Continent, Country } from '../data/types';
 import { CountryProgressRing } from '../components/CountryProgressRing';
+import { Flag } from '../components/Flag';
 import { useProgress } from '../state/ProgressContext';
 import { useSession } from '../state/SessionContext';
 import pageStyles from './pages.module.css';
@@ -20,8 +21,8 @@ function CountryCard({ country }: { country: Country }) {
 
   return (
     <Link to={`/collection/${country.id}`} className={styles.card}>
-      <span className={styles.flag} aria-hidden="true">
-        {country.flag}
+      <span className={styles.flag}>
+        <Flag countryId={country.id} width={34} title={country.name} />
       </span>
       <div className={styles.info}>
         <div className={styles.name}>{country.name}</div>

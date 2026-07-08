@@ -5,6 +5,7 @@ import { useProgress } from '../state/ProgressContext';
 import { useSession } from '../state/SessionContext';
 import { DishBadges } from './DishBadges';
 import { DishSprite } from './DishSprites';
+import { Flag } from './Flag';
 import { NoteEditor } from './NoteEditor';
 import styles from './DishCard.module.css';
 
@@ -50,7 +51,7 @@ export function DishCard({ dish, showRank = false, showCountry = true }: Props) 
           {dish.localName && <div className={styles.localName}>{dish.localName}</div>}
           {showCountry && country && (
             <div className={styles.origin}>
-              <span className={styles.flag}>{country.flag}</span>
+              <Flag countryId={country.id} width={18} title={country.name} />
               {country.name}
               {region && ` · ${region.name}`}
             </div>

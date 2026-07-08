@@ -4,6 +4,7 @@ import { getCountry, regionsForCountry } from '../data/countries';
 import { dishesForCountry, dishesForCountryRegion } from '../data/dishes';
 import type { Category } from '../data/types';
 import { CountryProgressRing } from '../components/CountryProgressRing';
+import { Flag } from '../components/Flag';
 import { DishGrid } from '../components/DishGrid';
 import { FilterBar } from '../components/FilterBar';
 import { applyFilters, defaultFilters, filterByTried } from '../lib/filters';
@@ -64,8 +65,8 @@ export function CountryPage() {
       </Link>
 
       <div className={styles.detailHead}>
-        <span className={styles.detailFlag} aria-hidden="true">
-          {country.flag}
+        <span className={styles.detailFlag}>
+          <Flag countryId={country.id} width={46} title={country.name} />
         </span>
         <div style={{ flex: 1 }}>
           <h1 className={styles.detailTitle}>{country.name}</h1>

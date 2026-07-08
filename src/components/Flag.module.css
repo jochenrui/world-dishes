@@ -1,0 +1,14 @@
+.flag {
+  display: inline-block;
+  vertical-align: middle;
+  height: auto;
+  border-radius: 3px;
+  /* hairline ring so white/light flags (Japan, etc.) read against light cards */
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.12);
+}
+
+@media (prefers-color-scheme: dark) {
+  .flag {
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.18);
+  }
+}
