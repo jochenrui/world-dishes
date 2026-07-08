@@ -32,27 +32,33 @@ A single-page application for exploring the world's most popular dishes and trac
 ## 3. Architecture
 
 ### 3.1 Routes / Pages
-- `/` — **Popular Dishes**: global ranking of most popular dishes worldwide. Cards with sprite, name, country flag, dietary badges. Filter/sort by dietary base, spice, category. Logged-in users see tried-state on each card.
-- `/collection` — **By Country**: list/grid of countries with a progress ring ("6/14 tried"). Selecting a country shows its dishes; countries with `hasRegions` expose a region/city filter (All / Sichuan / Cantonese / ...). Each dish card has a "tried" toggle and a note/rating editor.
+- `/` — **Popular Dishes**: global ranking of most popular dishes worldwide, ordered by `popularityRank` (globally unique, 1 = most popular). All dishes render (≈180 cards is trivial for the DOM; no pagination in v1). Cards show sprite, name, country flag, dietary badges. **Filters:** diet base, category, spice (max level), and "avoid" toggles for pork / beef / alcohol / each allergen. **Sort options:** Popularity (default) / Name A–Z / Spice. Empty filter results show a friendly empty state. Logged-in users see tried-state on each card.
+- `/collection` — **By Country**: countries grouped by continent, each with a progress ring ("6/14 tried"). Selecting a country shows its dishes; countries with `hasRegions` expose a region filter (All / Sichuan / Cantonese / ...). **Region semantics:** "All" shows every dish for the country; selecting a specific region shows that region's dishes **plus** national (region-less) dishes. Each dish card has a "tried" toggle and a note/rating editor. Same avoid/diet filters available here.
 - `/about` — **About the Data**: methodology, dataset scope, field definitions, dietary/allergen legend, sources/caveats, counts (computed from the dataset at build/render time).
 
 ### 3.2 Auth abstraction
 ```ts
 interface AuthProvider {
+  readonly mode: 'mock' | 'google';
   currentUser: User | null;
-  signIn(): Promise<User>;
-  signOut(): Promise<void>;
+  /** Trigger sign-in. For GIS this shows the prompt / renders into the given element. */
+  signIn(mountEl?: HTMLElement): void;
+  signOut(): void;
+  /** Primary source of truth — fires on init, sign-in, sign-out. Returns unsubscribe. */
   onChange(cb: (u: User | null) => void): () => void;
 }
 ```
-- `MockAuthProvider`: returns a canned Google-style user (name, email, avatar) immediately. Active when `VITE_GOOGLE_CLIENT_ID` is absent.
-- `GoogleAuthProvider`: uses Google Identity Services (GIS) client-side; decodes the ID token JWT for profile. Active automatically when `VITE_GOOGLE_CLIENT_ID` is set.
-- A factory picks the implementation at startup based on env. **This is the only swap needed for real auth.**
-- `User { id, name, email, avatarUrl }`. `id` keys the persisted progress.
+- Interface is **callback-driven** (via `onChange`) rather than promise-returning, because Google Identity Services (GIS) delivers credentials through a callback and may render its own button / One-Tap prompt — a `Promise<User>` facade fits it poorly.
+- `MockAuthProvider`: emits a canned Google-style user (name, email, avatar) on `signIn()`. Active when `VITE_GOOGLE_CLIENT_ID` is absent.
+- `GoogleAuthProvider` (**built in v1**, not deferred): loads the `accounts.google.com/gsi/client` script, initializes with the Client ID, and on credential callback decodes the ID-token JWT for the profile. Active automatically when `VITE_GOOGLE_CLIENT_ID` is set. To go live you supply the Client ID env var **and** register the app's Authorized JavaScript Origins in Google Cloud Console — not literally "zero code," but no code changes.
+- **Security caveat (client-only):** the decoded identity is *cosmetic/unverified* — we do not verify the JWT signature/`aud`/`exp`/`iss` (no backend trust boundary). It is used only to derive a stable `user.id` (the token's `sub` claim) to key localStorage. This is not authentication in a security sense; it gates personalization only. Real sign-in also requires network (offline works only under mock auth).
+- A factory picks the implementation at startup based on env.
+- `User { id, name, email, avatarUrl }`. `id` keys the persisted progress. **Note:** switching from mock to real Google auth changes `user.id`, so mock-era progress becomes orphaned under its old localStorage key (acceptable for v1; documented).
 
 ### 3.3 State & persistence
 - `SessionContext`: current user + auth actions.
-- `ProgressContext`: `UserProgress` map, actions `toggleTried(dishId)`, `setNote(dishId, note)`, `setRating(dishId, n)`.
+- `ProgressContext`: `UserProgress` map, actions `toggleTried(dishId)` (sets `triedAt` when turning on, clears note/rating/`triedAt` when turning off), `setNote(dishId, note)`, `setRating(dishId, rating: Rating)`.
+- **Per-country progress:** denominator = count of all dishes with that `countryId` (including region-specific ones); numerator = count of tried entries whose `dishId` still exists in the current dataset (orphaned entries from removed dishes are ignored, never inflate progress).
 - Persistence layer `storage.ts`: reads/writes `localStorage` under key `world-dishes:progress:<userId>`. Debounced writes. Graceful when unauthenticated (progress actions are disabled / prompt login).
 - Migration-safe: stored blob carries a `version` field.
 
@@ -67,7 +73,7 @@ type Category =
   | 'sandwich' | 'beverage' | 'pastry';
 
 interface Country { id: string; name: string; flag: string; continent: string; hasRegions: boolean; }
-interface Region { id: string; countryId: string; name: string; kind: 'city' | 'area'; }
+interface Region { id: string; countryId: string; name: string; }
 
 interface Dish {
   id: string;
@@ -112,8 +118,8 @@ Rationale: consistent, offline, lightweight, and scalable to more dishes without
 - `DishCard` (sprite + name + flag + badges + tried toggle)
 - `DishBadges` (renders diet/flags/spice/allergens)
 - `DishSprite` (references symbol sheet)
-- `FilterBar` (diet/category/spice/sort)
-- `CountryGrid` + `CountryProgressRing`
+- `FilterBar` (diet base / category / max spice / sort + "avoid" toggles for pork, beef, alcohol, and each allergen)
+- `CountryGrid` (grouped by continent) + `CountryProgressRing`
 - `RegionFilter` (only when `hasRegions`)
 - `NoteEditor` (note textarea + star rating, save/cancel)
 - `AboutData` (legend + stats)
@@ -142,6 +148,6 @@ Rationale: consistent, offline, lightweight, and scalable to more dishes without
 8. Tests + Playwright UX review + fixes.
 
 ## 10. Future / Deferred
-- Real Google OIDC (drop in `VITE_GOOGLE_CLIENT_ID`).
-- Backend + cross-device sync.
+- **Backend-verified auth** (verify the Google ID token server-side; today's client-side identity is cosmetic — see §3.2).
+- Cross-device sync (requires backend).
 - Larger dataset, dish photos via API (hybrid), i18n, PWA/offline.
