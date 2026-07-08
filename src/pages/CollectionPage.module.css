@@ -64,8 +64,8 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: var(--c-accent);
-  border: 1px solid var(--c-accent);
+  color: var(--c-accent-ink);
+  border: 1px solid var(--c-accent-ink);
   border-radius: 5px;
   padding: 0 5px;
   margin-top: 4px;
@@ -123,7 +123,10 @@
 }
 
 .regionChip {
-  padding: 6px 13px;
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 7px 14px;
   border-radius: 999px;
   border: 1.5px solid var(--c-border);
   background: var(--c-surface);
@@ -134,6 +137,18 @@
 
 .regionChip:hover {
   border-color: var(--c-primary);
+}
+
+.notFound {
+  text-align: center;
+  padding: 56px 20px;
+  color: var(--c-text-muted);
+}
+
+.notFoundEmoji {
+  font-size: 40px;
+  display: block;
+  margin-bottom: 10px;
 }
 
 .regionChipOn {

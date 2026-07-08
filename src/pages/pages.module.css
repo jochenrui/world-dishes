@@ -34,7 +34,7 @@
 
 .stickyFilters {
   position: sticky;
-  top: 70px;
+  top: calc(var(--header-h) + 6px);
   z-index: 10;
   margin-bottom: 20px;
 }

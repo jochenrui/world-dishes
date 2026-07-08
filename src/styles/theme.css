@@ -8,18 +8,25 @@
   --c-border: #e7ddcd;
   --c-text: #2c2620;
   --c-text-muted: #6f6858;
-  --c-primary: #d1462f;
+  --c-primary: #c23d29; /* deepened for AA on cream (4.9:1) */
   --c-primary-ink: #ffffff;
   --c-accent: #e8a020;
+  --c-accent-ink: #8a5410; /* AA-safe amber text/border on light surfaces */
   --c-success: #4a8f3c;
+  --nav-active-bg: #c23d29; /* white text passes AA in both themes */
 
-  /* Diet colors */
+  /* Diet colors — base (dots/bars/rings) + AA-safe ink (pill text on tint) */
   --diet-vegan: #3f9d4f;
   --diet-vegetarian: #7cb342;
   --diet-pescatarian: #2f88c1;
   --diet-meat: #b23b2e;
-  --spice: #d1462f;
+  --diet-vegan-ink: #2b6e37;
+  --diet-vegetarian-ink: #4d7a26;
+  --diet-pescatarian-ink: #1d6396;
+  --diet-meat-ink: #9e3327;
+  --spice: #c23d29;
 
+  --header-h: 64px;
   --radius: 14px;
   --radius-sm: 8px;
   --shadow: 0 1px 3px rgba(44, 38, 32, 0.08), 0 8px 24px rgba(44, 38, 32, 0.06);
@@ -38,6 +45,12 @@
     --c-text-muted: #a89f90;
     --c-primary: #e8624b;
     --c-accent: #edb04a;
+    --c-accent-ink: #edb04a; /* amber reads fine on dark surfaces */
+    --nav-active-bg: #c23d29;
+    --diet-vegan-ink: #7fd08c;
+    --diet-vegetarian-ink: #a8d86a;
+    --diet-pescatarian-ink: #7ec3ea;
+    --diet-meat-ink: #f0a094;
     --shadow: 0 1px 3px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.3);
     --shadow-hover: 0 2px 6px rgba(0, 0, 0, 0.5), 0 12px 32px rgba(0, 0, 0, 0.45);
   }
@@ -104,4 +117,23 @@ textarea:focus-visible,
 [tabindex]:focus-visible {
   outline: 3px solid var(--c-accent);
   outline-offset: 2px;
+}
+
+/* The header wraps to a taller two-row layout on small screens; keep the sticky
+   filter bar (top: var(--header-h)) from hiding behind it. */
+@media (max-width: 620px) {
+  :root {
+    --header-h: 122px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }

@@ -9,19 +9,23 @@
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  padding: 2px 9px 2px 7px;
+  padding: 3px 10px 3px 8px;
   border-radius: 999px;
   font-size: 12px;
-  font-weight: 600;
-  color: #fff;
+  font-weight: 700;
   line-height: 1.5;
+  /* Tinted pill: light wash of the diet color + AA-safe ink text (passes WCAG AA
+     in both themes, unlike the old white-on-light-fill). */
+  color: var(--pill-ink);
+  background: color-mix(in srgb, var(--pill-c) 16%, var(--c-surface));
+  border: 1px solid color-mix(in srgb, var(--pill-c) 34%, var(--c-surface));
 }
 
 .dietDot {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--pill-c);
 }
 
 .flag {
@@ -53,14 +57,32 @@
 
 .allergens {
   display: inline-flex;
-  gap: 3px;
+  flex-wrap: wrap;
+  gap: 4px;
   align-items: center;
 }
 
+.allergenTag {
+  font-size: 11px;
+  color: var(--c-text-muted);
+  margin-right: 1px;
+}
+
 .allergen {
-  font-size: 13px;
-  line-height: 1;
-  cursor: help;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--c-text-muted);
+  background: var(--c-surface-2);
+  border: 1px solid var(--c-border);
+  border-radius: 999px;
+  padding: 1px 7px 1px 5px;
+}
+
+.allergenName {
+  font-weight: 600;
 }
 
 .allergenNone {

@@ -14,6 +14,14 @@ export const dietColorVar: Record<DietBase, string> = {
   meat: 'var(--diet-meat)',
 };
 
+/** AA-safe text color for a diet pill sitting on a light tint of its own color. */
+export const dietInkVar: Record<DietBase, string> = {
+  vegan: 'var(--diet-vegan-ink)',
+  vegetarian: 'var(--diet-vegetarian-ink)',
+  pescatarian: 'var(--diet-pescatarian-ink)',
+  meat: 'var(--diet-meat-ink)',
+};
+
 export const dietShort: Record<DietBase, string> = {
   vegan: 'Vegan',
   vegetarian: 'Veg',

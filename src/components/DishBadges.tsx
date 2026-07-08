@@ -1,8 +1,10 @@
 import type { Dish } from '../data/types';
+import type { CSSProperties } from 'react';
 import {
   allergenGlyph,
   allergenLabels,
   dietColorVar,
+  dietInkVar,
   dietLabels,
   dietShort,
   spiceLabels,
@@ -17,12 +19,12 @@ interface Props {
 
 export function DietPill({ dish }: { dish: Dish }) {
   const { base } = dish.dietary;
+  const style = {
+    '--pill-c': dietColorVar[base],
+    '--pill-ink': dietInkVar[base],
+  } as CSSProperties;
   return (
-    <span
-      className={styles.dietPill}
-      style={{ background: dietColorVar[base] }}
-      title={dietLabels[base]}
-    >
+    <span className={styles.dietPill} style={style} title={dietLabels[base]}>
       <span className={styles.dietDot} aria-hidden="true" />
       {dietShort[base]}
     </span>
@@ -60,20 +62,24 @@ export function DishBadges({ dish, variant = 'full' }: Props) {
       ))}
       <SpiceMeter level={spiceLevel} />
       {variant === 'full' && (
-        <span className={styles.allergens} aria-label="Allergens">
+        <span className={styles.allergens}>
           {allergens.length === 0 ? (
             <span className={styles.allergenNone}>Allergen-free</span>
           ) : (
-            allergens.map((a) => (
-              <span
-                key={a}
-                className={styles.allergen}
-                title={allergenLabels[a]}
-                aria-label={allergenLabels[a]}
-              >
-                {allergenGlyph[a]}
-              </span>
-            ))
+            <>
+              <span className={styles.allergenTag}>Contains</span>
+              {allergens.map((a) => (
+                <span
+                  key={a}
+                  className={styles.allergen}
+                  title={allergenLabels[a]}
+                  aria-label={allergenLabels[a]}
+                >
+                  <span aria-hidden="true">{allergenGlyph[a]}</span>
+                  <span className={styles.allergenName}>{allergenLabels[a]}</span>
+                </span>
+              ))}
+            </>
           )}
         </span>
       )}

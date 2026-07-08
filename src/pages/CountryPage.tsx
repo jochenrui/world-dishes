@@ -35,7 +35,15 @@ export function CountryPage() {
         <Link to="/collection" className={pageStyles.backLink}>
           ← Back to countries
         </Link>
-        <p>Sorry, we don't have that country yet.</p>
+        <div className={styles.notFound}>
+          <span className={styles.notFoundEmoji} aria-hidden="true">
+            🗺️
+          </span>
+          <p>We don't have that country yet.</p>
+          <Link to="/collection" className={styles.regionChip}>
+            Browse all countries
+          </Link>
+        </div>
       </>
     );
   }

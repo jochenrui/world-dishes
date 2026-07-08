@@ -158,7 +158,7 @@
 
 .summaryStars {
   flex: 0 0 auto;
-  color: var(--c-accent);
+  color: var(--c-accent-ink);
   letter-spacing: 1px;
 }
 
