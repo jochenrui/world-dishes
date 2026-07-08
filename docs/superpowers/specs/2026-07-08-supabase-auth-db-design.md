@@ -116,7 +116,8 @@ The server is the **single source of truth** once signed in. The localStorage ca
    a. Capture `reqUserId = user.id`.
    b. Hydrate state from the localStorage cache for `reqUserId` (instant paint).
    c. Run **first-login migration if not yet done** for this account (§5.2), then `fetchAll(reqUserId)`.
-   d. **Guard:** if `userIdRef.current !== reqUserId` when the async work resolves, **discard** the result (the user changed/signed out mid-flight — prevents S2 cross-user leak). Otherwise the server result **replaces** state + cache wholesale.
+   d. **Guard:** if `userIdRef.current !== reqUserId` when the async work resolves, **discard** the result (the user changed/signed out mid-flight — prevents S2 cross-user leak).
+   e. **Apply with pending-overlay (prevents the initial-fetch clobber):** the server snapshot becomes the new base, but any `dishId` that has a **pending (unconfirmed) local write** in the per-dish write-through map (§5.1.2b) is overlaid from current local state (upsert → keep local entry, delete → keep it absent). So an edit the user makes *during* the fetch window is preserved, not reverted, without blocking writes. Dishes with no pending write take the server value. The merged result is written to state + cache.
 2. **Mutation** (`toggleTried` / `setNote` / `setRating`), only allowed once `initializing` is false and a user is present:
    a. Optimistic update to state + cache.
    b. Per-`dishId` **coalesced + serialized** write-through: a short debounce per dish collapses rapid edits to a single terminal operation computed from the final state — `upsert` if the key is present, `delete` if absent — and each dish's writes are chained (await the previous) so a `try→untry` burst can't land out of order (S4).
@@ -124,14 +125,15 @@ The server is the **single source of truth** once signed in. The localStorage ca
 3. **Sign-out / user change:** clear pending per-dish timers and mark in-flight writes/loads stale (via the `reqUserId` guard), then clear in-memory state. The per-user cache is left intact on disk.
 
 ### 5.2 First-login migration (once per account)
-Guarded by a persisted flag `world-dishes:migrated:<userId>`:
+Guarded by a persisted per-account flag `world-dishes:migrated:<userId>`:
 - If the flag is set, skip entirely.
-- Otherwise gather **local `tried` entries** from (a) the mock-era cache (`mock-user-1` key) and (b) any pre-existing cache under this user id, then `migrateInsert` them with `ignoreDuplicates: true` (never clobbers a server row).
-- Set the flag. Because it runs **once** and uses insert-if-absent, it can never resurrect a row the user later deletes (S1) — after migration, steady-state never backfills from the cache.
+- Otherwise gather **local `tried` entries** from (a) the mock-era cache (`mock-user-1` key) **only if the global marker `world-dishes:mock-consumed` is unset**, and (b) any pre-existing cache under this user id, then `migrateInsert` them with `ignoreDuplicates: true` (never clobbers a server row).
+- On success: set the per-account flag, and if the mock blob was consumed, **set `world-dishes:mock-consumed` and delete the `mock-user-1` blob**. This prevents a shared browser from seeding the same mock data into a second account.
+- Because it runs **once per account** and uses insert-if-absent, it can never resurrect a row the user later deletes (S1) — after migration, steady-state never backfills from the cache.
 
 ### 5.3 Why this fixes the review findings
 - **S1 (delete resurrection):** deletes are authoritative online; steady-state load *replaces* the cache; migration is once-only + insert-if-absent → nothing re-creates a deleted row.
-- **S2 (async leak/clobber/refresh storm):** load keyed on `user.id`; `reqUserId` guard drops stale resolutions; writes gated on `initializing`; timers cleared on user change.
+- **S2 (async leak/clobber/refresh storm):** load keyed on `user.id`; `reqUserId` guard drops stale resolutions; timers cleared on user change; and the **pending-overlay** (§5.1.1e) preserves edits made during the initial fetch window so the server snapshot never reverts an in-flight optimistic write.
 - **S3 (LWW):** claim dropped; server authoritative; `updated_at` kept as audit only.
 - **S4 (ordering):** per-dish coalescing + serialization.
 
