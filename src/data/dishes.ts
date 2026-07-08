@@ -1,11 +1,16 @@
 import type { Dish } from './types';
 import { rawDishes } from './dishes.raw';
+import { localDishes } from './dishes.local';
+
+/** World-famous + locally-famous dishes, combined into one pool. */
+export const allRawDishes = [...rawDishes, ...localDishes];
 
 /**
  * Derive globally-unique popularity ranks from the authored `fame` weights.
  * Sort by fame desc, then name asc as a stable tiebreaker, then assign 1..N.
+ * Because local dishes' fame sits below the world-famous tier, they rank after them.
  */
-export const dishes: Dish[] = [...rawDishes]
+export const dishes: Dish[] = [...allRawDishes]
   .sort((a, b) => b.fame - a.fame || a.name.localeCompare(b.name))
   .map(({ fame: _fame, ...dish }, i) => ({ ...dish, popularityRank: i + 1 }));
 

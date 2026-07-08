@@ -66,10 +66,13 @@ export function AboutPage() {
         <h2>Where the data comes from</h2>
         <p>
           There's no reliable public API for "the most popular dishes of each country," so this
-          dataset is <strong>hand-curated</strong>. Each dish was chosen for its cultural
-          prominence and international recognition, then annotated with dietary information, an
-          origin note, and a popularity weight. The global ranking you see on the Popular page is
-          derived from that weight (<code>fame</code>) and is deliberately opinionated.
+          dataset is <strong>hand-curated</strong>. It spans two tiers: <strong>world-famous</strong>{' '}
+          classics that travel across borders, and <strong>locally-famous</strong> dishes — home
+          cooking, street snacks, breakfast staples and regional specialties that a tourist "top 10"
+          usually misses. The local tier was researched region-by-region and independently reviewed
+          for dietary and attribution accuracy. Each dish is annotated with dietary information, an
+          origin note, and a popularity weight (<code>fame</code>); the global ranking on the Popular
+          page is derived from that weight, with world-famous dishes ranking above local ones.
         </p>
 
         <div className={styles.callout}>

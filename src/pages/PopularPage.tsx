@@ -31,8 +31,9 @@ export function PopularPage() {
       <div className={styles.hero}>
         <h1 className={styles.title}>The World's Most Popular Dishes</h1>
         <p className={styles.subtitle}>
-          {dishes.length} iconic dishes from around the globe, ranked by how famous they are.
-          Filter by diet, spice, or what you'd rather avoid — then start ticking off the ones you've tasted.
+          {dishes.length} dishes from around the globe — from world-famous classics to the local
+          favourites you'd only find by asking a local — ranked by fame. Filter by diet, spice, or
+          what you'd rather avoid, then start ticking off the ones you've tasted.
         </p>
         {user && (
           <div className={styles.statline}>
