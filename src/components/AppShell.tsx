@@ -20,7 +20,7 @@ function GoogleG() {
 }
 
 export function AppShell() {
-  const { user, mode, signIn, signOut } = useSession();
+  const { user, mode, initializing, signIn, signOut } = useSession();
 
   return (
     <>
@@ -47,7 +47,11 @@ export function AppShell() {
             ))}
           </nav>
           <div className={styles.spacer} />
-          {user ? (
+          {initializing ? (
+            <span className={styles.userName} aria-live="polite">
+              …
+            </span>
+          ) : user ? (
             <div className={styles.user}>
               {user.avatarUrl && <img className={styles.avatar} src={user.avatarUrl} alt="" />}
               <span className={styles.userName}>{user.name}</span>

@@ -28,6 +28,10 @@ jobs:
       - run: npm ci
       - run: npm run test
       - run: npm run build
+        env:
+          # Public-safe (RLS protects data); stored as repo Variables. Unset -> mock mode.
+          VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ vars.VITE_SUPABASE_ANON_KEY }}
       # SPA fallback: unknown deep-link paths serve index.html so the router can handle them.
       - run: cp dist/index.html dist/404.html
       - uses: actions/upload-pages-artifact@v3

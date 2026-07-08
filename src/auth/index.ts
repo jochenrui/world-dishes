@@ -1,18 +1,17 @@
 import type { AuthProvider } from './types';
 import { MockAuthProvider } from './mockAuth';
-import { GoogleAuthProvider } from './googleAuth';
+import { SupabaseAuthProvider } from './supabaseAuth';
+import { getSupabase } from '../lib/supabaseClient';
 
 export type { AuthProvider, User } from './types';
 
 /**
  * Picks the auth implementation at startup:
- *  - VITE_GOOGLE_CLIENT_ID present  -> real Google Identity Services
- *  - otherwise                      -> mock provider
+ *  - VITE_SUPABASE_* configured -> real Google sign-in via Supabase
+ *  - otherwise                  -> mock provider (dev / CI, no credentials needed)
  */
 export function createAuthProvider(): AuthProvider {
-  const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID as string | undefined;
-  if (clientId && clientId.trim().length > 0) {
-    return new GoogleAuthProvider(clientId.trim());
-  }
+  const supabase = getSupabase();
+  if (supabase) return new SupabaseAuthProvider(supabase);
   return new MockAuthProvider();
 }

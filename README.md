@@ -23,30 +23,39 @@ npm run preview    # serve the production build
 npm run test       # run the Vitest suite
 ```
 
-## Authentication
+## Authentication & data
 
 Auth sits behind a single interface (`src/auth/`) with two implementations chosen at startup:
 
 | Env | Provider | Behavior |
 | --- | --- | --- |
-| `VITE_GOOGLE_CLIENT_ID` **unset** | `MockAuthProvider` | Signs in instantly as a demo user. No network. |
-| `VITE_GOOGLE_CLIENT_ID` **set** | `GoogleAuthProvider` | Real Google Identity Services sign-in. |
+| `VITE_SUPABASE_*` **unset** | `MockAuthProvider` | Signs in instantly as a demo user; progress saved only in `localStorage`. No network. |
+| `VITE_SUPABASE_*` **set** | `SupabaseAuthProvider` | Real Google sign-in via Supabase (server-verified); progress stored in Postgres, cached locally. |
 
-To enable real Google sign-in, copy `.env.example` to `.env.local`, set your Client ID, and restart the dev server. See `.env.example` for how to obtain one.
+When Supabase is configured, progress is stored in a `dish_progress` table protected by
+Row-Level Security (each user sees only their own rows). The browser keeps a `localStorage`
+cache for instant/offline reads, and any progress accrued under the mock login is migrated into
+your account the first time you sign in for real.
 
-> **Security note:** this is a client-only app. The Google identity is decoded in the browser and **not** verified (no signature/`aud`/`exp` check) — it only derives a stable id to key your local data. It gates personalization, not security. Verifying the token requires a backend, which is out of scope for v1.
+**To turn it on:** follow [`docs/SETUP-SUPABASE.md`](docs/SETUP-SUPABASE.md) (create a Supabase
+project, run the SQL migration, set up a Google OAuth client), then put `VITE_SUPABASE_URL` and
+`VITE_SUPABASE_ANON_KEY` in `.env.local` (dev) and in the repo's Actions **Variables** (prod).
+
+> The anon key is public by design — data is protected by Postgres RLS, not by hiding the key.
 
 ## Project structure
 
 ```
 src/
-  auth/        AuthProvider interface, mock + Google (GIS) implementations, factory
-  data/        Curated dataset (countries, regions, dishes), types, labels, validator
-  state/       Session + Progress contexts, reducer, localStorage layer
+  auth/        AuthProvider interface, mock + Supabase implementations, factory
+  data/        Curated dataset (countries, regions, dishes), types, labels, validator, progressRepo
+  state/       Session + Progress contexts, reducer, localStorage cache + migration flags
   components/  AppShell, DishCard, DishGrid, FilterBar, badges, SVG sprite sheet, ...
   pages/       Popular, Collection, Country detail, About
-  lib/         Filtering + sorting logic
-docs/superpowers/specs/  Design spec
+  lib/         Filtering + sorting logic, Supabase client
+supabase/migrations/     SQL migration for the dish_progress table (+ RLS)
+docs/SETUP-SUPABASE.md   One-time backend setup guide
+docs/superpowers/specs/  Design specs
 tests/         Vitest unit + component tests
 ```
 

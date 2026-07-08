@@ -21,14 +21,21 @@ export function progressReducer(state: UserProgress, action: ProgressAction): Us
     case 'load':
       return action.progress;
 
-    case 'toggleTried':
-      return withEntry(state, action.dishId, (prev) => {
-        if (prev.tried) {
-          // Un-trying clears the whole entry (note, rating, timestamp).
-          return { tried: false };
-        }
-        return { ...prev, tried: true, triedAt: action.now };
-      });
+    case 'toggleTried': {
+      const existing = state.entries[action.dishId];
+      if (existing?.tried) {
+        // Un-trying deletes the entry entirely (no {tried:false} tombstone) so it
+        // maps cleanly to a DB delete and can't be resurrected by a later sync.
+        const next = { ...state.entries };
+        delete next[action.dishId];
+        return { ...state, entries: next };
+      }
+      return withEntry(state, action.dishId, (prev) => ({
+        ...prev,
+        tried: true,
+        triedAt: action.now,
+      }));
+    }
 
     case 'setNote':
       return withEntry(state, action.dishId, (prev) => ({

@@ -10,13 +10,14 @@ describe('progressReducer', () => {
     expect(s.entries['jp-sushi']).toEqual({ tried: true, triedAt: NOW });
   });
 
-  it('un-trying clears note, rating and timestamp', () => {
+  it('un-trying deletes the entry (note, rating, timestamp all gone)', () => {
     let s = progressReducer(emptyProgress(), { type: 'toggleTried', dishId: 'jp-sushi', now: NOW });
     s = progressReducer(s, { type: 'setNote', dishId: 'jp-sushi', note: 'loved it' });
     s = progressReducer(s, { type: 'setRating', dishId: 'jp-sushi', rating: 5 });
     expect(s.entries['jp-sushi']).toMatchObject({ tried: true, note: 'loved it', rating: 5 });
     s = progressReducer(s, { type: 'toggleTried', dishId: 'jp-sushi', now: NOW });
-    expect(s.entries['jp-sushi']).toEqual({ tried: false });
+    expect(s.entries['jp-sushi']).toBeUndefined();
+    expect('jp-sushi' in s.entries).toBe(false);
   });
 
   it('setting a note implies tried', () => {

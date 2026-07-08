@@ -6,6 +6,8 @@ import type { AuthProvider, User } from '../auth';
 interface SessionValue {
   user: User | null;
   mode: AuthProvider['mode'];
+  /** True until the auth provider has reported its initial (restored) state. */
+  initializing: boolean;
   signIn: () => void;
   signOut: () => void;
 }
@@ -18,17 +20,26 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   const provider = providerRef.current;
 
   const [user, setUser] = useState<User | null>(provider.currentUser);
+  const [initializing, setInitializing] = useState(true);
 
-  useEffect(() => provider.onChange(setUser), [provider]);
+  useEffect(() => {
+    // The first onChange emission (synchronous for mock; INITIAL_SESSION for
+    // Supabase once the persisted session is restored) settles initialization.
+    return provider.onChange((u) => {
+      setUser(u);
+      setInitializing(false);
+    });
+  }, [provider]);
 
   const value = useMemo<SessionValue>(
     () => ({
       user,
       mode: provider.mode,
+      initializing,
       signIn: () => provider.signIn(),
       signOut: () => provider.signOut(),
     }),
-    [user, provider],
+    [user, provider, initializing],
   );
 
   return <SessionContext.Provider value={value}>{children}</SessionContext.Provider>;

@@ -1,0 +1,119 @@
+import type { SupabaseClient } from '@supabase/supabase-js';
+import type { ProgressEntry, Rating, UserProgress } from './types';
+
+const TABLE = 'dish_progress';
+
+export interface DishProgressRow {
+  user_id: string;
+  dish_id: string;
+  tried: boolean;
+  note: string | null;
+  rating: number | null;
+  tried_at: string | null;
+}
+
+type Entries = UserProgress['entries'];
+
+// ── Pure mapping / merge helpers (unit-tested, no network) ─────────────────
+
+export function rowToEntry(row: DishProgressRow): { dishId: string; entry: ProgressEntry } {
+  const entry: ProgressEntry = { tried: row.tried };
+  if (row.note != null) entry.note = row.note;
+  if (row.rating != null) entry.rating = row.rating as Rating;
+  if (row.tried_at != null) entry.triedAt = row.tried_at;
+  return { dishId: row.dish_id, entry };
+}
+
+export function entryToRow(userId: string, dishId: string, entry: ProgressEntry): DishProgressRow {
+  return {
+    user_id: userId,
+    dish_id: dishId,
+    tried: entry.tried,
+    note: entry.note ?? null,
+    rating: entry.rating ?? null,
+    tried_at: entry.triedAt ?? null,
+  };
+}
+
+export function rowsToEntries(rows: DishProgressRow[]): Entries {
+  const out: Entries = {};
+  for (const row of rows) {
+    const { dishId, entry } = rowToEntry(row);
+    out[dishId] = entry;
+  }
+  return out;
+}
+
+/**
+ * Entries eligible for first-login migration: only genuinely-tried ones.
+ * Excludes any empty / `{tried:false}` tombstone that might linger in an old cache
+ * (guards against resurrecting a deleted dish).
+ */
+export function entriesToMigrate(local: Entries): Entries {
+  const out: Entries = {};
+  for (const [dishId, entry] of Object.entries(local)) {
+    if (entry && entry.tried === true) out[dishId] = entry;
+  }
+  return out;
+}
+
+/**
+ * Steady-state apply: the server snapshot is authoritative, EXCEPT for dishes with
+ * an in-flight local write (pending), which are overlaid from local state so an edit
+ * made during the fetch window isn't reverted.
+ */
+export function overlayPending(server: Entries, local: Entries, pending: Set<string>): Entries {
+  const merged: Entries = { ...server };
+  for (const dishId of pending) {
+    const localEntry = local[dishId];
+    if (localEntry) merged[dishId] = localEntry;
+    else delete merged[dishId]; // pending delete
+  }
+  return merged;
+}
+
+// ── Async CRUD (thin wrappers over Supabase) ───────────────────────────────
+
+export async function fetchAll(client: SupabaseClient, userId: string): Promise<Entries> {
+  const { data, error } = await client
+    .from(TABLE)
+    .select('user_id, dish_id, tried, note, rating, tried_at')
+    .eq('user_id', userId);
+  if (error) throw error;
+  return rowsToEntries((data ?? []) as DishProgressRow[]);
+}
+
+export async function upsertEntry(
+  client: SupabaseClient,
+  userId: string,
+  dishId: string,
+  entry: ProgressEntry,
+): Promise<void> {
+  const { error } = await client
+    .from(TABLE)
+    .upsert(entryToRow(userId, dishId, entry), { onConflict: 'user_id,dish_id' });
+  if (error) throw error;
+}
+
+export async function deleteEntry(
+  client: SupabaseClient,
+  userId: string,
+  dishId: string,
+): Promise<void> {
+  const { error } = await client.from(TABLE).delete().eq('user_id', userId).eq('dish_id', dishId);
+  if (error) throw error;
+}
+
+/** Bulk insert-if-absent for migration — never clobbers an existing server row. */
+export async function migrateInsert(
+  client: SupabaseClient,
+  userId: string,
+  entries: Entries,
+): Promise<void> {
+  const rows = Object.entries(entries).map(([dishId, entry]) => entryToRow(userId, dishId, entry));
+  if (rows.length === 0) return;
+  const { error } = await client
+    .from(TABLE)
+    .upsert(rows, { onConflict: 'user_id,dish_id', ignoreDuplicates: true });
+  if (error) throw error;
+}
