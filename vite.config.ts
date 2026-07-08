@@ -2,7 +2,9 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
-export default defineConfig({
+// Served from https://<user>.github.io/world-dishes/ in production; root in dev.
+export default defineConfig(({ mode }) => ({
+  base: mode === 'production' ? '/world-dishes/' : '/',
   plugins: [react()],
   test: {
     globals: true,
@@ -10,4 +12,4 @@ export default defineConfig({
     setupFiles: './tests/setup.ts',
     css: false,
   },
-});
+}));
