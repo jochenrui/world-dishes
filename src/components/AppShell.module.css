@@ -141,12 +141,34 @@
   text-align: center;
 }
 
-@media (max-width: 560px) {
-  .userName,
+@media (max-width: 620px) {
+  .headerInner {
+    height: auto;
+    flex-wrap: wrap;
+    gap: 8px 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  /* Nav drops to its own full-width row below the brand + auth control. */
+  .nav {
+    order: 3;
+    width: 100%;
+    margin-left: 0;
+    justify-content: space-between;
+  }
   .navLink {
     font-size: 13px;
+    padding: 7px 10px;
   }
-  .headerInner {
-    gap: 8px;
+  .userName {
+    font-size: 13px;
+    max-width: 90px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .signIn {
+    font-size: 13px;
+    padding: 7px 11px;
   }
 }
