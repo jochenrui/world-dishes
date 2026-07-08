@@ -1,0 +1,124 @@
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 14px;
+  margin: 8px 0 30px;
+}
+
+.stat {
+  padding: 18px;
+  border-radius: var(--radius);
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  box-shadow: var(--shadow);
+}
+
+.statNum {
+  font-size: 30px;
+  font-weight: 800;
+  color: var(--c-primary);
+  line-height: 1;
+}
+
+.statLabel {
+  font-size: 13px;
+  color: var(--c-text-muted);
+  margin-top: 6px;
+}
+
+.prose {
+  max-width: 68ch;
+  font-size: 15px;
+}
+
+.prose h2 {
+  font-size: 20px;
+  margin-top: 30px;
+}
+
+.prose p {
+  color: var(--c-text);
+}
+
+.prose code {
+  background: var(--c-surface-2);
+  padding: 1px 6px;
+  border-radius: 5px;
+  font-size: 13px;
+}
+
+.legendGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+  margin: 12px 0;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  font-size: 14px;
+}
+
+.legendGlyph {
+  font-size: 18px;
+}
+
+.dietChip {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+}
+
+.bars {
+  margin: 8px 0 20px;
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 7px;
+  font-size: 13.5px;
+}
+
+.barLabel {
+  width: 110px;
+  flex: 0 0 auto;
+  color: var(--c-text-muted);
+}
+
+.barTrack {
+  flex: 1 1 auto;
+  height: 12px;
+  background: var(--c-surface-2);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.barFill {
+  height: 100%;
+  border-radius: 999px;
+}
+
+.barCount {
+  width: 34px;
+  flex: 0 0 auto;
+  text-align: right;
+  font-weight: 700;
+}
+
+.callout {
+  padding: 14px 16px;
+  border-left: 4px solid var(--c-accent);
+  background: var(--c-surface-2);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  margin: 18px 0;
+  font-size: 14px;
+}

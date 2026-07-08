@@ -1,0 +1,126 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition: box-shadow 0.15s ease, transform 0.15s ease, border-color 0.15s ease;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-2px);
+}
+
+.tried {
+  border-color: var(--c-success);
+}
+
+.header {
+  display: flex;
+  gap: 12px;
+  padding: 14px 14px 8px;
+  align-items: flex-start;
+}
+
+.sprite {
+  flex: 0 0 auto;
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: var(--c-surface-2);
+  color: var(--c-primary);
+}
+
+.titleWrap {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.rank {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--c-text-muted);
+  letter-spacing: 0.02em;
+}
+
+.name {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 1px 0 1px;
+  line-height: 1.25;
+}
+
+.localName {
+  font-size: 12px;
+  color: var(--c-text-muted);
+}
+
+.origin {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12.5px;
+  color: var(--c-text-muted);
+  margin-top: 3px;
+}
+
+.flag {
+  font-size: 15px;
+}
+
+.body {
+  padding: 0 14px 12px;
+}
+
+.desc {
+  font-size: 13.5px;
+  color: var(--c-text);
+  margin: 8px 0 10px;
+}
+
+.footer {
+  margin-top: auto;
+  padding: 10px 14px 14px;
+}
+
+.tryBtn {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 9px 12px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--c-border);
+  background: var(--c-surface);
+  color: var(--c-text);
+  font-weight: 600;
+  font-size: 14px;
+  transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+}
+
+.tryBtn:hover {
+  border-color: var(--c-success);
+}
+
+.tryBtnOn {
+  background: var(--c-success);
+  border-color: var(--c-success);
+  color: #fff;
+}
+
+.check {
+  font-size: 15px;
+}
+
+.signInHint {
+  font-size: 12px;
+  color: var(--c-text-muted);
+  text-align: center;
+  margin-top: 6px;
+}

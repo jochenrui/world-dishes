@@ -1,0 +1,152 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: color-mix(in srgb, var(--c-bg) 88%, transparent);
+  backdrop-filter: saturate(1.4) blur(10px);
+  border-bottom: 1px solid var(--c-border);
+}
+
+.headerInner {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  height: 62px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-weight: 800;
+  font-size: 18px;
+  letter-spacing: -0.01em;
+}
+
+.brandMark {
+  font-size: 22px;
+}
+
+.nav {
+  display: flex;
+  gap: 4px;
+  margin-left: 8px;
+}
+
+.navLink {
+  padding: 7px 13px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--c-text-muted);
+  transition: background 0.12s ease, color 0.12s ease;
+}
+
+.navLink:hover {
+  background: var(--c-surface-2);
+  color: var(--c-text);
+}
+
+.navLinkActive {
+  background: var(--c-primary);
+  color: var(--c-primary-ink);
+}
+
+.navLinkActive:hover {
+  background: var(--c-primary);
+  color: var(--c-primary-ink);
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.signIn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 15px;
+  border-radius: 999px;
+  border: 1.5px solid var(--c-border);
+  background: var(--c-surface);
+  color: var(--c-text);
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.signIn:hover {
+  border-color: var(--c-primary);
+}
+
+.gLogo {
+  width: 16px;
+  height: 16px;
+}
+
+.user {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  position: relative;
+}
+
+.avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 2px solid var(--c-border);
+  object-fit: cover;
+}
+
+.userName {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.signOut {
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1.5px solid var(--c-border);
+  background: transparent;
+  color: var(--c-text-muted);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.signOut:hover {
+  color: var(--c-primary);
+  border-color: var(--c-primary);
+}
+
+.mockTag {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--c-accent);
+  border: 1px solid var(--c-accent);
+  border-radius: 5px;
+  padding: 1px 5px;
+}
+
+.main {
+  padding: 28px 0 64px;
+}
+
+.footer {
+  border-top: 1px solid var(--c-border);
+  padding: 24px 0;
+  color: var(--c-text-muted);
+  font-size: 13px;
+  text-align: center;
+}
+
+@media (max-width: 560px) {
+  .userName,
+  .navLink {
+    font-size: 13px;
+  }
+  .headerInner {
+    gap: 8px;
+  }
+}

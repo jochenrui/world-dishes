@@ -66,11 +66,17 @@ export interface Dish {
   dietary: Dietary;
   allergens: Allergen[];
   spiceLevel: 0 | 1 | 2 | 3;
-  /** Global popularity rank (1 = most popular). Also orders per-country lists. */
+  /** Global popularity rank (1 = most popular), globally unique. Derived from `fame`. */
   popularityRank: number;
   description: string;
   origin: string;
 }
+
+/**
+ * Authored dish record. `fame` (0-100) is a curated popularity weight; the unique
+ * global `popularityRank` is derived from it deterministically at load time.
+ */
+export type RawDish = Omit<Dish, 'popularityRank'> & { fame: number };
 
 export type Rating = 1 | 2 | 3 | 4 | 5;
 
