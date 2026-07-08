@@ -5,6 +5,7 @@ import { PopularPage } from './pages/PopularPage';
 import { CollectionPage } from './pages/CollectionPage';
 import { CountryPage } from './pages/CountryPage';
 import { DishPage } from './pages/DishPage';
+import { PassportPage } from './pages/PassportPage';
 import { AboutPage } from './pages/AboutPage';
 import { SessionProvider } from './state/SessionContext';
 import { ProgressProvider } from './state/ProgressContext';
@@ -20,6 +21,7 @@ export function App() {
             <Route path="collection" element={<CollectionPage />} />
             <Route path="collection/:countryId" element={<CountryPage />} />
             <Route path="dish/:dishId" element={<DishPage />} />
+            <Route path="passport" element={<PassportPage />} />
             <Route path="about" element={<AboutPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Route>

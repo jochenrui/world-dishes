@@ -4,8 +4,9 @@ import styles from './AppShell.module.css';
 
 const NAV = [
   { to: '/', label: 'Popular', end: true },
-  { to: '/collection', label: 'My Collection', end: false },
-  { to: '/about', label: 'About the Data', end: false },
+  { to: '/collection', label: 'Collection', end: false },
+  { to: '/passport', label: 'Passport', end: false },
+  { to: '/about', label: 'About', end: false },
 ];
 
 function GoogleG() {

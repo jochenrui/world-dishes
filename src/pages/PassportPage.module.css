@@ -1,0 +1,209 @@
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 14px;
+  margin: 8px 0 30px;
+}
+
+.stat {
+  padding: 18px;
+  border-radius: var(--radius);
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  box-shadow: var(--shadow);
+}
+
+.statNum {
+  font-size: 30px;
+  font-weight: 800;
+  color: var(--c-primary);
+  line-height: 1;
+}
+
+.statSub {
+  font-size: 13px;
+  color: var(--c-text-muted);
+  margin-top: 6px;
+}
+
+.sectionTitle {
+  font-size: 15px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--c-text-muted);
+  margin: 34px 0 14px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--c-border);
+}
+
+/* Achievements */
+.achievements {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px;
+}
+
+.badge {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 14px 16px;
+  border-radius: var(--radius);
+  border: 1px solid var(--c-border);
+  background: var(--c-surface);
+}
+
+.badgeEarned {
+  border-color: var(--c-accent);
+  box-shadow: 0 0 0 1px var(--c-accent) inset;
+}
+
+.badgeIcon {
+  font-size: 26px;
+  line-height: 1;
+  filter: grayscale(1);
+  opacity: 0.5;
+}
+
+.badgeEarned .badgeIcon {
+  filter: none;
+  opacity: 1;
+}
+
+.badgeBody {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.badgeTitle {
+  font-weight: 700;
+  font-size: 14.5px;
+}
+
+.badgeDesc {
+  font-size: 12.5px;
+  color: var(--c-text-muted);
+  margin: 2px 0 8px;
+}
+
+.progressTrack {
+  height: 7px;
+  border-radius: 999px;
+  background: var(--c-surface-2);
+  overflow: hidden;
+}
+
+.progressFill {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--c-primary);
+}
+
+.badgeEarned .progressFill {
+  background: var(--c-accent);
+}
+
+.progressText {
+  font-size: 11px;
+  color: var(--c-text-muted);
+  margin-top: 4px;
+}
+
+.earnedTag {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--c-accent-ink);
+}
+
+/* Country stamps */
+.stamps {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 16px;
+}
+
+.stamp {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 12px;
+  border-radius: 12px;
+  border: 2px dashed var(--c-primary);
+  background: var(--c-surface);
+  color: var(--c-text);
+  text-align: center;
+  transition: transform 0.12s ease;
+}
+
+.stamp:nth-child(3n) {
+  transform: rotate(-1.6deg);
+}
+.stamp:nth-child(3n + 1) {
+  transform: rotate(1.2deg);
+}
+
+.stamp:hover {
+  transform: rotate(0) translateY(-2px);
+}
+
+.stampComplete {
+  border-style: solid;
+  border-color: var(--c-success);
+}
+
+.stampName {
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.stampCount {
+  font-size: 12px;
+  color: var(--c-text-muted);
+}
+
+.stampRibbon {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--c-success);
+}
+
+.locked {
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--c-text-muted);
+}
+
+/* Signed-out gate */
+.gate {
+  text-align: center;
+  padding: 48px 20px;
+  border-radius: var(--radius);
+  background: var(--c-surface-2);
+  border: 1px dashed var(--c-border);
+}
+
+.gateEmoji {
+  font-size: 44px;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.gateBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: none;
+  background: var(--c-primary);
+  color: var(--c-primary-ink);
+  font-weight: 600;
+  font-size: 14px;
+}
