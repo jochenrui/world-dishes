@@ -80,6 +80,8 @@ export interface Dish {
   origin: string;
   /** 3-6 signature ingredients (curated). Optional so the app compiles pre-curation. */
   keyIngredients?: string[];
+  /** 1-3 sentence history / cultural significance, curated where a real story exists. */
+  history?: string;
 }
 
 /**

@@ -5,6 +5,7 @@ import { getCountry, getRegion } from '../data/countries';
 import { categoryLabels } from '../data/labels';
 import { DishBadges } from '../components/DishBadges';
 import { DishGrid } from '../components/DishGrid';
+import { ExpandableText } from '../components/ExpandableText';
 import { DishSprite } from '../components/DishSprites';
 import { Flag } from '../components/Flag';
 import { NoteEditor } from '../components/NoteEditor';
@@ -135,6 +136,13 @@ export function DishPage() {
         <p className={styles.originNote}>
           <strong>Origin:</strong> {dish.origin}
         </p>
+
+        {dish.history && (
+          <div className={styles.history}>
+            <span className={styles.historyLabel}>History</span>
+            <ExpandableText text={dish.history} lines={3} className={styles.historyText} />
+          </div>
+        )}
 
         <div className={styles.badgesRow}>
           <DishBadges dish={dish} variant="full" />
