@@ -58,6 +58,10 @@ export function CountryPage() {
   }
 
   const tried = triedCount(countryDishes.map((d) => d.id));
+  const selectedRegion = regionId ? regions.find((r) => r.id === regionId) : undefined;
+  const regionSpecificCount = regionId
+    ? countryDishes.filter((d) => d.regionId === regionId).length
+    : 0;
 
   return (
     <>
@@ -112,6 +116,13 @@ export function CountryPage() {
           showTriedFilter={!!user}
         />
       </StickyBar>
+
+      {regionId && selectedRegion && regionSpecificCount === 0 && (
+        <p className={styles.regionNote}>
+          No {selectedRegion.name}-specific dishes catalogued yet — showing {country.name}'s
+          national favourites.
+        </p>
+      )}
 
       <DishGrid
         dishes={visible}

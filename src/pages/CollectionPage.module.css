@@ -139,6 +139,16 @@
   border-color: var(--c-primary);
 }
 
+.regionNote {
+  margin: -4px 0 18px;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--c-surface-2);
+  border: 1px solid var(--c-border);
+  color: var(--c-text-muted);
+  font-size: 13.5px;
+}
+
 .notFound {
   text-align: center;
   padding: 56px 20px;
