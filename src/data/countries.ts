@@ -5,8 +5,8 @@ export const countries: Country[] = [
   { id: 'jp', name: 'Japan', flag: '🇯🇵', continent: 'Asia', hasRegions: false },
   { id: 'cn', name: 'China', flag: '🇨🇳', continent: 'Asia', hasRegions: true },
   { id: 'in', name: 'India', flag: '🇮🇳', continent: 'Asia', hasRegions: true },
-  { id: 'th', name: 'Thailand', flag: '🇹🇭', continent: 'Asia', hasRegions: false },
-  { id: 'vn', name: 'Vietnam', flag: '🇻🇳', continent: 'Asia', hasRegions: false },
+  { id: 'th', name: 'Thailand', flag: '🇹🇭', continent: 'Asia', hasRegions: true },
+  { id: 'vn', name: 'Vietnam', flag: '🇻🇳', continent: 'Asia', hasRegions: true },
   { id: 'kr', name: 'South Korea', flag: '🇰🇷', continent: 'Asia', hasRegions: false },
   { id: 'id', name: 'Indonesia', flag: '🇮🇩', continent: 'Asia', hasRegions: false },
   { id: 'my', name: 'Malaysia', flag: '🇲🇾', continent: 'Asia', hasRegions: false },
@@ -40,7 +40,7 @@ export const countries: Country[] = [
   { id: 'jm', name: 'Jamaica', flag: '🇯🇲', continent: 'North America', hasRegions: false },
 
   // South America
-  { id: 'br', name: 'Brazil', flag: '🇧🇷', continent: 'South America', hasRegions: false },
+  { id: 'br', name: 'Brazil', flag: '🇧🇷', continent: 'South America', hasRegions: true },
   { id: 'ar', name: 'Argentina', flag: '🇦🇷', continent: 'South America', hasRegions: false },
   { id: 'pe', name: 'Peru', flag: '🇵🇪', continent: 'South America', hasRegions: false },
   { id: 'co', name: 'Colombia', flag: '🇨🇴', continent: 'South America', hasRegions: false },
@@ -59,6 +59,7 @@ export const regions: Region[] = [
   { id: 'in-south', countryId: 'in', name: 'South India' },
   // Italy
   { id: 'it-north', countryId: 'it', name: 'Northern Italy' },
+  { id: 'it-central', countryId: 'it', name: 'Central Italy' },
   { id: 'it-south', countryId: 'it', name: 'Southern Italy' },
   // France
   { id: 'fr-provence', countryId: 'fr', name: 'Provence & South' },
@@ -73,6 +74,17 @@ export const regions: Region[] = [
   // Mexico
   { id: 'mx-central', countryId: 'mx', name: 'Central Mexico' },
   { id: 'mx-yucatan', countryId: 'mx', name: 'Yucatán & South' },
+  { id: 'mx-west', countryId: 'mx', name: 'Western (Jalisco & Michoacán)' },
+  // Thailand
+  { id: 'th-central', countryId: 'th', name: 'Central Thailand' },
+  { id: 'th-isan', countryId: 'th', name: 'Northeastern (Isan)' },
+  // Vietnam
+  { id: 'vn-north', countryId: 'vn', name: 'Northern Vietnam' },
+  { id: 'vn-central', countryId: 'vn', name: 'Central Vietnam' },
+  { id: 'vn-south', countryId: 'vn', name: 'Southern Vietnam' },
+  // Brazil
+  { id: 'br-bahia', countryId: 'br', name: 'Bahia & the Northeast' },
+  { id: 'br-south', countryId: 'br', name: 'The South' },
 ];
 
 const countryById = new Map(countries.map((c) => [c.id, c]));
