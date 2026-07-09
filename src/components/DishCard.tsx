@@ -49,9 +49,9 @@ export function DishCard({ dish, showRank = false, showCountry = true }: Props) 
   return (
     <article className={`${styles.card} ${tried ? styles.tried : ''}`}>
       <div className={styles.header}>
-        <Link to={`/dish/${dish.id}`} className={styles.sprite} aria-label={`View ${dish.name}`}>
+        <div className={styles.sprite} aria-hidden="true">
           <DishSprite category={dish.category} size={34} />
-        </Link>
+        </div>
         <div className={styles.titleWrap}>
           {showRank && <div className={styles.rank}>#{dish.popularityRank} worldwide</div>}
           <h3 className={styles.name}>

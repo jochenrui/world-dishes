@@ -1,6 +1,8 @@
 .card {
   display: flex;
   flex-direction: column;
+  position: relative; /* anchor for the stretched detail-link overlay */
+  cursor: pointer;
   background: var(--c-surface);
   border: 1px solid var(--c-border);
   border-radius: var(--radius);
@@ -59,9 +61,25 @@
   color: inherit;
 }
 
-.nameLink:hover {
+/* Stretch the (single) title link over the whole card so anywhere above the
+   footer navigates to the detail page — without nesting the footer buttons
+   inside an anchor (they're raised above this overlay). */
+.nameLink::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+.card:hover .nameLink {
   color: var(--c-primary);
   text-decoration: underline;
+}
+
+/* Keyboard focus rings the whole card, not just the small title text. */
+.nameLink:focus-visible::after {
+  outline: 3px solid var(--c-accent);
+  outline-offset: -3px;
+  border-radius: var(--radius);
 }
 
 .localName {
@@ -101,6 +119,8 @@
 .footer {
   margin-top: auto;
   padding: 10px 14px 14px;
+  position: relative; /* raise the Try/Review controls above the card link overlay */
+  z-index: 2;
 }
 
 .tryBtn {

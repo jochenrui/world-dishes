@@ -1,7 +1,8 @@
 import { useMemo } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { getDish, dishesForCountry } from '../data/dishes';
+import { dishes, getDish, dishesForCountry } from '../data/dishes';
 import { getCountry, getRegion } from '../data/countries';
+import { categoryLabels } from '../data/labels';
 import { DishBadges } from '../components/DishBadges';
 import { DishGrid } from '../components/DishGrid';
 import { DishSprite } from '../components/DishSprites';
@@ -21,6 +22,15 @@ export function DishPage() {
 
   const related = useMemo(
     () => (dish ? dishesForCountry(dish.countryId).filter((d) => d.id !== dish.id).slice(0, 6) : []),
+    [dish],
+  );
+  const similar = useMemo(
+    () =>
+      dish
+        ? dishes
+            .filter((d) => d.category === dish.category && d.countryId !== dish.countryId)
+            .slice(0, 6)
+        : [],
     [dish],
   );
 
@@ -119,6 +129,17 @@ export function DishPage() {
             </Link>
           </div>
           <DishGrid dishes={related} showCountry={false} />
+        </section>
+      )}
+
+      {similar.length > 0 && (
+        <section className={styles.related}>
+          <div className={styles.relatedHead}>
+            <h2 className={styles.relatedTitle}>
+              More {categoryLabels[dish.category].toLowerCase()} from around the world
+            </h2>
+          </div>
+          <DishGrid dishes={similar} showCountry />
         </section>
       )}
     </>
