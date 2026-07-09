@@ -1,0 +1,22 @@
+.sticky {
+  position: sticky;
+  top: var(--header-h);
+  z-index: 10;
+  /* Opaque backdrop flush under the header so scrolling cards never peek through
+     a gap or around the bar's rounded corners. */
+  background: var(--c-bg);
+  padding: 12px 0;
+  margin-bottom: 8px;
+  transition: box-shadow 0.2s ease;
+}
+
+/* Elevation only once content scrolls beneath it (the "two sheets" cue). */
+.stuck {
+  box-shadow: 0 10px 18px -10px rgba(44, 38, 32, 0.28);
+}
+
+@media (prefers-color-scheme: dark) {
+  .stuck {
+    box-shadow: 0 10px 20px -10px rgba(0, 0, 0, 0.6);
+  }
+}

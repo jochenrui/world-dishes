@@ -2,8 +2,8 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 18px;
-  /* Don't let one expanded card stretch its whole row's siblings. */
-  align-items: start;
+  /* Equal-height cards per row; each card pins its action button to the bottom. */
+  align-items: stretch;
 }
 
 .empty {

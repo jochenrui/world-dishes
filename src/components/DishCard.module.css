@@ -90,6 +90,12 @@
   font-size: 13.5px;
   color: var(--c-text);
   margin: 8px 0 10px;
+  /* Clamp so cards in a row stay uniform (paired with grid align-items: stretch). */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .footer {

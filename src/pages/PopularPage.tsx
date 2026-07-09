@@ -3,6 +3,7 @@ import { dishes } from '../data/dishes';
 import type { Category } from '../data/types';
 import { DishGrid } from '../components/DishGrid';
 import { FilterBar } from '../components/FilterBar';
+import { StickyBar } from '../components/StickyBar';
 import { applyFilters, defaultFilters, filterByTried } from '../lib/filters';
 import { useProgress } from '../state/ProgressContext';
 import { useSession } from '../state/SessionContext';
@@ -47,7 +48,7 @@ export function PopularPage() {
         )}
       </div>
 
-      <div className={styles.stickyFilters}>
+      <StickyBar>
         <FilterBar
           filters={filters}
           onChange={setFilters}
@@ -55,7 +56,7 @@ export function PopularPage() {
           availableCategories={availableCategories}
           showTriedFilter={!!user}
         />
-      </div>
+      </StickyBar>
 
       <DishGrid dishes={filtered} showRank showCountry />
     </>

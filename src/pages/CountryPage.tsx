@@ -7,6 +7,7 @@ import { CountryProgressRing } from '../components/CountryProgressRing';
 import { Flag } from '../components/Flag';
 import { DishGrid } from '../components/DishGrid';
 import { FilterBar } from '../components/FilterBar';
+import { StickyBar } from '../components/StickyBar';
 import { applyFilters, defaultFilters, filterByTried } from '../lib/filters';
 import { useProgress } from '../state/ProgressContext';
 import { useSession } from '../state/SessionContext';
@@ -102,7 +103,7 @@ export function CountryPage() {
         </div>
       )}
 
-      <div className={pageStyles.stickyFilters}>
+      <StickyBar>
         <FilterBar
           filters={filters}
           onChange={setFilters}
@@ -110,7 +111,7 @@ export function CountryPage() {
           availableCategories={availableCategories}
           showTriedFilter={!!user}
         />
-      </div>
+      </StickyBar>
 
       <DishGrid
         dishes={visible}
