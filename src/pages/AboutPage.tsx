@@ -173,9 +173,8 @@ export function AboutPage() {
 
         <h2>Your data & privacy</h2>
         <p>
-          Sign in with Google to save the dishes you've tried, along with your ratings and notes.
-          Your list is private to you, and you can sign out any time. Each dish also shows how many
-          people have tried it and its average rating — but never anything personal.
+          Sign in with Google to save the dishes you've tried; your list stays private to you. Only
+          anonymous “tried” counts and average ratings are ever shared — never anything personal.
         </p>
       </div>
     </>
