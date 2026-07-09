@@ -1,0 +1,321 @@
+{
+  "countries": [
+    {
+      "countryId": "jp",
+      "name": "Japan",
+      "hasRegions": true,
+      "regions": [
+        { "id": "jp-kanto", "name": "Kanto (Tokyo & the East)", "note": "Edomae/Tokyo tradition: refined soy-and-dashi cooking, seafood, sushi, buckwheat soba.", "sparse": false, "sampleDishes": ["Sushi", "Soba", "Gyudon (Beef Bowl)", "Taiyaki"] },
+        { "id": "jp-kansai", "name": "Kansai (Osaka & Kyoto)", "note": "Osaka 'kuidaore' griddle/street food and Kyoto's delicate kaiseki and tofu cuisine.", "sparse": false, "sampleDishes": ["Okonomiyaki", "Takoyaki"] },
+        { "id": "jp-hokkaido", "name": "Hokkaido & the North (Tohoku)", "note": "Snowy north: dairy, crab and uni seafood bowls, rich miso ramen (Sapporo), Genghis Khan grilled lamb.", "sparse": true, "sampleDishes": [] },
+        { "id": "jp-kyushu", "name": "Kyushu", "note": "Southern main-island specialties: Hakata tonkotsu (pork-bone) ramen, motsunabe, Nagasaki champon.", "sparse": true, "sampleDishes": [] },
+        { "id": "jp-okinawa", "name": "Okinawa (Ryukyu)", "note": "Subtropical former Ryukyu kingdom: goya champuru, Okinawa soba, rafute pork belly, taco rice.", "sparse": true, "sampleDishes": [] }
+      ],
+      "rationale": "NEWLY ADDED (this was flat before). Japan is exactly the user's own example: a food-curious traveler explicitly seeks out the snowy north (Hokkaido/Tohoku), Kansai's Osaka street food and Kyoto refinement, Tokyo/Edomae Kanto, Kyushu ramen, and subtropical Okinawa. These are genuinely distinct food cultures. Three are sparse/empty in our current data but are real, must-explore regions, so they are kept honestly. Ramen, tempura, karaage, curry rice, miso soup, onigiri, natto, yakitori stay national as pan-Japan staples."
+    },
+    {
+      "countryId": "cn",
+      "name": "China",
+      "hasRegions": true,
+      "regions": [
+        { "id": "cn-sichuan", "name": "Sichuan", "note": "Mala heat: chili plus numbing Sichuan pepper.", "sparse": false, "sampleDishes": ["Mapo Tofu", "Kung Pao Chicken", "Sichuan Hot Pot", "Dan Dan Noodles", "Twice-Cooked Pork"] },
+        { "id": "cn-canton", "name": "Cantonese (Guangdong)", "note": "Fresh, delicate, seafood and roast meats; dim sum / yum cha.", "sparse": false, "sampleDishes": ["Dim Sum", "Wonton Noodle Soup", "Char Siu", "Century Egg & Pork Congee", "Cantonese Steamed Fish"] },
+        { "id": "cn-north", "name": "Northern China", "note": "Wheat belt: dumplings, buns, noodles, roasts (Beijing, Shandong, the Northwest).", "sparse": false, "sampleDishes": ["Peking Duck", "Jiaozi (Dumplings)", "Baozi", "Lanzhou Beef Noodles", "Jianbing", "Zhajiangmian"] },
+        { "id": "cn-east", "name": "Eastern China (Shanghai & Jiangnan)", "note": "Huaiyang/Jiangnan cooking: sweeter, refined, red-braising and soup dumplings.", "sparse": true, "sampleDishes": [] }
+      ],
+      "rationale": "Kept the strong existing 3 and ADDED Eastern China (Shanghai/Jiangnan). Xiaolongbao, red-braised pork and drunken chicken make Shanghai a genuinely distinct, traveler-recognizable cuisine even though we have no dish for it yet (sparse). Held at 4 rather than fabricating empty Hunan/Xinjiang regions."
+    },
+    {
+      "countryId": "in",
+      "name": "India",
+      "hasRegions": true,
+      "regions": [
+        { "id": "in-north", "name": "North India", "note": "Mughlai/Punjabi: wheat breads, dairy, tandoor, rich gravies.", "sparse": false, "sampleDishes": ["Butter Chicken", "Biryani", "Palak Paneer", "Dal Makhani", "Chole Bhature", "Aloo Paratha", "Rogan Josh"] },
+        { "id": "in-south", "name": "South India", "note": "Rice/lentil ferments, coconut, tamarind, filter coffee.", "sparse": false, "sampleDishes": ["Masala Dosa", "Idli Sambar", "South Indian Filter Coffee", "Medu Vada", "Chettinad Chicken", "Rasam"] },
+        { "id": "in-west", "name": "Western India (Gujarat, Maharashtra & Goa)", "note": "Mumbai street food, Gujarati thali, Goan seafood curries.", "sparse": true, "sampleDishes": [] },
+        { "id": "in-east", "name": "Eastern India (Bengal)", "note": "Fish-and-mustard curries, rice, and famous Bengali milk sweets.", "sparse": true, "sampleDishes": [] }
+      ],
+      "rationale": "Kept the well-covered North/South axis and ADDED West (Gujarat/Maharashtra/Goa) and East (Bengal). Both are genuinely distinct cuisines a traveler explores (vada pav & Goan vindaloo in the west; fish curry & rasgulla in the east) even though our data doesn't yet populate them (sparse). Samosa, masala chai and gulab jamun stay national."
+    },
+    {
+      "countryId": "th",
+      "name": "Thailand",
+      "hasRegions": true,
+      "regions": [
+        { "id": "th-central", "name": "Central Thailand (Bangkok)", "note": "The default Thai canon: coconut curries, hot-sour soups, stir-fries.", "sparse": false, "sampleDishes": ["Pad Thai", "Green Curry", "Tom Yum Goong", "Pad Krapow", "Khao Man Gai", "Khao Pad", "Moo Ping"] },
+        { "id": "th-isan", "name": "Northeastern (Isan)", "note": "Lao-influenced: sticky rice, fermented, fiery, grilled, sour.", "sparse": false, "sampleDishes": ["Som Tam", "Larb", "Gai Yang"] },
+        { "id": "th-north", "name": "Northern (Lanna)", "note": "Chiang Mai / Lanna; Burmese-Chinese influence, milder and herbal.", "sparse": false, "sampleDishes": ["Khao Soi"] },
+        { "id": "th-south", "name": "Southern Thailand", "note": "Muslim-influenced and fiercely spicy peninsula cooking; rich curries.", "sparse": false, "sampleDishes": ["Massaman Curry"] }
+      ],
+      "rationale": "Expanded from the strict pass's 2 to 4. Under the inclusive brief both Northern/Lanna (khao soi) and Southern (massaman) are genuinely distinct, on-the-ground food regions a traveler explores, not just Central-vs-Isan. Each is thin (1 dish) but anchored by an iconic dish. Mango sticky rice and Thai iced tea stay national."
+    },
+    {
+      "countryId": "vn",
+      "name": "Vietnam",
+      "hasRegions": true,
+      "regions": [
+        { "id": "vn-north", "name": "Northern Vietnam (Hanoi)", "note": "Subtle, less sweet/spicy; birthplace of pho.", "sparse": false, "sampleDishes": ["Phở", "Bún Chả", "Bánh Cuốn", "Bún Riêu"] },
+        { "id": "vn-central", "name": "Central Vietnam (Huế/Hội An)", "note": "Bold, spicy, imperial-court complexity.", "sparse": false, "sampleDishes": ["Bún Bò Huế", "Cao Lầu"] },
+        { "id": "vn-south", "name": "Southern Vietnam (Saigon)", "note": "Sweeter, herb-heavy, tropical abundance.", "sparse": false, "sampleDishes": ["Bánh Mì", "Fresh Spring Rolls", "Cơm Tấm", "Bánh Xèo", "Chả Giò"] }
+      ],
+      "rationale": "Kept the textbook North/Central/South split, all three well populated. Iced coffee, chè and bò kho stay national."
+    },
+    {
+      "countryId": "kr",
+      "name": "South Korea",
+      "hasRegions": false,
+      "regions": [],
+      "rationale": "FLAT. Korean food is marketed and browsed as one national canon (BBQ, kimchi, bibimbap, stews). Real regional identities exist (Jeolla/Jeonju, Busan seafood, Pyongyang naengmyeon) but have low traveler recognizability and our dishes are all national staples."
+    },
+    {
+      "countryId": "id",
+      "name": "Indonesia",
+      "hasRegions": true,
+      "regions": [
+        { "id": "id-java", "name": "Java", "note": "Sweeter Javanese cooking: Yogyakarta gudeg, East-Java beef soups, Jakarta salads.", "sparse": false, "sampleDishes": ["Gudeg", "Rawon", "Soto Ayam", "Gado-Gado"] },
+        { "id": "id-sumatra", "name": "Sumatra (Padang & the West)", "note": "Minangkabau/Padang cooking: rich, spicy, coconut-heavy; South-Sumatran fish cakes.", "sparse": false, "sampleDishes": ["Rendang", "Pempek"] },
+        { "id": "id-bali", "name": "Bali & the Eastern Islands", "note": "Balinese and eastern-archipelago dishes: babi guling, lawar, ayam betutu.", "sparse": true, "sampleDishes": [] }
+      ],
+      "rationale": "NEWLY ADDED (flat before). The user named Indonesia among the most diverse; Padang/Sumatran vs sweet Javanese vs Balinese are genuinely distinct cuisines a traveler seeks out. Java and Sumatra are populated; Bali is sparse but a real must-explore identity. Nasi goreng, satay, bakso, martabak and es cendol stay national."
+    },
+    {
+      "countryId": "my",
+      "name": "Malaysia",
+      "hasRegions": false,
+      "regions": [],
+      "rationale": "FLAT. Genuinely diverse, but the variation is ethnic (Malay / Chinese / Indian-mamak / Peranakan) rather than geographic. A region filter wouldn't map to how the food actually differs; Malaysians and visitors browse it by community, not by state. Penang is the one place-based food destination but doesn't form a clean 2+ region split."
+    },
+    {
+      "countryId": "tr",
+      "name": "Turkey",
+      "hasRegions": true,
+      "regions": [
+        { "id": "tr-marmara", "name": "Istanbul & Marmara", "note": "Cosmopolitan Ottoman capital cooking; Bursa's İskender and Istanbul street bread.", "sparse": false, "sampleDishes": ["Simit", "İskender Kebab"] },
+        { "id": "tr-aegean", "name": "Aegean & the Coast", "note": "Olive-oil vegetables, herbs, seafood and eggs (Izmir, the Mediterranean shore).", "sparse": false, "sampleDishes": ["Menemen"] },
+        { "id": "tr-southeast", "name": "Southeastern Anatolia (Gaziantep)", "note": "Turkey's spice-and-kebab heartland: pistachio baklava, künefe, fiery meats (Gaziantep, Urfa, Hatay).", "sparse": false, "sampleDishes": ["Baklava", "Lahmacun", "Künefe"] },
+        { "id": "tr-central", "name": "Central Anatolia", "note": "Wheat-and-meat highland cooking: Kayseri mantı, Cappadocian pot dishes.", "sparse": false, "sampleDishes": ["Mantı"] }
+      ],
+      "rationale": "NEWLY ADDED (flat before). The user flagged Turkey as potentially diverse, and it is: Gaziantep (a UNESCO gastronomy city) and the spicy southeast, the olive-oil Aegean, Ottoman Istanbul/Bursa, and Central Anatolian mantı are genuinely distinct regions travelers explore. Southeast is well covered; the others are thinner but real. Döner, köfte, pide, çay and lentil soup stay national."
+    },
+    {
+      "countryId": "lb",
+      "name": "Lebanon",
+      "hasRegions": false,
+      "regions": [],
+      "rationale": "FLAT. Small country with a homogeneous Levantine mezze/grill tradition; mountain-vs-coast-vs-Bekaa nuances aren't a recognizable traveler filter."
+    },
+    {
+      "countryId": "ir",
+      "name": "Iran",
+      "hasRegions": false,
+      "regions": [],
+      "rationale": "FLAT. Persian cuisine reads as one national canon (rice + stews + kebabs) and our set is overwhelmingly pan-Persian. The Caspian/Gilani north (fesenjan, mirza ghasemi) is genuinely distinct but is a minor thread, not the primary way visitors browse Iranian food."
+    },
+    {
+      "countryId": "it",
+      "name": "Italy",
+      "hasRegions": true,
+      "regions": [
+        { "id": "it-north", "name": "Northern Italy", "note": "Butter, rice, egg pasta, braises (Lombardy, Emilia, Veneto, Piedmont, Liguria).", "sparse": false, "sampleDishes": ["Lasagna", "Risotto alla Milanese", "Tiramisù", "Focaccia Genovese", "Ossobuco alla Milanese", "Vitello Tonnato"] },
+        { "id": "it-central", "name": "Central Italy", "note": "Rome/Lazio + Tuscany: pecorino pastas, grilled meats, rustic bread salads.", "sparse": false, "sampleDishes": ["Spaghetti Carbonara", "Cacio e Pepe", "Bucatini all'Amatriciana", "Bistecca alla Fiorentina", "Panzanella"] },
+        { "id": "it-south", "name": "Southern Italy", "note": "Naples & Sicily: tomato, olive oil, pizza, fried street food.", "sparse": false, "sampleDishes": ["Pizza Margherita", "Cannoli", "Arancini", "Caponata"] }
+      ],
+      "rationale": "Kept the strong N/C/S split (the Central region correctly homes the Roman/Lazio pastas). Gelato stays national."
+    },
+    {
+      "countryId": "fr",
+      "name": "France",
+      "hasRegions": true,
+      "regions": [
+        { "id": "fr-provence", "name": "Provence & the South", "note": "Olive oil, tomato, herbs, Mediterranean seafood; includes the southwest cassoulet.", "sparse": false, "sampleDishes": ["Ratatouille", "Bouillabaisse", "Salade Niçoise", "Pissaladière", "Socca", "Cassoulet"] },
+        { "id": "fr-north", "name": "Paris & Northern France", "note": "Café classics and butter/pastry: Parisian breads, onion soup, bistro fare.", "sparse": false, "sampleDishes": ["Croissant", "Baguette", "French Onion Soup", "Croque Monsieur", "Tarte Tatin"] },
+        { "id": "fr-east", "name": "Burgundy & Eastern France", "note": "Wine-country braises and Alsace/Lorraine tarts (Lyon, Burgundy, Lorraine).", "sparse": false, "sampleDishes": ["Bœuf Bourguignon", "Coq au Vin", "Quiche Lorraine"] }
+      ],
+      "rationale": "Refined from 2 to 3. Splitting the old catch-all 'Northern France' into Paris/North vs Burgundy & the East is more accurate and more travel-recognizable (wine-country braises are a distinct culinary identity). Crème brûlée stays national. Held at 3 rather than adding an empty Brittany/Normandy region we have no dish for."
+    },
+    {
+      "countryId": "es",
+      "name": "Spain",
+      "hasRegions": true,
+      "regions": [
+        { "id": "es-valencia", "name": "Valencia & the East", "note": "Rice dishes and the Catalan Mediterranean coast.", "sparse": false, "sampleDishes": ["Paella", "Fideuà", "Turrón de Alicante", "Horchata de Chufa", "Pan con Tomate"] },
+        { "id": "es-andalucia", "name": "Andalucía", "note": "Southern: chilled tomato soups, fried fish, sherry-country braises.", "sparse": false, "sampleDishes": ["Gazpacho", "Salmorejo", "Oxtail Stew", "Sardine Skewers"] },
+        { "id": "es-north", "name": "Basque Country & the North", "note": "San Sebastián pintxos, salt cod, grilled beef; Spain's celebrated northern-coast cuisine.", "sparse": true, "sampleDishes": [] }
+      ],
+      "rationale": "Kept Valencia/East and Andalucía and ADDED the Basque Country & the North. Pintxos and San Sebastián make it arguably Spain's most celebrated food region, so it's kept sparse rather than omitted. Widely-national tapas (tortilla, jamón, croquetas, patatas bravas, gambas, churros) stay national."
+    },
+    {
+      "countryId": "gr",
+      "name": "Greece",
+      "hasRegions": false,
+      "regions": [],
+      "rationale": "FLAT. Greek cuisine is marketed and perceived as one Mediterranean canon (souvlaki, moussaka, salad, feta) and our dishes are all pan-Greek. Cretan and northern nuances are real but not a primary traveler browse axis."
+    },
+    {
+      "countryId": "de",
+      "name": "Germany",
+      "hasRegions": true,
+      "regions": [
+        { "id": "de-south", "name": "Bavaria & the South (Swabia)", "note": "Beer-garden and Swabian cooking: pretzels, cheese spätzle, filled pasta pockets, schnitzel.", "sparse": false, "sampleDishes": ["Pretzel", "Käsespätzle", "Maultaschen", "Schnitzel"] },
+        { "id": "de-west", "name": "Rhineland & the West", "note": "Vinegar pot roasts, beef roulades and thin Baden tarts along the Rhine.", "sparse": false, "sampleDishes": ["Flammkuchen", "Sauerbraten", "Beef Rouladen"] },
+        { "id": "de-north", "name": "Berlin, the North & East", "note": "Berlin street food and northern/eastern classics: currywurst, caper meatballs, berry compote.", "sparse": false, "sampleDishes": ["Currywurst", "Königsberger Klopse", "Rote Grütze"] }
+      ],
+      "rationale": "NEWLY ADDED (flat before). Under the inclusive lens German food genuinely varies by region and Bavaria/the South is a real food-and-beer destination; the West (Rhineland roasts) and Berlin/North (currywurst) form coherent, populated counterparts. Bratwurst and potato salad stay national. This is a deliberate reversal of the strict pass, which rejected it as 'one region + grab-bag.'"
+    },
+    {
+      "countryId": "gb",
+      "name": "United Kingdom",
+      "hasRegions": false,
+      "regions": [],
+      "rationale": "FLAT. British food is perceived as one national canon and Scotland/Wales aren't represented in our data. The West Country (Cornish pasty, cream tea) is the only place-based thread and can't anchor a second coherent region."
+    },
+    {
+      "countryId": "pt",
+      "name": "Portugal",
+      "hasRegions": false,
+      "regions": [],
+      "rationale": "FLAT. Small, fairly unified cuisine centred on bacalhau, sardines and custard tarts. A mild Porto/north (francesinha, caldo verde) vs Lisbon thread exists but doesn't form a recognizable traveler filter."
+    },
+    {
+      "countryId": "pl",
+      "name": "Poland",
+      "hasRegions": false,
+      "regions": [],
+      "rationale": "FLAT. Homogeneous national comfort-food canon (pierogi, kotlet, soups) with no recognizable regional axis."
+    },
+    {
+      "countryId": "ru",
+      "name": "Russia",
+      "hasRegions": false,
+      "regions": [],
+      "rationale": "FLAT. Geographically vast but our dishes are pan-Russian imperial/Soviet classics; only Siberian pelmeni carries a geographic note, not enough for a filter."
+    },
+    {
+      "countryId": "ma",
+      "name": "Morocco",
+      "hasRegions": false,
+      "regions": [],
+      "rationale": "FLAT. Unified Maghrebi tradition (tagine, couscous, mint tea) shared nationwide; imperial-city touches (Marrakech tanjia) aren't a recognizable regional filter."
+    },
+    {
+      "countryId": "et",
+      "name": "Ethiopia",
+      "hasRegions": false,
+      "regions": [],
+      "rationale": "FLAT. The injera-and-wat tradition is nationally shared; the main distinctions are religious (fasting vs meat), not regional."
+    },
+    {
+      "countryId": "ng",
+      "name": "Nigeria",
+      "hasRegions": false,
+      "regions": [],
+      "rationale": "FLAT. A real Hausa-North vs Yoruba/Igbo-South divide exists on the ground, but our set is overwhelmingly southern (suya is the lone clearly-northern dish) and the dominant identity is a shared jollof/egusi/swallow canon. Closest of the African 'maybes.'"
+    },
+    {
+      "countryId": "eg",
+      "name": "Egypt",
+      "hasRegions": false,
+      "regions": [],
+      "rationale": "FLAT. Unified cuisine centred on Cairo/Nile staples (koshari, ful, ta'ameya); Alexandria's seafood is the only geographic thread, not a browse axis."
+    },
+    {
+      "countryId": "za",
+      "name": "South Africa",
+      "hasRegions": false,
+      "regions": [],
+      "rationale": "FLAT. Variation is cultural/ethnic (Cape Malay, Afrikaner braai, Xhosa, Durban Indian) more than geographic, so a region filter wouldn't map cleanly to how the food differs."
+    },
+    {
+      "countryId": "us",
+      "name": "United States",
+      "hasRegions": true,
+      "regions": [
+        { "id": "us-south", "name": "The South", "note": "BBQ, fried chicken, soul food plus Louisiana Creole/Cajun.", "sparse": false, "sampleDishes": ["BBQ Ribs", "Fried Chicken", "Gumbo", "Jambalaya", "Biscuits and Gravy", "Shrimp and Grits", "Key Lime Pie"] },
+        { "id": "us-northeast", "name": "Northeast", "note": "Seafood shacks and city sandwiches (New England + Mid-Atlantic).", "sparse": false, "sampleDishes": ["Clam Chowder", "Philly Cheesesteak", "Buffalo Wings", "Lobster Roll"] },
+        { "id": "us-southwest", "name": "Southwest / Tex-Mex", "note": "Chile, tacos, Mexican-border cooking.", "sparse": false, "sampleDishes": ["Chili con Carne", "Breakfast Tacos", "Green Chile Stew"] }
+      ],
+      "rationale": "Kept the three well-covered regions. Midwest and California/Pacific NW are natural additions but we have no dishes for them, so I held at 3 rather than adding empties. The cheeseburger stays national."
+    },
+    {
+      "countryId": "mx",
+      "name": "Mexico",
+      "hasRegions": true,
+      "regions": [
+        { "id": "mx-central", "name": "Central Mexico", "note": "Mexico City & Puebla: tacos al pastor, mole, masa street food.", "sparse": false, "sampleDishes": ["Tacos al Pastor", "Mole Poblano", "Chiles en Nogada", "Barbacoa", "Tlacoyos"] },
+        { "id": "mx-west", "name": "Western Mexico (Jalisco & Michoacán)", "note": "Home of birria and carnitas, and tequila country.", "sparse": false, "sampleDishes": ["Birria", "Carnitas"] },
+        { "id": "mx-yucatan", "name": "Yucatán & the Southeast", "note": "Achiote, citrus, Maya-influenced; turkey and pickled onion.", "sparse": false, "sampleDishes": ["Cochinita Pibil", "Lime Soup", "Panuchos", "Salbutes"] },
+        { "id": "mx-oaxaca", "name": "Oaxaca & the Pacific South", "note": "Mexico's mole-and-mezcal capital: seven moles, tlayudas, tasajo, chapulines.", "sparse": true, "sampleDishes": [] }
+      ],
+      "rationale": "Kept Central/West/Yucatán and ADDED Oaxaca & the Pacific South. Oaxaca is one of Mexico's premier food-tourism regions (moles, tlayudas, mezcal) and belongs in a browse even though we have no Oaxacan dish yet (sparse). Guacamole, chilaquiles, tamales, elote, horchata and conchas stay national."
+    },
+    {
+      "countryId": "ca",
+      "name": "Canada",
+      "hasRegions": true,
+      "regions": [
+        { "id": "ca-quebec", "name": "Québec (French Canada)", "note": "Distinct French-Canadian cuisine: poutine, smoked meat, tourtière, Montreal bagels, pea soup.", "sparse": false, "sampleDishes": ["Poutine", "Montreal Smoked Meat", "Tourtière", "Montreal-Style Bagel", "French-Canadian Pea Soup"] },
+        { "id": "ca-atlantic", "name": "Atlantic Canada", "note": "Maritime seafood culture: lobster, seafood boils, and the Halifax donair.", "sparse": true, "sampleDishes": ["Halifax Donair"] }
+      ],
+      "rationale": "NEWLY ADDED (flat before). Québec is a genuinely distinct, must-explore food culture (well covered), and Atlantic/Maritime Canada is a real seafood-driven regional identity (sparse, anchored by the Halifax donair). Under the inclusive brief Québec's distinctiveness justifies the flip, with pan-Canadian items (butter tart, Caesar, Nanaimo bar, BeaverTails) staying national. Deliberate reversal of the strict pass."
+    },
+    {
+      "countryId": "cu",
+      "name": "Cuba",
+      "hasRegions": false,
+      "regions": [],
+      "rationale": "FLAT. Small island with a unified Spanish-Caribbean home-cooking tradition."
+    },
+    {
+      "countryId": "jm",
+      "name": "Jamaica",
+      "hasRegions": false,
+      "regions": [],
+      "rationale": "FLAT. Small island; one shared national cuisine (jerk, rice and peas, stews)."
+    },
+    {
+      "countryId": "br",
+      "name": "Brazil",
+      "hasRegions": true,
+      "regions": [
+        { "id": "br-bahia", "name": "Bahia & the Northeast", "note": "Afro-Brazilian coast: dendê palm oil, coconut, seafood; cassava tapioca crepes.", "sparse": false, "sampleDishes": ["Moqueca", "Acarajé", "Tapioca Crepe"] },
+        { "id": "br-southeast", "name": "Southeast (Rio, São Paulo & Minas)", "note": "The populous heartland: Minas cheese bread, São Paulo snack-bar fried food, market pastels.", "sparse": false, "sampleDishes": ["Pão de Queijo", "Coxinha", "Pastel"] },
+        { "id": "br-south", "name": "The South (Gaúcho Country)", "note": "Cowboy churrasco — open-fire barbecue, the 'Brazilian steakhouse' identity.", "sparse": true, "sampleDishes": ["Churrasco"] },
+        { "id": "br-amazon", "name": "The Amazon & North", "note": "Amazonian ingredients: açaí, tucupi, jambu, river fish.", "sparse": true, "sampleDishes": ["Açaí Bowl"] }
+      ],
+      "rationale": "Expanded from 2 to 4. Promoted the populous Southeast (Rio/SP/Minas) from national default to a named region and ADDED the Amazon/North (açaí is Pará/Amazonian, moved here from Bahia). Bahia/Northeast and the gaúcho South are kept. Feijoada, caipirinha, brigadeiro and quindim stay as pan-Brazil national items."
+    },
+    {
+      "countryId": "ar",
+      "name": "Argentina",
+      "hasRegions": false,
+      "regions": [],
+      "rationale": "FLAT. Argentine food is dominated by a shared, nationwide asado + Italian-immigrant canon (steak, pizza, milanesa, pasta). The Andean northwest (locro, humita) is a real but minor thread, not central to how the cuisine is explored."
+    },
+    {
+      "countryId": "pe",
+      "name": "Peru",
+      "hasRegions": true,
+      "regions": [
+        { "id": "pe-coast", "name": "The Coast (Lima & the Pacific)", "note": "Ceviche, Nikkei/Chifa fusion and Lima's celebrated restaurant scene.", "sparse": false, "sampleDishes": ["Ceviche", "Lomo Saltado", "Ají de Gallina", "Pisco Sour", "Pollo a la Brasa", "Anticuchos", "Causa Limeña", "Picarones"] },
+        { "id": "pe-andes", "name": "The Andean Highlands (Sierra)", "note": "Potatoes, corn, ají and highland peppers; Arequipa's stuffed rocoto.", "sparse": false, "sampleDishes": ["Papa a la Huancaína", "Rocoto Relleno", "Chicha Morada"] },
+        { "id": "pe-amazon", "name": "The Amazon (Selva)", "note": "Jungle cuisine: river fish, plantain, juanes and tacacho.", "sparse": true, "sampleDishes": [] }
+      ],
+      "rationale": "NEWLY ADDED (flat before). Peru's costa/sierra/selva is the canonical way its cuisine is understood, and it's a top-tier gastronomic destination where a traveler eats very differently in Lima vs Cusco/Arequipa vs the Amazon. Coast and Highlands are populated; the Amazon is sparse but a genuine, distinct region. Reversal of the strict pass, which called it borderline."
+    },
+    {
+      "countryId": "co",
+      "name": "Colombia",
+      "hasRegions": false,
+      "regions": [],
+      "rationale": "FLAT. Strong internal variation exists (Andean Bogotá, Paisa/Antioquia, Caribbean coast) but the regional identities are largely domestic and not codified for outside travelers the way Peru's costa/sierra/selva is; reads as one emerging cuisine (arepa, empanada, bandeja) to most visitors. The closest remaining South American 'maybe.'"
+    },
+    {
+      "countryId": "au",
+      "name": "Australia",
+      "hasRegions": false,
+      "regions": [],
+      "rationale": "FLAT. A single modern national/cafe food culture with no recognizable regional divide."
+    }
+  ],
+  "summary": "More-inclusive pass applying the 'what would a food-curious traveler browse by region' lens. Result: 16 countries get regions, 19 stay flat. WITH REGIONS: Japan (5: Kanto/Kansai/Hokkaido&North/Kyushu/Okinawa - NEW, the user's own example), China (4: +Eastern/Shanghai), India (4: +West/+East), Thailand (4: +Northern/+Southern), Vietnam (3: keep), Indonesia (3: Java/Sumatra/Bali - NEW), Turkey (4: Marmara/Aegean/Southeast/Central Anatolia - NEW), Italy (3: keep), France (3: refined 2->3, split Paris-North vs Burgundy-East), Spain (3: +Basque/North), Germany (3: South/West/North - NEW), USA (3: keep), Mexico (4: +Oaxaca), Canada (2: Québec/Atlantic - NEW), Brazil (4: +Southeast/+Amazon), Peru (3: Coast/Andes/Amazon - NEW). NEWLY ADDED vs the strict pass (7): Japan, Indonesia, Turkey, Germany, Canada, Peru, plus expansions to Thailand/India/China/Mexico/Spain/France/Brazil. KEPT FLAT (19) with reasons: Korea, Malaysia (ethnic-not-geographic), Lebanon/Greece/Portugal/Poland/Russia (small or homogeneous), Iran/Egypt/Morocco/Ethiopia (unified national canon), Nigeria (lopsided N/S data), South Africa (ethnic-not-geographic), Cuba/Jamaica (small islands), Argentina (homogeneous asado+Italian), Colombia (real but domestic-only regional identity), Australia (single cafe culture). NOTABLE CALLS: (1) Japan/Indonesia/Turkey/Germany/Canada/Peru are deliberate reversals of the stricter pass, justified by real culinary geography a traveler explores even where our data is thin. (2) I kept sparse/empty regions where they anchor genuinely must-explore identities (Okinawa, Shanghai, Oaxaca, San Sebastián/Basque, Bengal, Amazon) and marked them sparse honestly. (3) I resisted fabricating regions for genuinely homogeneous cuisines and for cuisines whose diversity is ethnic rather than geographic (Malaysia, South Africa). (4) Region-id convention <countryId>-<slug>; all existing ids preserved unchanged, new ids added (jp-*, cn-east, in-west, in-east, th-north, th-south, id-*, tr-*, fr-east, es-north, de-*, mx-oaxaca, ca-quebec, ca-atlantic, br-southeast, br-amazon, pe-*)."
+}

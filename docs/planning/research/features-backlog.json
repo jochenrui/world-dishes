@@ -1,0 +1,131 @@
+{
+  "items": [
+    {
+      "title": "Global dish search",
+      "description": "A persistent search box (in the app shell) that fuzzy-matches across dish name, localName, origin, description and country, with results linking to the dish. Closes the app's most conspicuous gap: 428 dishes and no way to look one up.",
+      "value": "high",
+      "effort": "M",
+      "feasibility": "Trivial on this stack — pure client-side filtering over the in-code dataset, zero CSP/RLS/schema risk. Use a normalized substring+token match (accent-folding for localName) rather than pulling in a fuzzy-search dependency, to keep the bundle lean and CSP-clean.",
+      "dependsOn": [],
+      "notes": "Both reviewers rank this the biggest UX win. Ship alongside 'Tried/untried filter' as the first release. Results should deep-link into the Dish detail view once that exists."
+    },
+    {
+      "title": "Tried / untried / wishlist filter toggle",
+      "description": "A segmented control in the existing FilterBar to show only untried, only tried, or all dishes (and later, only wishlisted). Directly serves the core completion loop — 'what have I not tried yet in Thai food?'.",
+      "value": "high",
+      "effort": "S",
+      "feasibility": "Fully feasible — reads existing progress state in context, no schema/CSP concern. Best raw value-to-effort ratio in the set.",
+      "dependsOn": [],
+      "notes": "Build first, paired with search. The wishlist option of this toggle depends on the Wishlist feature landing; ship tried/untried now and add the wishlist segment later."
+    },
+    {
+      "title": "Dish detail view (deep-linkable)",
+      "description": "A /dish/:id route (page or URL-backed modal) showing full description, origin, badges, related dishes, and the prominent note/rating editor. Surfaces the rich per-dish data that currently has nowhere to live.",
+      "value": "high",
+      "effort": "M",
+      "feasibility": "Fully feasible — React Router over static data; deep links work under the GitHub Pages base path (SPA 404 fallback already in place for OAuth). Centralizes the note/rating editor so it isn't duplicated.",
+      "dependsOn": [],
+      "notes": "Foundational enabler: search results, recommendations, share cards and 'surprise me' all want to link to a dish, and the note editor lives here. Ship early. Mind focus management for the modal variant (do the a11y basics inline)."
+    },
+    {
+      "title": "Culinary Passport (stamps + achievements)",
+      "description": "A passport-style page: a stamp per country once you've tried >=1 dish, continents 'unlocked', and achievement badges (e.g. Around the World — a dish on every continent; Spice Master — all level-3 dishes; Vegan Voyager). The thematic centerpiece and the emotional payoff for tracking.",
+      "value": "high",
+      "effort": "M",
+      "feasibility": "Fully client-side derivation from progress + static dish/country data (Country.continent already exists, so no content ops). Keep badge rules as static config. Reuses the existing SVG sprite system for stamps/badges.",
+      "dependsOn": [],
+      "notes": "Flagship gamification feature; strongest retention hook and perfectly on-theme. Shares its data-aggregation pipeline with Stats dashboard and World map — build that derivation once."
+    },
+    {
+      "title": "Want-to-try / wishlist",
+      "description": "Let users mark dishes they want to try, as a planning layer alongside 'tried'. Powers trip planning ('dishes to hunt down in Mexico') and a wishlist filter/segment.",
+      "value": "med",
+      "effort": "M",
+      "feasibility": "Feasible with an ADDITIVE nullable column on dish_progress (want_to_try boolean, or wishlisted_at timestamptz) — NOT a widening of 'tried' into a status enum (that would be a breaking migration + backfill). Additive keeps the composite-PK upsert (onConflict user_id,dish_id) and RLS unchanged, no backfill.",
+      "dependsOn": [],
+      "notes": "The only DB-schema item worth the migration. One design decision: whether tried and want-to-try are mutually exclusive (reconcile in UI — e.g. marking tried clears want-to-try). Ship before the wishlist segment of the filter toggle and before wishlist counts appear in the Passport."
+    },
+    {
+      "title": "Stats dashboard",
+      "description": "Charts of your eating: dishes tried by continent / category / diet base, average rating, spice-tolerance distribution, most-explored cuisine. A data-nerd complement to the Passport.",
+      "value": "med",
+      "effort": "M",
+      "feasibility": "Client-side aggregation, feasible. Render with hand-rolled inline SVG bars/rings (you already use SVG) rather than a chart library — avoids bundle bloat and any CSP concern.",
+      "dependsOn": ["Culinary Passport (stamps + achievements)"],
+      "notes": "Shares the progress-aggregation pipeline with the Passport; build after it so the derivation is reused, not duplicated."
+    },
+    {
+      "title": "World map choropleth",
+      "description": "A bundled SVG world map with countries shaded by your per-country completion %, as a geographic view of collection progress.",
+      "value": "med",
+      "effort": "L",
+      "feasibility": "CSP-clean ONLY if it stays a bundled/inline SVG shaded client-side — never map tiles (Leaflet/Mapbox = forbidden external calls). Cost is the map asset + mapping the 35 country ids to SVG paths, not the stack. Note: only 35 of ~195 countries are shaded, so the map reads sparse.",
+      "dependsOn": ["Culinary Passport (stamps + achievements)"],
+      "notes": "High visual appeal but the priciest of the progress-view trio and the sparsest payoff. Same completion metric as Passport/Stats. Lower priority; guard against tile-based scope drift."
+    },
+    {
+      "title": "Recommendations (“because you tried X”)",
+      "description": "Suggest untried dishes via a client-side similarity heuristic over existing fields (shared country/region, category, diet base, spice level), surfaced on the dish detail view and Popular page.",
+      "value": "med",
+      "effort": "M",
+      "feasibility": "Pure client-side; feasible because the similarity signals already exist in the static data — so it does NOT become content ops. Heuristic quality is modest but a pleasant discovery aid.",
+      "dependsOn": ["Dish detail view (deep-linkable)"],
+      "notes": "Gate: acceptable only while it rides existing fields; do not let it grow into a hand-curated similarity graph across 428 dishes. Best surfaced inside dish detail."
+    },
+    {
+      "title": "Export & share your progress",
+      "description": "Two client-side serializations of your progress: a JSON/CSV download (data ownership) and a shareable summary/passport card (canvas→PNG download or copy-to-clipboard text) for word-of-mouth.",
+      "value": "med",
+      "effort": "S",
+      "feasibility": "Trivial and CSP-safe — Blob download and canvas toDataURL make no external calls. No public data exposure (unlike a hosted profile).",
+      "dependsOn": ["Culinary Passport (stamps + achievements)"],
+      "notes": "Merged from 'data export' + 'share card' (same data-read path, different renderers). The share card wants the Passport's badge/stat visuals to be worth sharing. Delivers ~80% of a public-profile's value with none of the RLS/privacy risk."
+    },
+    {
+      "title": "Accessibility pass",
+      "description": "Keyboard navigation, ARIA labels for progress rings and badge/sprite SVGs, and focus management (esp. for any dish-detail modal). A quality and inclusivity baseline.",
+      "value": "high",
+      "effort": "M",
+      "feasibility": "Fully feasible, no stack constraint. Much cheaper done alongside new components (search, dish detail) than retrofitted later.",
+      "dependsOn": [],
+      "notes": "Cross-cutting. Progress rings and decorative sprite SVGs are exactly what screen readers choke on today. Fold into each feature build rather than deferring to a big-bang retrofit."
+    },
+    {
+      "title": "Surprise me (random dish)",
+      "description": "A button that opens a random dish (optionally from the current filtered set) as a lightweight discovery/delight feature.",
+      "value": "low",
+      "effort": "S",
+      "feasibility": "Trivial, client-side. Best once Dish detail exists so it can link straight to a full view.",
+      "dependsOn": ["Dish detail view (deep-linkable)"],
+      "notes": "Cheap delight; fold into the search/discovery surface. Reviewer 2 merges it with search as one 'find dishes' primitive."
+    },
+    {
+      "title": "PWA: installable + read-only offline",
+      "description": "Add a web app manifest + service worker so the app is installable and the static dish catalog + cached progress reads work offline.",
+      "value": "med",
+      "effort": "M",
+      "feasibility": "Feasible on static hosting via vite-plugin-pwa. Watch the service-worker scope under the GitHub Pages sub-path. STRICTLY read-only offline: must NOT grow an offline write queue / sync layer (an explicit documented non-goal).",
+      "dependsOn": [],
+      "notes": "Offline browse only — progress is server-authoritative once signed in. Guard against scope creep into sync."
+    },
+    {
+      "title": "Public shareable profile link",
+      "description": "A read-only public URL of your passport/progress that others can view.",
+      "value": "low",
+      "effort": "L",
+      "feasibility": "Problematic on a static host: RLS public-read would expose the dish_progress table (incl. free-text notes) to the shared anon key, and a share-token approach needs a Supabase edge function to mint/resolve/revoke tokens — net-new backend surface. Requires an explicit, opt-in, per-column privacy decision and a dedicated public VIEW.",
+      "dependsOn": ["Want-to-try / wishlist"],
+      "notes": "DROP for now (or treat as its own privacy-scoped project). The client-generated share card in 'Export & share' delivers most of the value with no privacy/backend risk. Do not treat as a quick win."
+    },
+    {
+      "title": "UI internationalization (i18n)",
+      "description": "Translate the interface chrome into multiple languages (dish localName already exists in data).",
+      "value": "low",
+      "effort": "L",
+      "feasibility": "Feasible but large — externalize all UI strings, add an i18n framework, maintain per-locale translations. localName in the data is not the same as translating the whole UI.",
+      "dependsOn": [],
+      "notes": "DROP until there is concrete multilingual demand; big surface-area change for unclear value. Cheapest to do before many UI strings accumulate, so revisit only if demand appears."
+    }
+  ],
+  "summary": "World Dishes has a solid tracking core but three obvious gaps: no way to find a dish (no search), nowhere to see the rich per-dish data (cards only), and no payoff for tracking (no gamification/stats). The highest-leverage, lowest-risk work is all client-side over the existing in-code dataset and needs no schema or backend change. Recommended first release: Global search + the tried/untried filter toggle (the app's most conspicuous hole, best value-to-effort, zero CSP/RLS risk). Next, build the Dish detail view as a foundational enabler (search results, recommendations, share cards and 'surprise me' all link to it, and the note/rating editor consolidates there), then the Culinary Passport as the on-theme flagship engagement feature — its progress-aggregation pipeline is reused by the Stats dashboard and World map. Wishlist is the one schema change worth doing, and only as an ADDITIVE want_to_try column (never an enum-widening of 'tried', which would force a breaking migration). Export/share and accessibility are cheap, high-trust wins folded in along the way. Two candidates are explicitly cut: a public shareable profile (exposes free-text notes via RLS on a static host / needs an edge function — replaced by the client-side share card) and UI i18n (large, no demand). Guardrails from review: keep the world map a bundled SVG (never map tiles), keep PWA offline read-only (no write queue — a documented non-goal), and keep recommendations riding existing fields (no hand-curated similarity graph)."
+}

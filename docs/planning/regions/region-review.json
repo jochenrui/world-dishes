@@ -1,0 +1,215 @@
+{
+  "verdicts": [
+    {
+      "countryId": "jp",
+      "verdict": "KEEP",
+      "change": null,
+      "rationale": "Kanto/Kansai/Hokkaido&North/Kyushu/Okinawa are all genuinely distinct, traveler-sought food cultures; 5 is not over-split. Only nit: 'Hokkaido & the North (Tohoku)' lumps two distinct areas, but that's an acceptable traveler-level grouping."
+    },
+    {
+      "countryId": "cn",
+      "verdict": "KEEP",
+      "change": null,
+      "rationale": "Sichuan/Cantonese/Northern/Eastern(Jiangnan) is the correct traveler-recognizable reduction of the Eight Cuisines; wisely resisted empty Hunan/Xinjiang. Eastern sparse but real (xiaolongbao/red-braising)."
+    },
+    {
+      "countryId": "in",
+      "verdict": "KEEP",
+      "change": null,
+      "rationale": "North/South/West/East is the canonical four-way map; West (Gujarat/Maharashtra/Goa) and East (Bengal) are genuinely distinct and must-explore even though sparse."
+    },
+    {
+      "countryId": "th",
+      "verdict": "KEEP",
+      "change": null,
+      "rationale": "Central/Isan/Northern(Lanna)/Southern is the textbook four-region Thai split; Lanna (khao soi) and the Muslim-influenced South are real on-the-ground identities, each anchored by an iconic dish."
+    },
+    {
+      "countryId": "vn",
+      "verdict": "KEEP",
+      "change": null,
+      "rationale": "North/Central/South is textbook and all three are well populated."
+    },
+    {
+      "countryId": "kr",
+      "verdict": "CHANGE",
+      "change": "Flip hasRegions to true. Add: Seoul & Central (default canon), Jeolla / the Southwest (Jeonju), Gyeongsang / Busan & the Southeast. Optionally Jeju.",
+      "rationale": "Strongest wrong flat call under the inclusive bar: Jeonju is a UNESCO City of Gastronomy and Korea's acknowledged food capital, and Busan (milmyeon, dwaeji-gukbap, Jagalchi seafood) is a distinct must-explore destination a food traveler explicitly seeks out."
+    },
+    {
+      "countryId": "id",
+      "verdict": "KEEP",
+      "change": null,
+      "rationale": "Java/Sumatra(Padang)/Bali are genuinely distinct cuisines; Bali sparse but a real, must-explore identity. Correct."
+    },
+    {
+      "countryId": "my",
+      "verdict": "KEEP",
+      "change": null,
+      "rationale": "Peninsular variation is genuinely ethnic (Malay/Chinese/Indian/Peranakan), not geographic, so a region filter won't map cleanly. Borderline: Borneo/East Malaysia (Sarawak laksa, Sabah) is the one truly geographic distinction and Penang the one place-brand, but neither yields a clean 2+ split — flat is defensible."
+    },
+    {
+      "countryId": "tr",
+      "verdict": "KEEP",
+      "change": null,
+      "rationale": "Marmara/Aegean/Southeast(Gaziantep)/Central Anatolia are real, distinct regions; Gaziantep is a UNESCO gastronomy city. Only omission worth noting: the Black Sea (hamsi, mıhlama) is a genuine 5th identity, but 4 is a sound non-over-split call."
+    },
+    {
+      "countryId": "lb",
+      "verdict": "KEEP",
+      "change": null,
+      "rationale": "Small country, homogeneous Levantine mezze/grill tradition; mountain/coast/Bekaa nuances aren't a traveler browse axis."
+    },
+    {
+      "countryId": "ir",
+      "verdict": "KEEP",
+      "change": null,
+      "rationale": "Persian cuisine reads as one national canon (rice/stews/kebabs); the Caspian/Gilani north is a real but minor thread, not the primary browse axis."
+    },
+    {
+      "countryId": "it",
+      "verdict": "KEEP",
+      "change": null,
+      "rationale": "North/Central/South is the standard travel-book split and Central correctly homes the Roman pastas. Italy is the most regional cuisine on earth, so 3 is a conservative-but-defensible simplification (Sicily could arguably stand alone)."
+    },
+    {
+      "countryId": "fr",
+      "verdict": "KEEP",
+      "change": null,
+      "rationale": "Provence&South / Paris&North / Burgundy&East is workable. Nit: cassoulet is Southwest (Toulouse/Languedoc), a stretch under 'Provence'; and Brittany/Normandy (crêpes, cider, oysters) is a genuine missing identity — but holding at 3 is reasonable."
+    },
+    {
+      "countryId": "es",
+      "verdict": "KEEP",
+      "change": null,
+      "rationale": "Valencia&East / Andalucía / Basque&North is right; Basque is Spain's premier food region so including it sparse is correct. Minor: Catalonia (pan con tomate) is lumped into 'Valencia & the East', a slight stretch but acceptable."
+    },
+    {
+      "countryId": "gr",
+      "verdict": "KEEP",
+      "change": null,
+      "rationale": "Greek food is strongly a unified Mediterranean canon (souvlaki/moussaka/salad/feta everywhere). Crete has a genuinely distinct celebrated cuisine, but islands-vs-mainland isn't how the food meaningfully differs — flat is defensible."
+    },
+    {
+      "countryId": "de",
+      "verdict": "KEEP",
+      "change": null,
+      "rationale": "Bavaria/South (beer-garden, Swabian spätzle/Maultaschen) is a real must-explore food-and-beer destination that alone justifies a split; West (Rhineland roasts) and North/East (currywurst) are coherent, populated counterparts. Weakest of the added set — could defensibly be 2 — but 3 holds."
+    },
+    {
+      "countryId": "gb",
+      "verdict": "KEEP",
+      "change": null,
+      "rationale": "British food is perceived as one canon; Scotland (haggis) is the one latent identity but is absent from data and not a primary regional browse axis — flat defensible."
+    },
+    {
+      "countryId": "pt",
+      "verdict": "KEEP",
+      "change": null,
+      "rationale": "Small, fairly unified cuisine (bacalhau, sardines, pastéis de nata); Porto/north (francesinha, caldo verde) vs Lisbon exists but isn't a recognizable traveler filter."
+    },
+    {
+      "countryId": "pl",
+      "verdict": "KEEP",
+      "change": null,
+      "rationale": "Homogeneous national comfort-food canon (pierogi, kotlet, soups) with no recognizable regional browse axis."
+    },
+    {
+      "countryId": "ru",
+      "verdict": "KEEP",
+      "change": null,
+      "rationale": "Vast but our set is pan-Russian imperial/Soviet; genuine variation is ethnic/republic-level (Tatar, Caucasian), not a clean geographic browse. Flat defensible."
+    },
+    {
+      "countryId": "ma",
+      "verdict": "KEEP",
+      "change": null,
+      "rationale": "Unified Maghrebi tradition (tagine/couscous/mint tea) shared nationwide; Fez-vs-Marrakech is about refinement not distinct cuisine, and coastal seafood is a thin thread — not a clean regional filter."
+    },
+    {
+      "countryId": "et",
+      "verdict": "KEEP",
+      "change": null,
+      "rationale": "Injera-and-wat is nationally shared; the main distinction is religious (fasting/vegan vs meat), not regional. Correct."
+    },
+    {
+      "countryId": "ng",
+      "verdict": "KEEP",
+      "change": null,
+      "rationale": "A real Hausa-North (suya, tuwo, miyan kuka) vs Yoruba/Igbo-South (jollof, egusi, swallow) divide exists, but the dominant identity is a shared national canon and our data is lopsidedly southern — the strongest African maybe, but flat is defensible."
+    },
+    {
+      "countryId": "eg",
+      "verdict": "KEEP",
+      "change": null,
+      "rationale": "Unified cuisine centred on Cairo/Nile staples (koshari, ful, ta'ameya); Alexandria seafood is a lone thread, not a browse axis."
+    },
+    {
+      "countryId": "za",
+      "verdict": "KEEP",
+      "change": null,
+      "rationale": "Variation is cultural/ethnic (Cape Malay, Afrikaner braai, Durban Indian). Cape Town (Cape Malay) vs Durban (bunny chow) is a latent geographic axis, but it maps to community more than place — flat defensible."
+    },
+    {
+      "countryId": "us",
+      "verdict": "CHANGE",
+      "change": "Add a 'California & the West Coast' region (farm-to-table, Cal-Mex, sourdough, Pacific NW salmon/coffee). Optionally the Midwest.",
+      "rationale": "Coverage gap: under the inclusive bar the West Coast is one of America's most influential and traveler-recognizable regional cuisines; leaving the US at 3 omits an obvious must-explore identity even if our current dishes are thin there."
+    },
+    {
+      "countryId": "mx",
+      "verdict": "KEEP",
+      "change": null,
+      "rationale": "Central/West/Yucatán/Oaxaca captures Mexico's top food regions; Oaxaca (moles, tlayudas, mezcal) rightly added sparse. Norteño North (cabrito, machaca, flour tortillas, arrachera) is a defensible 5th but 4 avoids over-splitting."
+    },
+    {
+      "countryId": "ca",
+      "verdict": "KEEP",
+      "change": null,
+      "rationale": "Québec is a genuinely distinct, well-covered French-Canadian cuisine (poutine, tourtière, Montreal smoked meat/bagels); Atlantic/Maritime seafood is a real sparse identity. Flip justified."
+    },
+    {
+      "countryId": "cu",
+      "verdict": "KEEP",
+      "change": null,
+      "rationale": "Small island, unified Spanish-Caribbean home cooking."
+    },
+    {
+      "countryId": "jm",
+      "verdict": "KEEP",
+      "change": null,
+      "rationale": "Small island, one shared national cuisine (jerk, rice and peas, stews)."
+    },
+    {
+      "countryId": "br",
+      "verdict": "KEEP",
+      "change": null,
+      "rationale": "Bahia&NE / Southeast / South(gaúcho) / Amazon are the canonical macro-regions; açaí correctly moved to the Amazon. Well justified at 4."
+    },
+    {
+      "countryId": "ar",
+      "verdict": "KEEP",
+      "change": null,
+      "rationale": "Dominated by a nationwide asado + Italian-immigrant canon (steak, pizza, milanesa, pasta). The Andean Northwest (locro, humita, empanadas salteñas) is genuinely distinct but a minor thread, not the primary way the cuisine is explored — flat defensible."
+    },
+    {
+      "countryId": "pe",
+      "verdict": "KEEP",
+      "change": null,
+      "rationale": "Coast/Andes/Amazon (costa/sierra/selva) is exactly how Peruvian cuisine is understood; a top gastronomic destination where you eat very differently in Lima vs Cusco/Arequipa vs the jungle."
+    },
+    {
+      "countryId": "co",
+      "verdict": "KEEP",
+      "change": null,
+      "rationale": "Real internal variation (Paisa/Antioquia, Caribbean coast, Andean Bogotá) but it's largely domestic and not codified for outside travelers the way Peru's is — reads as one emerging cuisine (arepa, empanada, bandeja). Defensible flat."
+    },
+    {
+      "countryId": "au",
+      "verdict": "KEEP",
+      "change": null,
+      "rationale": "Single modern national cafe/multicultural food culture with no recognizable regional divide."
+    }
+  ],
+  "summary": "Strong, well-calibrated inclusive pass. I endorse all 16 region flips and 17 of 19 flat calls. Two changes I'd insist on: (1) SOUTH KOREA should flip to hasRegions — Jeonju/Jeolla (UNESCO City of Gastronomy, Korea's food capital) and Busan/Gyeongsang are genuine must-explore food destinations a traveler seeks out; this is the clearest flat error under the inclusive bar. (2) USA has a coverage gap — add 'California & the West Coast', one of America's most influential and traveler-recognizable regional cuisines. Softer notes, none blocking: Germany's 3 is the closest to padded (Bavaria strong, West/North weaker — could defensibly be 2); Turkey could add a Black Sea region and Mexico a Norteño North as legitimate 5th regions, but holding at 4 is sound anti-over-splitting; France mislabels cassoulet (Southwest) under 'Provence' and omits Brittany/Normandy; Nigeria (N/S divide), Malaysia (Borneo), Argentina (Andean NW), Greece (Crete), and South Africa (Cape/Durban) are all real-but-minor identities where flat remains defensible. On granularity overall: the proposal correctly uses broad traveler-recognizable macro-regions rather than academic province lists, honestly marks sparse regions that anchor real identities (Okinawa, Shanghai, Oaxaca, Basque, Bengal, Amazon), and resists fabricating regions for ethnic-not-geographic diversity (Malaysia, South Africa) — no over-split included country. The only structural miss is a slight under-inclusiveness (Korea, US West Coast) rather than over-splitting."
+}

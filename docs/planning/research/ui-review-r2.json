@@ -1,0 +1,103 @@
+{
+  "summary": "Visual/UI audit of World Dishes across Popular, Collection, Country (China), Dish detail (Pad Thai), Passport (gate + signed-in with 6 dishes marked) and About, at 1280px and 390px in light and dark. Overall the app has a coherent warm terracotta-on-cream identity, a genuinely nice custom SVG dish-icon set (consistent stroke weight, viewBox and monochrome treatment), clean filter pills, and solid mobile reflow with no horizontal overflow. The weakest surfaces are the achievement badges (grayscale emoji that look muddy/broken, worst in dark), the new Dish detail page (sparse, lots of dead space), and vertical rhythm in the dish grids (ragged card bottoms / misaligned CTAs). Icon repetition is systemic because sprites are keyed to category, not dish, so 15-20 dishes can share one glyph on a single screen. Also a couple of off-palette emoji (blue passport-control glyph on the sign-in gate, globe in the logo) break the otherwise custom-SVG visual language.",
+  "items": [
+    {
+      "title": "Achievement badges are grayscale emoji that look muddy and broken",
+      "severity": "Critical",
+      "area": "Passport - ACHIEVEMENTS grid (all viewports; worst in dark)",
+      "problem": "Locked achievements render OS emoji (medal, globe, chili, ice cream, sprout, trophy) with filter: grayscale(1). On the warm cream cards they read as washed-out gray blobs; on dark cards they nearly disappear and look like failed/missing images. They clash hard with the polished custom monochrome SVG dish icons used everywhere else, so the most 'gamified' surface looks the least designed.",
+      "fix": "Replace emoji with a small custom monochrome SVG set in the same style as DishSprites (currentColor, stroke 2, 32x32 viewBox), driven off --c-text-muted when locked and --c-primary/--c-accent when earned. If keeping emoji short-term, drop grayscale(1) in PassportPage.module.css .badgeIcon (line ~65) and instead lower opacity to ~0.45 and tint the container, so they don't look broken. Locked icons must stay legible on --c-surface in both themes."
+    },
+    {
+      "title": "Dish detail page looks unfinished - large dead space, single narrow card",
+      "severity": "Critical",
+      "area": "Dish detail (/dish/:id, e.g. Pad Thai), 1280px light & dark",
+      "problem": "Below the ~720px content card the entire lower two-thirds of the viewport is empty background, and the footer floats in isolation. The page reads as a placeholder rather than a destination: one narrow left-aligned card with description + origin + badges + CTA, no visual anchor, no supporting content, and the icon tile is the only graphic. The two internal <hr> dividers chop the small card into three thin bands, amplifying the sparse feel.",
+      "fix": "Give the page visual body: center the content column or widen it, and add structured sections (a larger hero band using the dish icon on a --c-surface-2 tinted panel, a dietary/spice summary row, and a 'More from <country>' or 'Similar dishes' grid reusing DishCard). At minimum, replace the two dividers with a single grouped meta block and constrain page min-height so the footer doesn't strand. See DishPage.tsx / DishPage.module.css."
+    },
+    {
+      "title": "Sign-in gate uses a raw blue passport-control emoji, off-palette",
+      "severity": "Major",
+      "area": "Passport signed-out gate (empty state), all viewports",
+      "problem": "The empty-state hero icon is the OS 🛂 emoji - a bright blue rounded square. Against the terracotta/cream/amber brand it is the only saturated blue on the page and looks pasted-in, cheapening an otherwise clean empty state.",
+      "fix": "Swap for a custom SVG (passport/stamp motif) in --c-primary or --c-accent, matching the dish-icon line style. Sits in PassportPage.tsx gate block (~line 30). While there, align the gate's solid-red 'Sign in with Google' button with the header's white Google button treatment for consistency."
+    },
+    {
+      "title": "Dish cards are not equal-height in a row, so CTAs and card bottoms misalign",
+      "severity": "Major",
+      "area": "Popular, Collection country pages (China), any DishGrid - 1280px",
+      "problem": "DishGrid uses align-items: start (DishGrid.module.css line 6) to stop an expanded note editor from stretching siblings. Side effect: when descriptions or the 'Contains' allergen line wrap differently (e.g. China row: Peking Duck / Jiaozi end higher than Dim Sum; Kung Pao vs Sichuan Hot Pot), the 'Mark as tried' buttons and 'Sign in to track' captions sit at different heights and card bottom edges are ragged, breaking the grid rhythm.",
+      "fix": "Keep align-items: start but make the pre-CTA content a fixed-rhythm block: give the description a min-height (2 lines) and reserve a consistent height for the badge/Contains region, or push the CTA to a shared baseline with a min-height on the card body so buttons align even when text length differs. Alternatively move the note-editor into a popover/overlay so full-height stretch (align-items: stretch) becomes safe."
+    },
+    {
+      "title": "Category-keyed icons repeat heavily - the glyph stops identifying the dish",
+      "severity": "Major",
+      "area": "All dish grids and dish icon tiles (Popular, Country, Dish detail)",
+      "problem": "DishSprite selects by category (<use href={`#dish-${category}`}>), and the dataset has 21 'grilled', 20 'stew', 11 'rice' etc. So a single screen shows many identical icons (e.g. Ramen and Carbonara identical; Jiaozi/Dim Sum/Mapo/Hot Pot near-identical bowls). The icons are individually well-drawn and stylistically consistent, but at grid density the repetition makes them read as decoration, not identity, and undercuts the perceived polish.",
+      "fix": "Increase glyph variety: add sub-category or per-dish icon overrides for the highest-frequency categories (grilled, stew, rice, soup), or introduce a small accent variation (e.g. topping marks) so same-category dishes differ. If keeping category-only, lean into it by de-emphasizing the icon (smaller, lower-contrast tile) so repetition is less conspicuous. See DishSprites.tsx symbol set + DishSprite mapping."
+    },
+    {
+      "title": "About page content is left-confined while stat cards span full width",
+      "severity": "Major",
+      "area": "About, 1280px (light & dark)",
+      "problem": "The four stat cards use the full ~1160px content width, but everything below - 'Where the data comes from' prose, the callout, and both bar charts (Diet base breakdown, Dishes by category) - is capped at roughly 55% width, leaving the entire right half empty. The result is strong left-weighting and an inconsistent content width within one page. (On mobile the bars go full-width and look correct.)",
+      "fix": "Either constrain the whole page to one readable measure (prose ~640px is fine, but then don't let stat cards run full-bleed - center them at the same max), or use the reclaimed right column: put the bar charts in a 2-up layout beside the prose, or widen the chart block. See AboutPage.module.css section widths."
+    },
+    {
+      "title": "Allergen pill iconography is inconsistent between cards and the AVOID filter",
+      "severity": "Major",
+      "area": "Popular 'More filters' AVOID row vs dish card 'Contains' pills",
+      "problem": "On dish cards the Contains pills carry emoji (wheat for Gluten, milk for Dairy, egg, etc.). In the expanded AVOID filter row the same allergens (Gluten, Dairy, Egg, Nuts, Shellfish, Soy) are plain text with no icon, while Pork, Beef and Alcohol DO have emoji - so within one row half the pills are iconed and half aren't, and the same token (e.g. Gluten) is iconed in one place and bare in another.",
+      "fix": "Standardize: use the same icon+label treatment for every allergen/avoid token in both FilterBar and DishBadges (or drop icons in both). Given the cards already use emoji, add them to the AVOID pills too. See FilterBar.tsx/DishBadges.tsx and their module.css."
+    },
+    {
+      "title": "Progress rings read faint at 0 progress (low-contrast track)",
+      "severity": "Minor",
+      "area": "Collection country cards + Country header ring (light & dark)",
+      "problem": "With 0 tried, the ring is just its track - a pale gold/cream circle on white (light) or a barely-visible gray outline (dark) - and the '0/16' label inside is small. The rings, a signature element of the Collection page, look inert and low-contrast until progress exists.",
+      "fix": "Raise track contrast (use --c-border at full strength or a slightly darker tint) and/or thicken the ring; consider a subtle filled dot or brand-tinted '0' state so empty rings still register. See CountryProgressRing.tsx."
+    },
+    {
+      "title": "'Grilled' glyph reads as a rocket/abstract shape at tile size",
+      "severity": "Minor",
+      "area": "Dish icon tiles for grilled-category dishes (e.g. Peking Duck), all pages",
+      "problem": "The grilled skewer-on-diagonal symbol, at 40px in the card tile, reads as a rocket or ambiguous shape rather than food (Peking Duck's tile is a clear example). It's the least legible glyph in an otherwise readable set, and it's the highest-frequency category (21 dishes).",
+      "fix": "Redraw the grilled symbol horizontally (skewer + clearer meat chunks + flame ticks) or reduce diagonal so it doesn't read as a launch vector at small sizes. DishSprites.tsx #dish-grilled (~line 52)."
+    },
+    {
+      "title": "MAX SPICE slider has no low-end label",
+      "severity": "Minor",
+      "area": "FilterBar - MAX SPICE control (Popular, Country), all viewports",
+      "problem": "The slider shows only 'Hot' at the right end with no 'Mild'/'0' anchor at the left, and it defaults fully filled to the right. Visually it looks like a maxed-out red bar with a single label, making the scale and current value ambiguous at a glance.",
+      "fix": "Add a low-end label ('Mild' or '0') mirroring 'Hot', and/or a current-value readout. Consider a subtler track fill so a full range doesn't read as an alarming solid-red bar. FilterBar.tsx + FilterBar.module.css."
+    },
+    {
+      "title": "REGIONAL badge on only some collection cards creates uneven row height",
+      "severity": "Minor",
+      "area": "Collection grid (China/India/Italy/Spain cards), 1280px",
+      "problem": "Cards with a REGIONAL badge are taller than their neighbors; since the grid rows align to the tallest card, the non-regional cards in those rows carry extra bottom whitespace, giving the grid an inconsistent, slightly untidy rhythm.",
+      "fix": "Reserve consistent vertical space for the badge slot on all country cards (empty when absent) or move REGIONAL to an inline chip next to 'N popular dishes' so it doesn't add a row. CollectionPage.module.css."
+    },
+    {
+      "title": "Badge row crowds when meat + protein + spice + Contains all appear",
+      "severity": "Minor",
+      "area": "Dish cards with dense metadata (e.g. Kung Pao Chicken, Mapo Tofu), Country page",
+      "problem": "Cards packing Meat + Pork/Beef pill + chili spice indicator + 'Contains' + multiple allergen pills cram onto a tight single line or wrap awkwardly, so spacing between pills gets inconsistent and the line feels cramped versus lighter cards.",
+      "fix": "Give the diet/spice row and the 'Contains' row their own lines with consistent gap tokens, and set a uniform min-height for the combined block so wrapping doesn't shift the CTA. DishBadges.module.css / DishCard.module.css."
+    },
+    {
+      "title": "Logo globe uses an OS emoji, off the custom-SVG language",
+      "severity": "Minor",
+      "area": "Header wordmark (all pages)",
+      "problem": "The 🌍 emoji beside the 'World Dishes' wordmark renders in full multicolor OS style, the only such element in the header, slightly at odds with the app's monochrome custom-SVG icon system and warm palette.",
+      "fix": "Replace with a small custom SVG globe/plate mark in brand color, matching the dish-icon stroke style. AppShell.tsx header."
+    },
+    {
+      "title": "Muted body text is a touch dim on dark card surfaces",
+      "severity": "Minor",
+      "area": "Dark mode - intro paragraphs, card descriptions, captions",
+      "problem": "--c-text-muted (#a89f90) on --c-surface (#23201c) in dark mode is legible but borderline low-contrast for longer descriptions and the 'Sign in to track & review' captions, which fade into the card.",
+      "fix": "Nudge dark --c-text-muted lighter (e.g. ~#b7ae9d) for AA on card surfaces, or reserve the dimmest muted only for the smallest captions. theme.css dark block line ~45."
+    }
+  ]
+}

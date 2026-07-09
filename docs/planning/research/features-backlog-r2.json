@@ -1,0 +1,131 @@
+{
+  "items": [
+    {
+      "title": "Tasting timeline (your food journey)",
+      "description": "A chronological 'diary' view of the dishes you've tried, grouped by month, built entirely from the tried_at timestamps the app already captures but surfaces nowhere. Lives as a 'Your Journey' tab/section on the Passport. This is the Letterboxd/Untappd 'diary' — re-reading your own history is the emotional reason people keep a tracker.",
+      "value": "high",
+      "effort": "S",
+      "feasibility": "Trivial. Pure client-side group-by-month over existing progress entries; tried_at is already mapped through rowToEntry as triedAt. Zero schema/CSP/RLS change. Caveat: tried_at is nullable and rows migrated via migrateInsert (mock-era) may have null triedAt — render those in a single 'undated / earlier' bucket rather than dropping them.",
+      "dependsOn": [],
+      "notes": "Both reviewers' #1 pick and the clear build-next: highest value-to-effort in the set, activates dormant data, and cements the product's identity as a journal. First consumer of the shared deriveStats(entries, dishes) aggregation module — build that module here so the Stats dashboard reuses it rather than duplicating."
+    },
+    {
+      "title": "Want-to-try / wishlist",
+      "description": "A 'want to try' layer beside 'tried', so users bank intentions and gain an open-loop reason to return ('I still want to eat X'). Adds a wishlist filter segment and wishlist counts. Deepens the core loop from a 2-state (tried/untried) to a 3-state model.",
+      "value": "high",
+      "effort": "M",
+      "feasibility": "Feasible with ONE additive nullable column — prefer wishlisted_at timestamptz over a boolean (consistent with the tried_at pattern, preserves ordering, and powers the timeline/planner). ARCHITECTURE CAVEAT (the sharp one): the current invariant is 'un-trying DELETES the row', and a bare {tried:false} is treated as a tombstone that entriesToMigrate/overlayPending intentionally drop so deletes can't resurrect. A wishlisted-but-untried dish is exactly a legitimate persistent tried=false row. You MUST redefine the delete rule to 'delete only when tried=false AND wishlisted_at is null' and update the migration tombstone filter + reducer un-try path. Get this right before anything depends on it.",
+      "dependsOn": [],
+      "notes": "Strongest retention mechanic in the backlog and the only item worth a migration (still additive, no backfill). Touches the core mutation/sync path in progressReducer + progressRepo + ProgressContext — sequence carefully and keep the RLS/PK upsert (onConflict user_id,dish_id) unchanged. Reconcile UI: marking tried can clear the wishlist flag. Subsumes most of the value of the Country menu planner."
+    },
+    {
+      "title": "URL-backed filters (shareable/bookmarkable views)",
+      "description": "Move Popular/Country filter state from React useState into URL search params, so filtered views are shareable, bookmarkable, and back-button-friendly ('spicy vegan street food' as a link).",
+      "value": "med",
+      "effort": "S",
+      "feasibility": "Feasible. Refactor of FilterBar-driven state in PopularPage/CountryPage to useSearchParams. No DB/CSP. Caveats: (a) validate/serialize param values against the enums (Category, DietBase, Allergen, sort keys) so hand-edited URLs can't produce a broken state; (b) confirm the GitHub Pages SPA setup (BrowserRouter + 404.html fallback is already in place for OAuth) handles deep-linked query strings — it should, since query strings survive the same base-path serve.",
+      "dependsOn": [],
+      "notes": "Cheap hygiene win that also unblocks the sharing story (pairs with Share/export) and near-fully replaces the Country menu planner. Reviewer 2 ranks it #3. Good candidate to bundle with the Tasting timeline as a small combined release."
+    },
+    {
+      "title": "Recommendations (“because you tried X”)",
+      "description": "Client-side similar-dish suggestions on the dish detail page, using a heuristic over existing fields (shared country/region, category, diet base, spice level). A discovery nudge toward the next thing to try.",
+      "value": "med",
+      "effort": "M",
+      "feasibility": "Feasible, pure client-side over the in-code dataset (428x428 pairwise is trivially cheap; memoize). No DB/CSP concern because all similarity signals already exist in the static data. Gate: keep it riding existing fields — do NOT let it grow into a hand-curated 428-dish similarity graph (content ops).",
+      "dependsOn": ["Dish detail view (deep-linkable)"],
+      "notes": "This is the cheap, tag-driven version of personalization and it DOMINATES the full 'taste profile' item — build this, drop that. Shares a dish feature-vector/scoring module with any future personalization; build the feature extraction once. Best surfaced inside dish detail."
+    },
+    {
+      "title": "Share / export progress",
+      "description": "Two client-side serializations: a JSON/CSV download (data ownership / trust insurance) and a shareable passport image card (canvas→PNG download + copy-to-clipboard text) — the app's one real word-of-mouth / acquisition lever.",
+      "value": "med",
+      "effort": "M",
+      "feasibility": "Feasible and CSP-safe: Blob + object URL for download, navigator.clipboard for copy. CANVAS CAVEAT: the PNG card must draw only inline SVG / system fonts / emoji — any externally-sourced image or font taints the canvas and makes toDataURL() throw under CSP; also emoji-on-canvas renders inconsistently across OSes (acceptable, but flag it). Export is the user's own RLS-scoped data — no public exposure.",
+      "dependsOn": ["Culinary Passport (stamps + achievements)"],
+      "notes": "Export = S, image card = M; splittable. The card wants the Passport's badge/stat visuals to be worth sharing. Delivers ~80% of a public-profile's value with none of the RLS/edge-function/privacy risk (public profile stays dropped). Serializes the same deriveStats output used by the timeline/dashboard."
+    },
+    {
+      "title": "Stats dashboard",
+      "description": "Inline-SVG charts of your eating: dishes by continent / category / diet base, rating distribution, spice-tolerance histogram, most-explored cuisine. A quantified-self complement to the Passport.",
+      "value": "med",
+      "effort": "M",
+      "feasibility": "Feasible. Hand-rolled inline SVG bars/rings/histograms fit the existing SVG-sprite approach and CSP perfectly. Do NOT pull a charting library from a CDN or one that fetches runtime fonts/tiles — that violates the no-external-network CSP. Client-side aggregation only.",
+      "dependsOn": ["Tasting timeline (your food journey)"],
+      "notes": "Reuses the deriveStats(entries, dishes) module built for the timeline — build after it so the aggregation is shared, not duplicated. Payoff scales with how much data a user has, so it lands better once the collection deepens; medium priority. Some overlap with the Passport — keep it charts, not stamps."
+    },
+    {
+      "title": "Dish of the day",
+      "description": "A deterministic-by-date featured dish (seeded from the calendar day → index into the ranked list), shown on Popular or as a small banner. A lightweight reason to open the app again.",
+      "value": "med",
+      "effort": "S",
+      "feasibility": "Trivial. Deterministic seed from the date, no backend, no DB, no CSP concern. Zero risk.",
+      "dependsOn": [],
+      "notes": "Cheap return-hook, but the pull is weak on a static host with no push notifications — it's a nudge you only see if you already visited. Cheap delight; keep it small and don't over-invest."
+    },
+    {
+      "title": "Accessibility pass",
+      "description": "Keyboard navigation, ARIA labels for progress rings (CountryProgressRing) and decorative sprite/flag SVGs (aria-hidden), and focus management on route changes and the dish detail view.",
+      "value": "med",
+      "effort": "M",
+      "feasibility": "Feasible, no stack constraint. Cross-cutting refactor — scope it as a defined pass rather than open-ended. Much cheaper folded into each component build than retrofitted.",
+      "dependsOn": [],
+      "notes": "The right thing to do and broadens reach, but largely invisible to already-engaged users — treat as ongoing hygiene folded into other feature work (esp. shared focus-management with URL-backed filters), not a headline round-2 feature. Progress rings and decorative SVGs are exactly what screen readers choke on today."
+    },
+    {
+      "title": "“Where to find it / recipe” links per dish",
+      "description": "An additive optional link field on the Dish data (recipe or 'where to eat it' reference) rendered as an external link on the dish detail page. Bridges the hardest gap in the loop: actually going and trying the dish.",
+      "value": "med",
+      "effort": "M",
+      "feasibility": "Feasible. Additive field on Dish/RawDish in src/data (NOT the DB — consistent with 'dishes live in code'). CSP is fine: an <a target=\"_blank\" rel=\"noopener noreferrer\"> is a user-initiated navigation, not an app fetch, so it is NOT blocked. Real cost is content, not engineering: curating/verifying up to 428 links, and never trying to fetch/preview the target (that WOULD violate CSP).",
+      "dependsOn": [],
+      "notes": "Attacks a real gap (browse → actually eat), but sourcing + maintaining hundreds of curated links is ongoing solo-maintainer toil — the effort is under-stated until there's a maintenance answer (e.g. link only the top-N most popular dishes, or a generic 'search this dish' link). Must use rel=\"noopener noreferrer\"."
+    },
+    {
+      "title": "PWA: installable + read-only offline",
+      "description": "Web app manifest + service worker so the app is installable and the in-code catalog + cached progress reads work offline. STRICTLY read-only offline; no write queue / background sync.",
+      "value": "low",
+      "effort": "M",
+      "feasibility": "Feasible-with-caveats. Catalog is in-code so it's offline for free; SW + manifest are self-hostable (CSP-OK). Caveats: (a) GitHub Pages base-path — SW scope and manifest start_url must match the /world-dishes/ subpath or registration silently fails; (b) writes need Supabase/OAuth network anyway, so offline = cached reads only (as scoped); (c) SW caching vs Vite hashed assets needs an update/cache-bust strategy or users get stale bundles.",
+      "dependsOn": [],
+      "notes": "Low value for a browse-and-tap app that needs the network to write. Polish, not identity. Explicit non-goal: no offline write queue / sync (documented). Lower priority than the client-side wins above."
+    },
+    {
+      "title": "Taste profile + personalized “For You” re-rank",
+      "description": "Infer flavor/cuisine/diet preferences from tried dishes + ratings and re-rank the catalog to the user's palate.",
+      "value": "low",
+      "effort": "L",
+      "feasibility": "Feasible client-side but over-scoped: ~428 dishes / 35 countries is a small corpus for meaningful inference, cold-start needs a fallback to popularityRank, and re-ranking a COMPLETION tracker fights the 'explore everything' goal.",
+      "dependsOn": [],
+      "notes": "DROP in favor of 'Because you tried X' recommendations, which delivers the same discovery intent with a transparent, cheap, tag-based heuristic. Both reviewers flagged this as over-engineered for the app's size and identity."
+    },
+    {
+      "title": "Country menu planner",
+      "description": "A per-country printable/checkable 'dishes to hunt down in Mexico' list built from wishlist + untried dishes.",
+      "value": "low",
+      "effort": "M",
+      "feasibility": "Feasible (print via @media print CSS, no external calls) but hard-depends on Wishlist for its source, and is otherwise mostly a filtered view.",
+      "dependsOn": ["Want-to-try / wishlist"],
+      "notes": "DROP / defer: largely subsumed by Wishlist (the intentions layer) + URL-backed filters (the shareable filtered view). Niche travel assumption. Revisit only if wishlist usage shows demand for a trip-planning surface."
+    },
+    {
+      "title": "Command palette (Cmd-K quick-jump)",
+      "description": "A keyboard-driven overlay to jump to any dish or country by name.",
+      "value": "low",
+      "effort": "M",
+      "feasibility": "Feasible client-side (bundle a tiny local fuzzy matcher — no CDN; reuse the shipped search index rather than adding a second matcher). No DB/CSP.",
+      "dependsOn": [],
+      "notes": "DROP for now: low marginal value over the search that already ships; power-user gloss for a catalog this size. Keep navigation-only if ever built."
+    },
+    {
+      "title": "First-run onboarding",
+      "description": "Empty-state guidance / a brief sample flow for new or signed-out users.",
+      "value": "low",
+      "effort": "S",
+      "feasibility": "Trivial-to-feasible. Empty-state components, persist a 'seen' flag in localStorage (not the server). Keep it as empty states, not a modal tour framework (scope-creep risk).",
+      "dependsOn": [],
+      "notes": "DEFER: the core loop (browse → mark tried → rate) is self-evident and there's no acquisition funnel yet. Premature for a hobby app; revisit if real inbound traffic appears."
+    }
+  ],
+  "summary": "Round 1 shipped the whole core loop (search, tried/untried, dish detail, passport + achievements, notes/ratings, Supabase auth + sync), so round 2 is about DEEPENING the journal and creating return reasons rather than filling holes. The standout build-next is the Tasting timeline: tried_at timestamps are already captured and surfaced nowhere, so a chronological 'your food journey' view is nearly free (S), activates dormant data, and cements the product's identity as a journal (the emotional reason people keep Letterboxd/Untappd). Its aggregation module (deriveStats) is then reused by the Stats dashboard and Share/export, so build it first. The strongest retention follow-up is the Want-to-try/wishlist layer — the one item worth a migration (still additive: a nullable wishlisted_at column, no backfill) — but it carries the sharpest architecture caveat: it breaks the current 'un-trying deletes the row / {tried:false} is a tombstone' invariant, so the delete rule and migration tombstone filter must be redefined ('delete only when tried=false AND wishlisted_at null') before anything depends on it; get that right first. Between them, timeline (past) + wishlist (future) complete the loop in both directions. Round out with cheap, high-trust wins: URL-backed filters (shareable views, near-free, also replaces the country planner) and Share/export (the only real word-of-mouth lever). Recommendations 'because you tried X' is the cheap tag-based discovery aid that explicitly REPLACES the over-scoped 'taste profile' personalization (dropped). Stats dashboard is good but pays off once collections deepen, so it follows the timeline. Accessibility is real work but treat it as hygiene folded into other builds, not a headline. Explicitly dropped/deferred: full taste-profile re-ranking (over-engineered for a 428-dish completion tracker), country menu planner (subsumed by wishlist + URL filters), Cmd-K command palette (low marginal value over shipped search), first-run onboarding (premature, no funnel), and PWA (polish, low value for a network-dependent tracker). Guardrails carried from review: hand-roll inline-SVG charts and any fuzzy matcher (never a CDN lib — CSP); keep the canvas share card inline-SVG/emoji/system-font only (external assets taint toDataURL); mind the GitHub Pages base-path for PWA scope and deep-linked query strings; keep 'where to find it' links as user-initiated <a rel=noopener> navigations (allowed), never app fetches; and hold the additive-only schema line — wishlist is the sole column, nullable, no breaking migration."
+}

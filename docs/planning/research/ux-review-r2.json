@@ -1,0 +1,144 @@
+{
+  "items": [
+    {
+      "title": "Un-marking 'tried' silently deletes the user's written review + star rating, with no warning or undo",
+      "severity": "Critical",
+      "area": "Actions & affordances / Data safety",
+      "problem": "The 'I've tried this' button is a plain toggle. Clicking it off runs a reducer branch that DELETES the whole progress entry (verified in progressReducer.ts: 'delete next[dishId]'), so a rating and a note the user typed are destroyed instantly. Verified in-browser: rated Pizza 4 stars + wrote 'Had this in Bangkok', un-tried, re-tried -> the review was gone (persisted=false). Users treat try/un-try as a reversible checkbox and will toggle it to fix a mis-tap or re-taste, unaware they are wiping content they authored. There is no confirm, no toast, no undo.",
+      "fix": "Keep the note/rating when un-trying (soft state) OR, if the entry must be deleted for sync, guard it: when a review or rating exists, show a confirm ('Remove your 4-star review too?') or an undo toast after the toggle. At minimum, restore the review if the dish is re-tried in the same session."
+    },
+    {
+      "title": "Search ignores descriptions, diet and spice — ingredient/diet queries dead-end despite matching dishes existing",
+      "severity": "Major",
+      "area": "Flow & behavior / Discoverability",
+      "problem": "matchesSearch() only indexes name, localName, country, category label and origin. Verified live: 'coconut' -> 0, 'peanut' -> 0, 'spicy' -> 0, 'vegan' -> 0, 'cheese' -> 2, 'beef' -> 4 — even though the Vegan diet chip right above the box returns 72 dishes, and dozens of dishes list coconut/peanuts in their description. The placeholder invites 'name, country, category' but users naturally type ingredients or diets. They hit a full-page empty state ('No dishes match these filters. Try loosening them.') that wrongly implies nothing exists.",
+      "fix": "Add description to the search haystack, and map common diet/attribute words ('vegan','vegetarian','spicy','pork','beef') to the corresponding filter or field so text search and the chips agree. If a query matches a known diet/allergen keyword, surface a hint ('Did you mean the Vegan filter?')."
+    },
+    {
+      "title": "Clicking 'Mark as tried' while signed out signs you in but drops the action",
+      "severity": "Major",
+      "area": "Flow & behavior / Actions",
+      "problem": "onToggle() calls signIn() and returns when there's no user, so the click is consumed by auth and the dish is NOT marked. Verified: from signed-out, clicking a card's 'Mark as tried' logged in (header switched to 'Sign out') but the stat line still read 'You've tried 0' and the card still said 'Mark as tried'. The user's actual intent is silently lost and they must find the card and click again. Same pattern on the dish detail page.",
+      "fix": "After sign-in resolves, complete the pending intent (mark that dish tried). Store the target dishId and apply toggleTried once the session exists, so a single click accomplishes the goal."
+    },
+    {
+      "title": "'Write a review' expand/collapse is an instant mount/unmount — no transition",
+      "severity": "Minor",
+      "area": "Transitions & animation",
+      "problem": "Expanding the collapsed 'Write a review' into the star row + textarea is a conditional render (editing state swaps components), so the editor snaps open and the card jumps in height. Same on collapse and on the 'Done'/'Edit' round-trip. It reads abrupt next to the otherwise smooth 0.12-0.15s hover/chip transitions the app uses elsewhere.",
+      "fix": "Animate the editor's height/opacity on expand (e.g. grid-template-rows 0fr->1fr or a max-height/opacity transition, ~0.18s), respecting the existing prefers-reduced-motion block in theme.css."
+    },
+    {
+      "title": "Missing favicon (404 + blank tab icon)",
+      "severity": "Minor",
+      "area": "Flow & behavior / Polish",
+      "problem": "index.html declares no favicon; /favicon.ico returns 404. This is the only console error on load ('Failed to load resource: 404') and leaves the browser tab with a blank/default icon — off-brand for an app whose identity is the globe emoji it already uses in the header.",
+      "fix": "Add a favicon (an SVG/emoji-based 🌍 data-URI favicon link in index.html) to kill the 404 and brand the tab."
+    },
+    {
+      "title": "Empty-state copy assumes 'filters' and offers no route forward",
+      "severity": "Minor",
+      "area": "Flow & behavior / Empty states",
+      "problem": "A zero-result search shows 'No dishes match these filters. Try loosening them.' — but the user may have only typed in the search box (no filters), so 'these filters'/'loosen them' is confusing, and it doesn't point at the diet/category chips that would actually work. Contrast with the genuinely good invalid-dish/invalid-country empty states which give a clear 'Browse all' action.",
+      "fix": "Tailor the message to the active constraint (search vs. filter), and include an action ('Clear search' / 'Clear filters') button plus a nudge toward the diet chips when the query looks like a diet/ingredient."
+    },
+    {
+      "title": "Star rating: no hover preview and no way to clear a rating",
+      "severity": "Minor",
+      "area": "Actions & affordances",
+      "problem": "Stars only reflect the committed value; hovering star 4 doesn't preview 1-4 filled, so the control feels less responsive than the familiar rating pattern. Also there is no path back to 0 stars — once you rate, you can only lower to 1 (the only 'clear' is un-trying, which nukes the whole review). A mis-click to 5 stars is awkward to correct.",
+      "fix": "Add a hover-preview fill on the star row, and let clicking the current rating (or a small 'clear' affordance) reset to no rating."
+    },
+    {
+      "title": "Notes only persist on blur; 'Saved automatically' overstates it",
+      "severity": "Minor",
+      "area": "Actions & behavior / Persistence",
+      "problem": "NoteEditor commits the note in onBlur only; the hint says 'Saved automatically'. On the dish detail page there is no 'Done' button, so if a user types a note and closes the tab (or the app reloads) before the textarea loses focus, the note is never written. Perceived-vs-actual save mismatch.",
+      "fix": "Debounce-save on change (e.g. every ~500ms) in addition to blur, so the 'Saved automatically' promise holds; show the '✓ saved' flash on the debounced write."
+    },
+    {
+      "title": "Grid filtering / result changes have no enter-exit motion",
+      "severity": "Minor",
+      "area": "Transitions & animation",
+      "problem": "Applying a filter or search re-renders the grid instantly; large jumps (e.g. 428 -> 72) pop with no fade/reflow cue, which feels janky given the app animates smaller things. Not broken, but below the 'polished consumer product' bar the rest of the app sets.",
+      "fix": "Add a light fade/stagger on card enter (or a FLIP layout animation), gated by prefers-reduced-motion."
+    },
+    {
+      "title": "Passport stamps and achievement unlocks don't animate on earn",
+      "severity": "Minor",
+      "area": "Transitions & animation",
+      "problem": "The country progress ring animates its fill (0.4s), and stamps have a playful hover-rotate, but earning a stamp or an achievement badge is an instant state swap with no pop/celebration. For a gamified 'passport' the moment of earning is the emotional payoff and currently passes silently.",
+      "fix": "Add a one-time entrance/celebration animation when a stamp or achievement transitions to earned (scale-in + subtle ribbon reveal), reduced-motion aware."
+    },
+    {
+      "title": "Dish detail: only a generic 'All dishes' back link and wide empty right column",
+      "severity": "Minor",
+      "area": "Flow & behavior / Layout",
+      "problem": "The detail page's back link is always '← All dishes' even when you arrived from a country collection, so Back-by-link loses your place (browser Back works, but the on-page affordance doesn't mirror it). The content panel is left-aligned and narrow, leaving a large blank right half on desktop.",
+      "fix": "Make the back link context-aware (or label it 'Back') and either widen/center the panel or use the right column for related dishes from the same country."
+    }
+  ],
+  "svgFit": [
+    {
+      "dish": "Pizza Margherita (#1 worldwide)",
+      "category": "bread -> scored-loaf icon",
+      "issue": "The bread icon is a domed loaf with diagonal score slashes. Pizza is flat and round; the loaf reads as a baguette/boule, not pizza. This is the single most-popular, highest-visibility dish in the app, so the mismatch is glaring.",
+      "suggestion": "Give pizza/flatbread its own icon (round disc with topping dots) or a dedicated category; a loaf can't represent it."
+    },
+    {
+      "dish": "Spaghetti Carbonara & Lasagna",
+      "category": "noodles -> bowl + chopsticks + wavy loops",
+      "issue": "The noodles icon is an Asian noodle bowl lifted with a pair of chopsticks. Italian pasta with chopsticks is culturally wrong, and Lasagna is a baked layered dish, not a broth bowl. Reads as ramen for both.",
+      "suggestion": "Add a pasta variant (plate + fork, or a twirl) or split 'pasta' from 'noodles'; the chopstick bowl only fits East/SE-Asian noodles."
+    },
+    {
+      "dish": "Fresh Spring Rolls / Gỏi cuốn (Vietnam)",
+      "category": "seafood -> whole side-view fish",
+      "issue": "Rice-paper rolls of shrimp, pork and herbs are shown as a whole fish with tail and eye. Strongly misleading — nothing about the dish is a whole fish.",
+      "suggestion": "Recategorize to streetfood/other; the seafood 'whole fish' glyph can't cover rolls, sushi or tempura."
+    },
+    {
+      "dish": "Sushi (#2) & Tempura",
+      "category": "seafood -> whole fish",
+      "issue": "Both render as a whole side-view fish. Sushi is rice+fish pieces; tempura is battered fried items. Loose rather than wrong, but the fish glyph over-literalizes 'seafood'.",
+      "suggestion": "Acceptable as a category emblem, but a plated/nigiri glyph would fit sushi better if granularity is added."
+    },
+    {
+      "dish": "Street-food bucket: Menemen, Full English Breakfast, Poutine, Tortilla Española, Samosa, Falafel, Tteokbokki, Okonomiyaki",
+      "category": "streetfood -> folded taco",
+      "issue": "Every street-food dish renders as a taco. That fits Tacos al Pastor and roughly Chilaquiles/Masala Dosa, but Menemen (scrambled eggs), a Full English fry-up, Poutine (fries+gravy), Tortilla Española (potato omelette), Samosa (fried triangle), Falafel (fritters), Tteokbokki (rice cakes) and Okonomiyaki (pancake) are nothing like a taco — the icon actively misleads.",
+      "suggestion": "The single taco glyph can't represent the whole 'street food' catch-all. Either give these dishes truer categories (egg, fritter, pancake, fries) or make 'streetfood' render a neutral takeaway box rather than a specific food."
+    },
+    {
+      "dish": "Bread bucket: Pretzel, Lahmacun, Injera, Arepa, Pão de Queijo",
+      "category": "bread -> scored loaf",
+      "issue": "The loaf glyph misfits a knotted Pretzel, thin flatbreads (Lahmacun, Injera), a round griddle cake (Arepa) and small cheese balls (Pão de Queijo). Only Baguette truly fits a loaf.",
+      "suggestion": "Add a flatbread and/or a pretzel/round-bread variant; the loaf can't stand in for flat, knotted or ball breads."
+    },
+    {
+      "dish": "Grilled bucket: Fried Chicken, Schnitzel, Milanesa, Sunday Roast, Peking Duck, Jamón Ibérico",
+      "category": "grilled -> skewer with 3 chunks",
+      "issue": "The skewer glyph is perfect for kebabs/satay/yakitori but wrong for breaded fried cutlets (Schnitzel, Milanesa), Fried Chicken, a roast dinner (Sunday Roast), roast duck (Peking Duck) and thin-sliced cured ham (Jamón Ibérico) — none are skewered.",
+      "suggestion": "Split 'grilled' into skewer vs. roast/fried, or map cutlets/roasts to a plate-with-meat glyph."
+    },
+    {
+      "dish": "Pastry bucket: Pastéis de Nata, Empanadas, Butter Tart, Meat Pie",
+      "category": "pastry -> croissant",
+      "issue": "All pastries render as a croissant. A custard tart, savory empanada pockets, a butter tart and a hand pie are visually unrelated to a croissant, so only Croissant itself fits.",
+      "suggestion": "Add a tart/pie variant; the croissant glyph should be reserved for laminated crescents."
+    },
+    {
+      "dish": "Kung Pao Chicken & Lomo Saltado",
+      "category": "rice -> heaped rice bowl",
+      "issue": "Both are stir-fries (the code comment even notes 'stir-fries -> rice'). A plain heaped rice dome represents the side, not the dish, so a wok stir-fry looks like a bowl of plain rice.",
+      "suggestion": "A stir-fry/wok glyph would fit; or accept rice as a loose emblem but note the under-representation."
+    },
+    {
+      "dish": "Hummus & Guacamole",
+      "category": "salad -> bowl with pointed leaves + tomato",
+      "issue": "Both are smooth dips/purées, but the salad glyph shows leafy greens and a cherry tomato — it reads as a green salad, not a dip. Tabbouleh/Greek Salad fit the glyph; these don't.",
+      "suggestion": "A dip/bowl-with-swirl glyph would fit spreads; leafy-salad icon misrepresents purées."
+    }
+  ],
+  "summary": "World Dishes is genuinely polished: clean cohesive two-tone icon family, consistent hover/active/focus states (visible focus rings), progress rings that animate, well-designed empty states for invalid dish/country/route, working deep links and Back/forward, and reliable persistence across reload and sign-out/in. No crashes; the only console error is a missing favicon. The most serious issue is a data-safety one: un-marking 'tried' silently deletes the user's written review and rating with no warning or undo. Two Major behavior gaps: (1) search only indexes name/country/category/origin, so ingredient and diet queries ('coconut','peanut','vegan','spicy') dead-end even though matching dishes and a matching Vegan chip exist; (2) clicking 'Mark as tried' while signed out logs you in but drops the action, forcing a second click. Motion is good but a few high-touch moments are abrupt — the 'Write a review' expand is an instant mount/unmount, grid filtering has no enter/exit, and earning a stamp/achievement isn't celebrated. On SVG-fit, the 1:1 category->icon mapping breaks down for the broad catch-all categories: the taco (streetfood), scored loaf (bread), skewer (grilled), whole fish (seafood) and croissant (pastry) each only fit a subset, and the most visible misfits are Pizza Margherita (#1) shown as a bread loaf, Carbonara/Lasagna shown as chopstick noodle bowls, and Vietnamese fresh spring rolls shown as a whole fish. Fixing the un-try data loss, broadening search, and adding a handful of granular icons (pizza/flatbread, pasta, roast/fried, tart, dip) would take this from good to consumer-grade."
+}
