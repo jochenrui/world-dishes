@@ -60,10 +60,15 @@
   box-sizing: border-box;
 }
 
-html,
+html {
+  height: 100%;
+}
+
+/* min-height (not height) so #root grows with content — a fixed 100% height caps
+   the sticky header's containing block to one viewport, releasing it on scroll. */
 body,
 #root {
-  height: 100%;
+  min-height: 100%;
 }
 
 body {
