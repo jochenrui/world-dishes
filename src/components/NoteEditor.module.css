@@ -4,6 +4,14 @@
   border-radius: var(--radius-sm);
   background: var(--c-surface-2);
   border: 1px solid var(--c-border);
+  animation: editorIn 0.16s ease;
+}
+
+@keyframes editorIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
 }
 
 .stars {

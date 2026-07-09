@@ -9,6 +9,7 @@ export function NoteEditor({ dishId }: { dishId: string }) {
   const { get, setNote, setRating } = useProgress();
   const entry = get(dishId);
   const [draft, setDraft] = useState(entry?.note ?? '');
+  const [hover, setHover] = useState(0);
   const [savedFlash, setSavedFlash] = useState(false);
   const flashTimer = useRef<ReturnType<typeof setTimeout>>();
 
@@ -28,9 +29,14 @@ export function NoteEditor({ dishId }: { dishId: string }) {
 
   return (
     <div className={styles.editor}>
-      <div className={styles.stars} role="radiogroup" aria-label="Your rating">
+      <div
+        className={styles.stars}
+        role="radiogroup"
+        aria-label="Your rating"
+        onMouseLeave={() => setHover(0)}
+      >
         {STAR_VALUES.map((v) => {
-          const on = (entry?.rating ?? 0) >= v;
+          const on = (hover || entry?.rating || 0) >= v;
           return (
             <button
               key={v}
@@ -39,6 +45,9 @@ export function NoteEditor({ dishId }: { dishId: string }) {
               role="radio"
               aria-checked={entry?.rating === v}
               aria-label={`${v} star${v > 1 ? 's' : ''}`}
+              onMouseEnter={() => setHover(v)}
+              onFocus={() => setHover(v)}
+              onBlur={() => setHover(0)}
               onClick={() => setRating(dishId, v)}
             >
               {on ? '★' : '☆'}

@@ -37,6 +37,12 @@ export function DishCard({ dish, showRank = false, showCountry = true }: Props) 
       signIn();
       return;
     }
+    if (tried && hasReview) {
+      const ok = window.confirm(
+        `Un-mark "${dish.name}" as tried? This also removes your rating and note.`,
+      );
+      if (!ok) return;
+    }
     toggleTried(dish.id);
   };
 
@@ -74,14 +80,13 @@ export function DishCard({ dish, showRank = false, showCountry = true }: Props) 
           type="button"
           className={`${styles.tryBtn} ${tried ? styles.tryBtnOn : ''}`}
           onClick={onToggle}
-          aria-pressed={tried}
+          aria-pressed={user ? tried : undefined}
         >
           <span className={styles.check} aria-hidden="true">
-            {tried ? '✓' : '＋'}
+            {!user ? '🔒' : tried ? '✓' : '＋'}
           </span>
-          {tried ? "I've tried this" : 'Mark as tried'}
+          {!user ? 'Sign in to track' : tried ? "I've tried this" : 'Mark as tried'}
         </button>
-        {!user && <div className={styles.signInHint}>Sign in to track & review</div>}
 
         {user && tried && !editing && (
           <button

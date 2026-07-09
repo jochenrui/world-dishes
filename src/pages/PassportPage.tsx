@@ -26,9 +26,17 @@ export function PassportPage() {
 
       {!user ? (
         <div className={styles.gate}>
-          <span className={styles.gateEmoji} aria-hidden="true">
-            🛂
-          </span>
+          <svg
+            className={styles.gateMark}
+            viewBox="0 0 32 32"
+            aria-hidden="true"
+            width={52}
+            height={52}
+          >
+            <rect x="6" y="3" width="20" height="26" rx="3" fill="currentColor" fillOpacity="0.16" stroke="currentColor" strokeWidth="2" />
+            <circle cx="16" cy="13" r="4" fill="none" stroke="currentColor" strokeWidth="2" />
+            <path d="M11 22c1-2.6 3-4 5-4s4 1.4 5 4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+          </svg>
           <p>Sign in to start stamping your passport and unlocking achievements.</p>
           <button type="button" className={styles.gateBtn} onClick={signIn}>
             Sign in with Google

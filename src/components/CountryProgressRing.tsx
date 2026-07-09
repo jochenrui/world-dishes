@@ -25,7 +25,7 @@ export function CountryProgressRing({ tried, total, size = 46 }: Props) {
         cy={size / 2}
         r={r}
         fill="none"
-        stroke="var(--c-border)"
+        stroke="color-mix(in srgb, var(--c-text-muted) 30%, var(--c-surface))"
         strokeWidth={stroke}
       />
       <circle

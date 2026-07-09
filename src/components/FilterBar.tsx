@@ -88,7 +88,9 @@ export function FilterBar({
             aria-label="Maximum spice level"
             onChange={(e) => set({ maxSpice: Number(e.target.value) as DishFilters['maxSpice'] })}
           />
-          <span className={styles.count}>{spiceLabels[filters.maxSpice]}</span>
+          <span className={styles.count}>
+            {filters.maxSpice === 3 ? 'Any' : `≤ ${spiceLabels[filters.maxSpice]}`}
+          </span>
         </div>
 
         <div className={styles.group}>

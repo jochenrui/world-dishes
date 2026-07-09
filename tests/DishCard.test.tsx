@@ -27,17 +27,11 @@ describe('DishCard', () => {
     const user = userEvent.setup();
     renderCard();
 
-    // Signed out: the button offers to mark tried and shows the sign-in hint.
-    const button = screen.getByRole('button', { name: /mark as tried/i });
-    expect(screen.getByText(/sign in to track/i)).toBeInTheDocument();
-    expect(button).toHaveAttribute('aria-pressed', 'false');
+    // Signed out: the control is an explicit sign-in CTA (not a dead toggle).
+    const signInBtn = screen.getByRole('button', { name: /sign in to track/i });
+    await user.click(signInBtn); // mock sign-in
 
-    // First click signs in (mock) — dish not yet tried, hint disappears.
-    await user.click(button);
-    expect(screen.queryByText(/sign in to track/i)).not.toBeInTheDocument();
-
-    // Second click marks it tried. The editor is collapsed by default — only a
-    // compact "Write a review" affordance shows, keeping the card small.
+    // Now it's a real toggle. Marking tried keeps the review collapsed by default.
     await user.click(screen.getByRole('button', { name: /mark as tried/i }));
     expect(screen.getByRole('button', { name: /tried this/i })).toHaveAttribute(
       'aria-pressed',

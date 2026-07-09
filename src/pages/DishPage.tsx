@@ -1,7 +1,9 @@
+import { useMemo } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { getDish } from '../data/dishes';
+import { getDish, dishesForCountry } from '../data/dishes';
 import { getCountry, getRegion } from '../data/countries';
 import { DishBadges } from '../components/DishBadges';
+import { DishGrid } from '../components/DishGrid';
 import { DishSprite } from '../components/DishSprites';
 import { Flag } from '../components/Flag';
 import { NoteEditor } from '../components/NoteEditor';
@@ -15,7 +17,12 @@ export function DishPage() {
   const { dishId = '' } = useParams();
   const dish = getDish(dishId);
   const { user, signIn } = useSession();
-  const { isTried, toggleTried } = useProgress();
+  const { isTried, toggleTried, get } = useProgress();
+
+  const related = useMemo(
+    () => (dish ? dishesForCountry(dish.countryId).filter((d) => d.id !== dish.id).slice(0, 6) : []),
+    [dish],
+  );
 
   if (!dish) {
     return (
@@ -39,11 +46,19 @@ export function DishPage() {
   const country = getCountry(dish.countryId);
   const region = dish.regionId ? getRegion(dish.regionId) : undefined;
   const tried = isTried(dish.id);
+  const entry = get(dish.id);
+  const hasReview = !!(entry?.rating || entry?.note);
 
   const onToggle = () => {
     if (!user) {
       signIn();
       return;
+    }
+    if (tried && hasReview) {
+      const ok = window.confirm(
+        `Un-mark "${dish.name}" as tried? This also removes your rating and note.`,
+      );
+      if (!ok) return;
     }
     toggleTried(dish.id);
   };
@@ -86,17 +101,26 @@ export function DishPage() {
           type="button"
           className={`${styles.tryBtn} ${tried ? styles.tryBtnOn : ''}`}
           onClick={onToggle}
-          aria-pressed={tried}
+          aria-pressed={user ? tried : undefined}
         >
-          <span aria-hidden="true">{tried ? '✓' : '＋'}</span>
-          {tried ? "I've tried this" : 'Mark as tried'}
+          <span aria-hidden="true">{!user ? '🔒' : tried ? '✓' : '＋'}</span>
+          {!user ? 'Sign in to track' : tried ? "I've tried this" : 'Mark as tried'}
         </button>
 
-        {!user && (
-          <div className={styles.signInHint}>Sign in to track this dish and save a review.</div>
-        )}
         {user && tried && <NoteEditor dishId={dish.id} />}
       </div>
+
+      {related.length > 0 && country && (
+        <section className={styles.related}>
+          <div className={styles.relatedHead}>
+            <h2 className={styles.relatedTitle}>More from {country.name}</h2>
+            <Link to={`/collection/${country.id}`} className={styles.relatedLink}>
+              See all →
+            </Link>
+          </div>
+          <DishGrid dishes={related} showCountry={false} />
+        </section>
+      )}
     </>
   );
 }

@@ -1,6 +1,6 @@
 import type { Allergen, Category, DietBase, Dish } from '../data/types';
 import { getCountry } from '../data/countries';
-import { categoryLabels } from '../data/labels';
+import { allergenLabels, categoryLabels, dietLabels } from '../data/labels';
 
 export type SortKey = 'popularity' | 'name' | 'spice';
 export type TriedFilter = 'all' | 'tried' | 'untried';
@@ -53,6 +53,11 @@ function matchesSearch(d: Dish, q: string): boolean {
     getCountry(d.countryId)?.name ?? '',
     categoryLabels[d.category],
     d.origin,
+    d.description, // so ingredient queries like "coconut"/"peanut" resolve
+    dietLabels[d.dietary.base], // "vegan" / "vegetarian" / etc.
+    d.dietary.base === 'vegan' ? 'plant based plant-based' : '',
+    d.spiceLevel >= 2 ? 'spicy hot' : '',
+    d.allergens.map((a) => allergenLabels[a]).join(' '),
   ]
     .join(' ')
     .toLowerCase();

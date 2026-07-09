@@ -116,3 +116,31 @@
   color: var(--c-text-muted);
   margin-top: 10px;
 }
+
+.related {
+  margin-top: 36px;
+}
+
+.relatedHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--c-border);
+}
+
+.relatedTitle {
+  font-size: 15px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--c-text-muted);
+  margin: 0;
+}
+
+.relatedLink {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--c-primary);
+}
