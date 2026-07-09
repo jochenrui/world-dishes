@@ -104,6 +104,30 @@ export async function deleteEntry(
   if (error) throw error;
 }
 
+export interface DishStats {
+  triedCount: number;
+  ratingCount: number;
+  avgRating: number | null;
+}
+
+/** Aggregate community stats for one dish (null if unavailable / none yet). */
+export async function fetchDishStats(
+  client: SupabaseClient,
+  dishId: string,
+): Promise<DishStats | null> {
+  const { data, error } = await client
+    .from('dish_stats')
+    .select('tried_count, rating_count, avg_rating')
+    .eq('dish_id', dishId)
+    .maybeSingle();
+  if (error || !data) return null;
+  return {
+    triedCount: data.tried_count ?? 0,
+    ratingCount: data.rating_count ?? 0,
+    avgRating: data.avg_rating != null ? Number(data.avg_rating) : null,
+  };
+}
+
 /** Bulk insert-if-absent for migration — never clobbers an existing server row. */
 export async function migrateInsert(
   client: SupabaseClient,

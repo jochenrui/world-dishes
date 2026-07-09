@@ -16,10 +16,11 @@ you deploy elsewhere. Note the **trailing slash** — it matters for the OAuth a
    - **Project API keys → `anon` `public`** → `VITE_SUPABASE_ANON_KEY`
    (The anon key is safe to expose publicly; Row-Level Security protects the data.)
 
-## 2. Create the database table
+## 2. Create the database table + stats view
 1. Open **SQL Editor** in the Supabase dashboard.
-2. Paste the contents of [`supabase/migrations/0001_dish_progress.sql`](../supabase/migrations/0001_dish_progress.sql) and **Run**.
-3. Confirm under **Table Editor** that `dish_progress` exists and shows the shield icon (RLS enabled).
+2. Run [`supabase/migrations/0001_dish_progress.sql`](../supabase/migrations/0001_dish_progress.sql) — the per-user progress table.
+3. Run [`supabase/migrations/0002_dish_stats.sql`](../supabase/migrations/0002_dish_stats.sql) — the aggregate `dish_stats` view that powers the "X tried · ★ rating" community stats on each dish page. (Until you run it, dish pages just omit the stats line — nothing breaks.)
+4. Confirm under **Table Editor** that `dish_progress` exists and shows the shield icon (RLS enabled).
 
 ## 3. Create a Google OAuth client
 1. Go to <https://console.cloud.google.com/apis/credentials> (create/select a project).

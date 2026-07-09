@@ -58,6 +58,7 @@ function matchesSearch(d: Dish, q: string): boolean {
     d.dietary.base === 'vegan' ? 'plant based plant-based' : '',
     d.spiceLevel >= 2 ? 'spicy hot' : '',
     d.allergens.map((a) => allergenLabels[a]).join(' '),
+    (d.keyIngredients ?? []).join(' '), // search by ingredient, e.g. "coconut"
   ]
     .join(' ')
     .toLowerCase();

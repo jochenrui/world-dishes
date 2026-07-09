@@ -78,6 +78,8 @@ export interface Dish {
   popularityRank: number;
   description: string;
   origin: string;
+  /** 3-6 signature ingredients (curated). Optional so the app compiles pre-curation. */
+  keyIngredients?: string[];
 }
 
 /**

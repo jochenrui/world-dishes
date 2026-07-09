@@ -79,11 +79,60 @@
   color: var(--c-text);
 }
 
+.ingredients {
+  margin: 0 0 16px;
+}
+
+.ingredientsLabel {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--c-text-muted);
+  margin-bottom: 8px;
+}
+
+.ingredientChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.ingredientChip {
+  padding: 4px 11px;
+  border-radius: 999px;
+  background: var(--c-surface-2);
+  border: 1px solid var(--c-border);
+  font-size: 13px;
+  color: var(--c-text);
+}
+
 .badgesRow {
   padding: 14px 0;
   border-top: 1px solid var(--c-border);
   border-bottom: 1px solid var(--c-border);
   margin-bottom: 18px;
+}
+
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  margin-bottom: 18px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--c-text);
+}
+
+.statsRating {
+  color: var(--c-accent-ink);
+}
+
+.statsMuted {
+  color: var(--c-text-muted);
+  font-weight: 400;
 }
 
 .tryBtn {

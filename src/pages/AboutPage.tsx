@@ -28,7 +28,7 @@ export function AboutPage() {
       if (dish.spiceLevel >= 2) spicy++;
     }
     const topCats = [...catCounts.entries()].sort((a, b) => b[1] - a[1]);
-    return { dietCounts, topCats, spicy };
+    return { dietCounts, topCats, spicy, categoryCount: catCounts.size };
   }, []);
 
   const maxCat = stats.topCats[0]?.[1] ?? 1;
@@ -66,13 +66,20 @@ export function AboutPage() {
         <h2>Where the data comes from</h2>
         <p>
           There's no reliable public API for "the most popular dishes of each country," so this
-          dataset is <strong>hand-curated</strong>. It spans two tiers: <strong>world-famous</strong>{' '}
-          classics that travel across borders, and <strong>locally-famous</strong> dishes — home
-          cooking, street snacks, breakfast staples and regional specialties that a tourist "top 10"
-          usually misses. The local tier was researched region-by-region and independently reviewed
-          for dietary and attribution accuracy. Each dish is annotated with dietary information, an
-          origin note, and a popularity weight (<code>fame</code>); the global ranking on the Popular
-          page is derived from that weight, with world-famous dishes ranking above local ones.
+          dataset is <strong>hand-curated</strong>. It spans three tiers: <strong>world-famous</strong>{' '}
+          classics that travel across borders, <strong>locally-famous</strong> dishes — home cooking,
+          street snacks and staples a tourist "top 10" misses — and <strong>regional must-eats</strong>{' '}
+          for the sub-regions of countries whose cuisine varies a lot. Each dish is annotated with
+          dietary information, key ingredients, an origin note, and a popularity weight (<code>fame</code>);
+          the global ranking on the Popular page is derived from that weight, with world-famous dishes
+          ranking above local ones.
+        </p>
+        <p>
+          Countries with strong internal variation can be browsed by <strong>region</strong> (e.g.
+          Japan by Kanto / Kansai / Okinawa). Every dish is sorted into one of {stats.categoryCount}{' '}
+          categories, and dishes you sign in and mark as tried feed the community "tried" counts and
+          average ratings shown on each dish page. The dataset was researched region-by-region and
+          independently reviewed by a second pass for dietary, attribution, and relevance accuracy.
         </p>
 
         <div className={styles.callout}>
@@ -143,6 +150,11 @@ export function AboutPage() {
 
         <p>
           <strong>Spice level</strong> — 0 (none) to 3 (hot), shown as 🌶️ chillies.
+        </p>
+
+        <p>
+          <strong>Key ingredients</strong> — 3–6 signature ingredients per dish, shown on the dish
+          page and matched by the search box (so you can search "coconut" or "chickpeas").
         </p>
 
         <p>

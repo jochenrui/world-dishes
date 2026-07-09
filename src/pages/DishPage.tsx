@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { dishes, getDish, dishesForCountry } from '../data/dishes';
 import { getCountry, getRegion } from '../data/countries';
@@ -10,6 +10,8 @@ import { Flag } from '../components/Flag';
 import { NoteEditor } from '../components/NoteEditor';
 import { useProgress } from '../state/ProgressContext';
 import { useSession } from '../state/SessionContext';
+import { getSupabase } from '../lib/supabaseClient';
+import { fetchDishStats, type DishStats } from '../data/progressRepo';
 import pageStyles from './pages.module.css';
 import collStyles from './CollectionPage.module.css';
 import styles from './DishPage.module.css';
@@ -33,6 +35,23 @@ export function DishPage() {
         : [],
     [dish],
   );
+
+  const [stats, setStats] = useState<DishStats | null>(null);
+  useEffect(() => {
+    const client = getSupabase();
+    if (!client || !dish) {
+      setStats(null);
+      return;
+    }
+    let cancelled = false;
+    fetchDishStats(client, dish.id).then((s) => {
+      if (!cancelled) setStats(s);
+    });
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dishId]);
 
   if (!dish) {
     return (
@@ -99,6 +118,20 @@ export function DishPage() {
 
       <div className={styles.panel}>
         <p className={styles.description}>{dish.description}</p>
+
+        {dish.keyIngredients && dish.keyIngredients.length > 0 && (
+          <div className={styles.ingredients}>
+            <span className={styles.ingredientsLabel}>Key ingredients</span>
+            <div className={styles.ingredientChips}>
+              {dish.keyIngredients.map((ing) => (
+                <span key={ing} className={styles.ingredientChip}>
+                  {ing}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+
         <p className={styles.originNote}>
           <strong>Origin:</strong> {dish.origin}
         </p>
@@ -106,6 +139,21 @@ export function DishPage() {
         <div className={styles.badgesRow}>
           <DishBadges dish={dish} variant="full" />
         </div>
+
+        {stats && stats.triedCount > 0 && (
+          <div className={styles.stats}>
+            <span>
+              🍽️ {stats.triedCount} {stats.triedCount === 1 ? 'person has' : 'people have'} tried
+              this
+            </span>
+            {stats.avgRating != null && (
+              <span className={styles.statsRating}>
+                ★ {stats.avgRating}
+                <span className={styles.statsMuted}> ({stats.ratingCount})</span>
+              </span>
+            )}
+          </div>
+        )}
 
         <button
           type="button"
