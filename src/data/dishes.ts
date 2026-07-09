@@ -1,9 +1,10 @@
 import type { Dish } from './types';
 import { rawDishes } from './dishes.raw';
 import { localDishes } from './dishes.local';
+import { regionalDishes } from './dishes.regional';
 
-/** World-famous + locally-famous dishes, combined into one pool. */
-export const allRawDishes = [...rawDishes, ...localDishes];
+/** World-famous + locally-famous + region-specific dishes, combined into one pool. */
+export const allRawDishes = [...rawDishes, ...localDishes, ...regionalDishes];
 
 /**
  * Derive globally-unique popularity ranks from the authored `fame` weights.

@@ -1,6 +1,7 @@
 import { countries, regions } from './countries';
 import { rawDishes } from './dishes.raw';
 import { localDishes } from './dishes.local';
+import { regionalDishes } from './dishes.regional';
 
 /**
  * Dev-time integrity check for the curated dataset. Returns a list of problems
@@ -27,7 +28,7 @@ export function validateDataset(): string[] {
   }
 
   const seenDishIds = new Set<string>();
-  for (const d of [...rawDishes, ...localDishes]) {
+  for (const d of [...rawDishes, ...localDishes, ...regionalDishes]) {
     if (seenDishIds.has(d.id)) errors.push(`Duplicate dish id "${d.id}".`);
     seenDishIds.add(d.id);
     if (!countryIds.has(d.countryId)) {
