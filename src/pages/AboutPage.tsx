@@ -10,7 +10,6 @@ import {
   dietLabels,
 } from '../data/labels';
 import type { Allergen } from '../data/types';
-import { isSupabaseConfigured } from '../lib/supabaseClient';
 import pageStyles from './pages.module.css';
 import styles from './AboutPage.module.css';
 
@@ -173,25 +172,11 @@ export function AboutPage() {
         </div>
 
         <h2>Your data & privacy</h2>
-        {isSupabaseConfigured ? (
-          <p>
-            Sign-in uses <strong>Google</strong> via <strong>Supabase</strong>, which verifies your
-            identity server-side. The dishes you mark as tried, plus your ratings and notes, are
-            stored in a Postgres database protected by <strong>row-level security</strong> — so only
-            you can read or write your own entries. Your browser keeps a local cache too, for
-            instant and offline-friendly reads. The only thing shown publicly is{' '}
-            <strong>aggregate</strong> data per dish (how many people tried it and its average
-            rating); that contains no personal information. Sign out any time to hide your progress.
-          </p>
-        ) : (
-          <p>
-            This build isn't connected to a backend, so sign-in is a <strong>mock</strong> and the
-            dishes you tick off, your ratings and notes stay only in this browser's{' '}
-            <code>localStorage</code> — nothing leaves your device. Connecting Supabase (see the
-            project's setup guide) switches on real Google sign-in with server-side storage and the
-            community stats on each dish page.
-          </p>
-        )}
+        <p>
+          Sign in with Google to save the dishes you've tried, along with your ratings and notes.
+          Your list is private to you, and you can sign out any time. Each dish also shows how many
+          people have tried it and its average rating — but never anything personal.
+        </p>
       </div>
     </>
   );
