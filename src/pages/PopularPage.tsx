@@ -9,8 +9,10 @@ import { useSession } from '../state/SessionContext';
 import styles from './pages.module.css';
 
 const CATEGORY_ORDER: Category[] = [
-  'noodles', 'curry', 'grilled', 'dumpling', 'soup', 'rice', 'bread', 'stew',
-  'salad', 'seafood', 'dessert', 'streetfood', 'sandwich', 'beverage', 'pastry',
+  'noodles', 'pasta', 'rice', 'curry', 'stew', 'soup',
+  'grilled', 'roast', 'fried', 'seafood', 'dumpling',
+  'bread', 'pizza', 'sandwich', 'taco', 'wrap',
+  'salad', 'dip', 'streetfood', 'pie', 'pastry', 'dessert', 'beverage',
 ];
 
 export function PopularPage() {

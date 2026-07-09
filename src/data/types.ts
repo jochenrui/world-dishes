@@ -10,20 +10,28 @@ export type Allergen =
 
 export type Category =
   | 'noodles'
+  | 'pasta'
   | 'curry'
   | 'grilled'
+  | 'roast'
+  | 'fried'
   | 'dumpling'
   | 'soup'
   | 'rice'
   | 'bread'
+  | 'pizza'
   | 'stew'
   | 'salad'
+  | 'dip'
   | 'seafood'
   | 'dessert'
   | 'streetfood'
+  | 'taco'
+  | 'wrap'
   | 'sandwich'
   | 'beverage'
-  | 'pastry';
+  | 'pastry'
+  | 'pie';
 
 export type Continent =
   | 'Africa'

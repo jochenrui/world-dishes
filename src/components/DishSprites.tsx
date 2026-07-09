@@ -19,6 +19,7 @@ import type { Category } from '../data/types';
  *  - rice    = round BOWL + heaped grainy dome above rim, NO utensil
  *  - stew    = two-handled POT with lid + knob (not a bowl)
  *  - curry   = divided PLATE (rice dome beside a chunky sauce pool)
+ *  - dip     = shallow wide bowl + swirl + a triangular chip poking out
  */
 export function DishSpriteSheet() {
   return (
@@ -116,8 +117,17 @@ export function DishSpriteSheet() {
         <circle cx="16" cy="8.2" r="1.7" fill="currentColor" />
       </symbol>
 
-      {/* STREETFOOD — a folded TACO: crescent shell wall (double arc) + fillings cresting over the top */}
+      {/* STREETFOOD — a paper food TRAY/boat: open trapezoid container with 2 food bites cresting + a flag pick */}
       <symbol id="dish-streetfood" viewBox="0 0 32 32">
+        <path d="M6 13h20l-2 9a2 2 0 0 1-2 1.6h-12a2 2 0 0 1-2-1.6Z" fill="currentColor" fillOpacity="0.16" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+        <path d="M8 13a4 4 0 0 1 8 0" fill="currentColor" fillOpacity="0.16" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+        <path d="M16 13a4 4 0 0 1 8 0" fill="currentColor" fillOpacity="0.16" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+        <path d="M12 11.5v-6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+        <path d="M12 5.5l5 1.4-5 1.6Z" fill="currentColor" fillOpacity="0.16" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+      </symbol>
+
+      {/* TACO — a folded taco: crescent shell wall (double arc) + fillings cresting over the top */}
+      <symbol id="dish-taco" viewBox="0 0 32 32">
         <path d="M4 13A12 12 0 0 0 28 13L25 13A9 9 0 0 1 7 13Z" fill="currentColor" fillOpacity="0.16" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
         <path d="M8 13a3.2 3.2 0 0 1 6.4 0" fill="currentColor" fillOpacity="0.16" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
         <path d="M17.6 13a3.2 3.2 0 0 1 6.4 0" fill="currentColor" fillOpacity="0.16" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
@@ -144,6 +154,63 @@ export function DishSpriteSheet() {
       <symbol id="dish-pastry" viewBox="0 0 32 32">
         <path d="M4 18C6 11 12 9 16 11C20 9 26 11 28 18C24 15 20 16 16 15C12 16 8 15 4 18Z" fill="currentColor" fillOpacity="0.16" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
         <path d="M9 13l-1.5 3M13 11.5l-1 4M17 11.5l1 4M21 13l1.5 3" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+      </symbol>
+
+      {/* PIZZA — a slice: triangular wedge point-down, wider curved crust across the top, pepperoni dots */}
+      <symbol id="dish-pizza" viewBox="0 0 32 32">
+        <path d="M6 9.5C10 7 22 7 26 9.5L16 27Z" fill="currentColor" fillOpacity="0.16" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+        <path d="M6 9.5C10 7 22 7 26 9.5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+        <circle cx="12.5" cy="13" r="1.6" fill="currentColor" />
+        <circle cx="19" cy="14" r="1.6" fill="currentColor" />
+        <circle cx="16" cy="20" r="1.6" fill="currentColor" />
+      </symbol>
+
+      {/* PASTA — spaghetti twirled on a FORK: vertical handle + tines + wavy strands wound around */}
+      <symbol id="dish-pasta" viewBox="0 0 32 32">
+        <path d="M16 26v-8" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+        <path d="M12 18v-4M14.7 18v-4M17.3 18v-4M20 18v-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+        <path d="M8 13a8 5 0 0 1 16 0Z" fill="currentColor" fillOpacity="0.16" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+        <path d="M9 12c2-2 4 1.6 6-.2s4 1.6 6-.2" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M9.5 9c2-2 4 1.6 6-.2s4 1.6 6-.2" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      </symbol>
+
+      {/* ROAST — oval platter (rim like curry) holding a domed roast/ham with a bone nub + carving slits */}
+      <symbol id="dish-roast" viewBox="0 0 32 32">
+        <ellipse cx="16" cy="21.5" rx="13" ry="4.2" fill="none" stroke="currentColor" strokeWidth="2" />
+        <path d="M4.5 22.7a12 3.2 0 0 0 23 0" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+        <path d="M8 20.5a8 6.5 0 0 1 16 0Z" fill="currentColor" fillOpacity="0.16" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+        <path d="M24 18.5c2-1 3.5 0 3.5 1.2s-1.5 1.6-3.5 1.2" fill="currentColor" fillOpacity="0.16" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+        <path d="M13 15l1.6 2M17 14.5l1.6 2" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+      </symbol>
+
+      {/* FRIED — fried chicken drumstick: meaty rounded top, bone handle down-left, crumb specks */}
+      <symbol id="dish-fried" viewBox="0 0 32 32">
+        <path d="M22 8a7 7 0 0 1 0 10c-2.5 2.5-6 2.2-8 .6l-1.8 1.8a2.4 2.4 0 1 1-1.6-1.6L12.4 17c-1.6-2-1.9-5.5.6-8a7 7 0 0 1 9 -1Z" fill="currentColor" fillOpacity="0.16" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+        <path d="M9.6 22.4l-1.4 1.4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+        <circle cx="17" cy="11.5" r="0.8" fill="currentColor" />
+        <circle cx="20.5" cy="14.5" r="0.8" fill="currentColor" />
+        <circle cx="16" cy="16" r="0.8" fill="currentColor" />
+      </symbol>
+
+      {/* DIP — shallow wide bowl with a surface swirl + a triangular chip dipped in, leaning out top-right */}
+      <symbol id="dish-dip" viewBox="0 0 32 32">
+        <path d="M4 17h24a12 7 0 0 1-24 0Z" fill="currentColor" fillOpacity="0.16" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+        <path d="M10 15.5c1.2-1.2 2.8 0 4-.6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M18 17l7-11 3 2Z" fill="currentColor" fillOpacity="0.16" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+      </symbol>
+
+      {/* WRAP — rolled burrito on a diagonal: one end folded closed, angled cut end with filling spiral */}
+      <symbol id="dish-wrap" viewBox="0 0 32 32">
+        <path d="M7 22l13-13a5 5 0 0 1 4 8L11 26a5 5 0 0 1-4-4Z" fill="currentColor" fillOpacity="0.16" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+        <path d="M7 22l4-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+        <path d="M22.5 8.5a2.6 2.6 0 0 0-1.6 4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+      </symbol>
+
+      {/* PIE — round pie top view: crimped scalloped rim + a lattice of crossing strips over soft filling */}
+      <symbol id="dish-pie" viewBox="0 0 32 32">
+        <circle cx="16" cy="16" r="11" fill="currentColor" fillOpacity="0.16" stroke="currentColor" strokeWidth="2" />
+        <path d="M9 9l14 14M23 9L9 23" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+        <path d="M16 5v3M27 16h-3M16 27v-3M5 16h3" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
       </symbol>
     </svg>
   );

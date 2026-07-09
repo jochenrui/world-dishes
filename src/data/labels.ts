@@ -49,20 +49,28 @@ export const allergenGlyph: Record<Allergen, string> = {
 
 export const categoryLabels: Record<Category, string> = {
   noodles: 'Noodles',
+  pasta: 'Pasta',
   curry: 'Curry',
   grilled: 'Grilled',
+  roast: 'Roast',
+  fried: 'Fried',
   dumpling: 'Dumplings',
   soup: 'Soup',
   rice: 'Rice',
   bread: 'Bread',
+  pizza: 'Pizza',
   stew: 'Stew',
   salad: 'Salad',
+  dip: 'Dip',
   seafood: 'Seafood',
   dessert: 'Dessert',
   streetfood: 'Street food',
+  taco: 'Taco',
+  wrap: 'Wrap',
   sandwich: 'Sandwich',
   beverage: 'Beverage',
   pastry: 'Pastry',
+  pie: 'Pie',
 };
 
 export const spiceLabels = ['No spice', 'Mild', 'Medium', 'Hot'] as const;
