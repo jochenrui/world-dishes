@@ -68,20 +68,27 @@ describe('applyFilters', () => {
 
 describe('filterByTried', () => {
   const tried = new Set(['jp-sushi', 'it-pizza']);
+  const wishlisted = new Set(['th-padthai']);
   const isTried = (id: string) => tried.has(id);
+  const isWishlisted = (id: string) => wishlisted.has(id);
 
   it('all → unchanged', () => {
-    expect(filterByTried(dishes, 'all', isTried)).toHaveLength(dishes.length);
+    expect(filterByTried(dishes, 'all', isTried, isWishlisted)).toHaveLength(dishes.length);
   });
   it('tried → only tried dishes', () => {
-    expect(filterByTried(dishes, 'tried', isTried).map((d) => d.id).sort()).toEqual([
+    expect(filterByTried(dishes, 'tried', isTried, isWishlisted).map((d) => d.id).sort()).toEqual([
       'it-pizza',
       'jp-sushi',
     ]);
   });
   it('untried → excludes tried dishes', () => {
-    const out = filterByTried(dishes, 'untried', isTried);
+    const out = filterByTried(dishes, 'untried', isTried, isWishlisted);
     expect(out.some((d) => tried.has(d.id))).toBe(false);
     expect(out).toHaveLength(dishes.length - 2);
+  });
+  it('wishlist → only wishlisted dishes', () => {
+    expect(filterByTried(dishes, 'wishlist', isTried, isWishlisted).map((d) => d.id)).toEqual([
+      'th-padthai',
+    ]);
   });
 });

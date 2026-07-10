@@ -3,7 +3,14 @@ import { getCountry } from '../data/countries';
 import { allergenLabels, categoryLabels, dietLabels } from '../data/labels';
 
 export type SortKey = 'popularity' | 'name' | 'spice';
-export type TriedFilter = 'all' | 'tried' | 'untried';
+export type TriedFilter = 'all' | 'tried' | 'untried' | 'wishlist';
+
+/** Known SHOW-segment values, for validating an untrusted (e.g. URL) segment. */
+export const TRIED_FILTERS: readonly TriedFilter[] = ['all', 'untried', 'tried', 'wishlist'];
+
+export function isTriedFilter(v: string): v is TriedFilter {
+  return (TRIED_FILTERS as readonly string[]).includes(v);
+}
 
 export interface DishFilters {
   search: string;
@@ -102,7 +109,9 @@ export function filterByTried(
   dishes: Dish[],
   mode: TriedFilter,
   isTried: (dishId: string) => boolean,
+  isWishlisted: (dishId: string) => boolean,
 ): Dish[] {
   if (mode === 'all') return dishes;
+  if (mode === 'wishlist') return dishes.filter((d) => isWishlisted(d.id));
   return dishes.filter((d) => isTried(d.id) === (mode === 'tried'));
 }

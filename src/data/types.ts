@@ -98,6 +98,8 @@ export interface ProgressEntry {
   rating?: Rating;
   /** ISO timestamp of when it was marked tried */
   triedAt?: string;
+  /** ISO timestamp of when it was added to the want-to-try wishlist */
+  wishlistedAt?: string;
 }
 
 export interface UserProgress {

@@ -153,6 +153,34 @@
   font-size: 15px;
 }
 
+/* Want-to-try (wishlist) toggle — amber accent to sit apart from the green tried state. */
+.wishBtn {
+  width: 100%;
+  margin-top: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--c-border);
+  background: var(--c-surface);
+  color: var(--c-text);
+  font-weight: 600;
+  font-size: 13.5px;
+  transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+}
+
+.wishBtn:hover {
+  border-color: var(--c-accent);
+}
+
+.wishBtnOn {
+  border-color: var(--c-accent);
+  background: var(--c-surface-2);
+  color: var(--c-accent-ink);
+}
+
 .signInHint {
   font-size: 12px;
   color: var(--c-text-muted);

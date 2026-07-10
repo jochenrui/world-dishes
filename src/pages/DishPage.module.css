@@ -180,6 +180,32 @@
   color: #fff;
 }
 
+.wishBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-left: 10px;
+  padding: 11px 20px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--c-border);
+  background: var(--c-surface);
+  color: var(--c-text);
+  font-weight: 600;
+  font-size: 15px;
+  transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+}
+
+.wishBtn:hover {
+  border-color: var(--c-accent);
+}
+
+.wishBtnOn {
+  border-color: var(--c-accent);
+  background: var(--c-surface-2);
+  color: var(--c-accent-ink);
+}
+
 .signInHint {
   font-size: 13px;
   color: var(--c-text-muted);

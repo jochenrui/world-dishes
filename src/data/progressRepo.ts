@@ -10,6 +10,7 @@ export interface DishProgressRow {
   note: string | null;
   rating: number | null;
   tried_at: string | null;
+  wishlisted_at: string | null;
 }
 
 type Entries = UserProgress['entries'];
@@ -21,6 +22,8 @@ export function rowToEntry(row: DishProgressRow): { dishId: string; entry: Progr
   if (row.note != null) entry.note = row.note;
   if (row.rating != null) entry.rating = row.rating as Rating;
   if (row.tried_at != null) entry.triedAt = row.tried_at;
+  // Note: entry.tried may be false here — a wishlist-only row is legitimate.
+  if (row.wishlisted_at != null) entry.wishlistedAt = row.wishlisted_at;
   return { dishId: row.dish_id, entry };
 }
 
@@ -32,6 +35,7 @@ export function entryToRow(userId: string, dishId: string, entry: ProgressEntry)
     note: entry.note ?? null,
     rating: entry.rating ?? null,
     tried_at: entry.triedAt ?? null,
+    wishlisted_at: entry.wishlistedAt ?? null,
   };
 }
 
@@ -45,14 +49,15 @@ export function rowsToEntries(rows: DishProgressRow[]): Entries {
 }
 
 /**
- * Entries eligible for first-login migration: only genuinely-tried ones.
- * Excludes any empty / `{tried:false}` tombstone that might linger in an old cache
+ * Entries eligible for first-login migration: genuinely-tried ones AND want-to-try
+ * wishlist intentions (a legitimate `{tried:false, wishlistedAt}` row). Excludes any
+ * empty / pure `{tried:false}` tombstone that might linger in an old cache
  * (guards against resurrecting a deleted dish).
  */
 export function entriesToMigrate(local: Entries): Entries {
   const out: Entries = {};
   for (const [dishId, entry] of Object.entries(local)) {
-    if (entry && entry.tried === true) out[dishId] = entry;
+    if (entry && (entry.tried === true || entry.wishlistedAt != null)) out[dishId] = entry;
   }
   return out;
 }
@@ -77,7 +82,7 @@ export function overlayPending(server: Entries, local: Entries, pending: Set<str
 export async function fetchAll(client: SupabaseClient, userId: string): Promise<Entries> {
   const { data, error } = await client
     .from(TABLE)
-    .select('user_id, dish_id, tried, note, rating, tried_at')
+    .select('user_id, dish_id, tried, note, rating, tried_at, wishlisted_at')
     .eq('user_id', userId);
   if (error) throw error;
   return rowsToEntries((data ?? []) as DishProgressRow[]);

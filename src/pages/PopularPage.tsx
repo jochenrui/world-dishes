@@ -19,11 +19,11 @@ const CATEGORY_ORDER: Category[] = [
 export function PopularPage() {
   const [filters, setFilters] = useState(defaultFilters);
   const { user } = useSession();
-  const { triedCount, isTried } = useProgress();
+  const { triedCount, isTried, isWishlisted } = useProgress();
 
   const filtered = useMemo(
-    () => filterByTried(applyFilters(dishes, filters), filters.triedFilter, isTried),
-    [filters, isTried],
+    () => filterByTried(applyFilters(dishes, filters), filters.triedFilter, isTried, isWishlisted),
+    [filters, isTried, isWishlisted],
   );
   const availableCategories = useMemo(() => {
     const present = new Set(dishes.map((d) => d.category));

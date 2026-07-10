@@ -25,6 +25,7 @@ const TRIED_OPTIONS: { key: TriedFilter; label: string }[] = [
   { key: 'all', label: 'All' },
   { key: 'untried', label: 'Not tried' },
   { key: 'tried', label: 'Tried' },
+  { key: 'wishlist', label: 'Want to try' },
 ];
 
 const DIETS: DietBase[] = ['vegan', 'vegetarian', 'pescatarian', 'meat'];

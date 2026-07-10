@@ -19,7 +19,7 @@ export function CountryPage() {
   const country = getCountry(countryId);
   const [regionId, setRegionId] = useState<string | undefined>(undefined);
   const [filters, setFilters] = useState(defaultFilters);
-  const { triedCount, isTried } = useProgress();
+  const { triedCount, isTried, isWishlisted } = useProgress();
   const { user } = useSession();
 
   const regions = useMemo(() => regionsForCountry(countryId), [countryId]);
@@ -30,8 +30,9 @@ export function CountryPage() {
         applyFilters(dishesForCountryRegion(countryId, regionId), filters),
         filters.triedFilter,
         isTried,
+        isWishlisted,
       ),
-    [countryId, regionId, filters, isTried],
+    [countryId, regionId, filters, isTried, isWishlisted],
   );
   const availableCategories = useMemo(() => {
     const present = new Set(countryDishes.map((d) => d.category));

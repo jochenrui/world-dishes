@@ -19,8 +19,9 @@ interface Props {
 
 export function DishCard({ dish, showRank = false, showCountry = true }: Props) {
   const { user, signIn } = useSession();
-  const { isTried, toggleTried, get } = useProgress();
+  const { isTried, toggleTried, isWishlisted, toggleWishlist, get } = useProgress();
   const tried = isTried(dish.id);
+  const wishlisted = isWishlisted(dish.id);
   const entry = get(dish.id);
   const hasReview = !!(entry?.rating || entry?.note);
   const [editing, setEditing] = useState(false);
@@ -44,6 +45,14 @@ export function DishCard({ dish, showRank = false, showCountry = true }: Props) 
       if (!ok) return;
     }
     toggleTried(dish.id);
+  };
+
+  const onToggleWishlist = () => {
+    if (!user) {
+      signIn();
+      return;
+    }
+    toggleWishlist(dish.id);
   };
 
   return (
@@ -87,6 +96,20 @@ export function DishCard({ dish, showRank = false, showCountry = true }: Props) 
           </span>
           {!user ? 'Sign in to track' : tried ? "I've tried this" : 'Mark as tried'}
         </button>
+
+        {user && !tried && (
+          <button
+            type="button"
+            className={`${styles.wishBtn} ${wishlisted ? styles.wishBtnOn : ''}`}
+            onClick={onToggleWishlist}
+            aria-pressed={wishlisted}
+          >
+            <span className={styles.check} aria-hidden="true">
+              {wishlisted ? '🔖' : '📑'}
+            </span>
+            {wishlisted ? 'On your want-to-try list' : 'Want to try'}
+          </button>
+        )}
 
         {user && tried && !editing && (
           <button

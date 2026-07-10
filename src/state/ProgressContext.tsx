@@ -30,8 +30,10 @@ interface ProgressValue {
   entries: UserProgress['entries'];
   get: (dishId: string) => ProgressEntry | undefined;
   isTried: (dishId: string) => boolean;
+  isWishlisted: (dishId: string) => boolean;
   triedCount: (dishIds: string[]) => number;
   toggleTried: (dishId: string) => void;
+  toggleWishlist: (dishId: string) => void;
   setNote: (dishId: string, note: string) => void;
   setRating: (dishId: string, rating: Rating) => void;
 }
@@ -170,10 +172,16 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       entries: state.entries,
       get: (dishId) => state.entries[dishId],
       isTried: (dishId) => !!state.entries[dishId]?.tried,
+      isWishlisted: (dishId) => !!state.entries[dishId]?.wishlistedAt,
       triedCount: (dishIds) => dishIds.reduce((n, id) => (state.entries[id]?.tried ? n + 1 : n), 0),
       toggleTried: (dishId) => {
         if (!canWrite()) return;
         dispatch({ type: 'toggleTried', dishId, now: nowIso() });
+        scheduleWrite(dishId);
+      },
+      toggleWishlist: (dishId) => {
+        if (!canWrite()) return;
+        dispatch({ type: 'toggleWishlist', dishId, now: nowIso() });
         scheduleWrite(dishId);
       },
       setNote: (dishId, note) => {

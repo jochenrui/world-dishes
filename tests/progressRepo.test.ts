@@ -9,8 +9,14 @@ import {
 import type { ProgressEntry } from '../src/data/types';
 
 describe('progressRepo mapping', () => {
-  it('round-trips a full entry through row and back', () => {
-    const entry: ProgressEntry = { tried: true, note: 'great', rating: 4, triedAt: '2026-07-08T00:00:00.000Z' };
+  it('round-trips a full entry (incl. wishlistedAt) through row and back', () => {
+    const entry: ProgressEntry = {
+      tried: true,
+      note: 'great',
+      rating: 4,
+      triedAt: '2026-07-08T00:00:00.000Z',
+      wishlistedAt: '2026-07-07T00:00:00.000Z',
+    };
     const row = entryToRow('u1', 'jp-sushi', entry);
     expect(row).toEqual({
       user_id: 'u1',
@@ -19,11 +25,27 @@ describe('progressRepo mapping', () => {
       note: 'great',
       rating: 4,
       tried_at: '2026-07-08T00:00:00.000Z',
+      wishlisted_at: '2026-07-07T00:00:00.000Z',
     });
     expect(rowToEntry(row)).toEqual({ dishId: 'jp-sushi', entry });
   });
 
-  it('maps null note/rating/tried_at to absent fields', () => {
+  it('round-trips a wishlist-only (tried:false) row', () => {
+    const entry: ProgressEntry = { tried: false, wishlistedAt: '2026-07-07T00:00:00.000Z' };
+    const row = entryToRow('u1', 'th-padthai', entry);
+    expect(row).toEqual({
+      user_id: 'u1',
+      dish_id: 'th-padthai',
+      tried: false,
+      note: null,
+      rating: null,
+      tried_at: null,
+      wishlisted_at: '2026-07-07T00:00:00.000Z',
+    });
+    expect(rowToEntry(row)).toEqual({ dishId: 'th-padthai', entry });
+  });
+
+  it('maps null note/rating/tried_at/wishlisted_at to absent fields', () => {
     const { entry } = rowToEntry({
       user_id: 'u1',
       dish_id: 'it-pizza',
@@ -31,14 +53,15 @@ describe('progressRepo mapping', () => {
       note: null,
       rating: null,
       tried_at: null,
+      wishlisted_at: null,
     });
     expect(entry).toEqual({ tried: true });
   });
 
   it('rowsToEntries builds a keyed map', () => {
     const entries = rowsToEntries([
-      { user_id: 'u1', dish_id: 'a', tried: true, note: null, rating: null, tried_at: null },
-      { user_id: 'u1', dish_id: 'b', tried: true, note: 'x', rating: 3, tried_at: null },
+      { user_id: 'u1', dish_id: 'a', tried: true, note: null, rating: null, tried_at: null, wishlisted_at: null },
+      { user_id: 'u1', dish_id: 'b', tried: true, note: 'x', rating: 3, tried_at: null, wishlisted_at: null },
     ]);
     expect(Object.keys(entries)).toEqual(['a', 'b']);
     expect(entries.b).toEqual({ tried: true, note: 'x', rating: 3 });
@@ -46,13 +69,14 @@ describe('progressRepo mapping', () => {
 });
 
 describe('entriesToMigrate', () => {
-  it('includes tried entries and excludes {tried:false} tombstones', () => {
+  it('includes tried AND wishlist-only entries, excludes {tried:false} tombstones', () => {
     const out = entriesToMigrate({
       'a': { tried: true, rating: 5 },
       'b': { tried: false } as ProgressEntry, // legacy tombstone
       'c': { tried: true },
+      'd': { tried: false, wishlistedAt: '2026-07-07T00:00:00.000Z' }, // wishlist-only intention
     });
-    expect(Object.keys(out).sort()).toEqual(['a', 'c']);
+    expect(Object.keys(out).sort()).toEqual(['a', 'c', 'd']);
   });
 
   it('is empty for empty input', () => {

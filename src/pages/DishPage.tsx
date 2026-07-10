@@ -21,7 +21,7 @@ export function DishPage() {
   const { dishId = '' } = useParams();
   const dish = getDish(dishId);
   const { user, signIn } = useSession();
-  const { isTried, toggleTried, get } = useProgress();
+  const { isTried, toggleTried, isWishlisted, toggleWishlist, get } = useProgress();
 
   const related = useMemo(
     () => (dish ? dishesForCountry(dish.countryId).filter((d) => d.id !== dish.id).slice(0, 6) : []),
@@ -76,6 +76,7 @@ export function DishPage() {
   const country = getCountry(dish.countryId);
   const region = dish.regionId ? getRegion(dish.regionId) : undefined;
   const tried = isTried(dish.id);
+  const wishlisted = isWishlisted(dish.id);
   const entry = get(dish.id);
   const hasReview = !!(entry?.rating || entry?.note);
 
@@ -91,6 +92,14 @@ export function DishPage() {
       if (!ok) return;
     }
     toggleTried(dish.id);
+  };
+
+  const onToggleWishlist = () => {
+    if (!user) {
+      signIn();
+      return;
+    }
+    toggleWishlist(dish.id);
   };
 
   return (
@@ -172,6 +181,18 @@ export function DishPage() {
           <span aria-hidden="true">{!user ? '🔒' : tried ? '✓' : '＋'}</span>
           {!user ? 'Sign in to track' : tried ? "I've tried this" : 'Mark as tried'}
         </button>
+
+        {user && !tried && (
+          <button
+            type="button"
+            className={`${styles.wishBtn} ${wishlisted ? styles.wishBtnOn : ''}`}
+            onClick={onToggleWishlist}
+            aria-pressed={wishlisted}
+          >
+            <span aria-hidden="true">{wishlisted ? '🔖' : '📑'}</span>
+            {wishlisted ? 'On your want-to-try list' : 'Want to try'}
+          </button>
+        )}
 
         {user && tried && <NoteEditor dishId={dish.id} />}
       </div>
