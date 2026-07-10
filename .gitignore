@@ -3,3 +3,9 @@ dist
 .env
 .env.local
 *.log
+
+# Playwright e2e artifacts / verification screenshots
+/e2e/screens
+/e2e/.artifacts
+/playwright-report
+/test-results
