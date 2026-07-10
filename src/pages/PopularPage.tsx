@@ -1,10 +1,13 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { dishes } from '../data/dishes';
 import type { Category } from '../data/types';
+import type { DishFilters } from '../lib/filters';
 import { DishGrid } from '../components/DishGrid';
 import { FilterBar } from '../components/FilterBar';
 import { StickyBar } from '../components/StickyBar';
-import { applyFilters, defaultFilters, filterByTried } from '../lib/filters';
+import { applyFilters, filterByTried } from '../lib/filters';
+import { filtersToSearchParams, searchParamsToFilters } from '../lib/filterParams';
 import { useProgress } from '../state/ProgressContext';
 import { useSession } from '../state/SessionContext';
 import styles from './pages.module.css';
@@ -17,7 +20,13 @@ const CATEGORY_ORDER: Category[] = [
 ];
 
 export function PopularPage() {
-  const [filters, setFilters] = useState(defaultFilters);
+  // Filter state lives in the URL query string, so a filtered view is a shareable,
+  // bookmarkable link that survives reload. `replace: true` avoids pushing a history
+  // entry on every keystroke (tradeoff: filter changes aren't individually back-able).
+  const [searchParams, setSearchParams] = useSearchParams();
+  const filters = useMemo(() => searchParamsToFilters(searchParams), [searchParams]);
+  const setFilters = (next: DishFilters) =>
+    setSearchParams(filtersToSearchParams(next), { replace: true });
   const { user } = useSession();
   const { triedCount, isTried, isWishlisted } = useProgress();
 

@@ -1,14 +1,16 @@
-import { useMemo, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useMemo } from 'react';
+import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { getCountry, regionsForCountry } from '../data/countries';
 import { dishesForCountry, dishesForCountryRegion } from '../data/dishes';
 import type { Category } from '../data/types';
+import type { DishFilters } from '../lib/filters';
 import { CountryProgressRing } from '../components/CountryProgressRing';
 import { Flag } from '../components/Flag';
 import { DishGrid } from '../components/DishGrid';
 import { FilterBar } from '../components/FilterBar';
 import { StickyBar } from '../components/StickyBar';
-import { applyFilters, defaultFilters, filterByTried } from '../lib/filters';
+import { applyFilters, filterByTried } from '../lib/filters';
+import { filtersToSearchParams, searchParamsToFilters } from '../lib/filterParams';
 import { useProgress } from '../state/ProgressContext';
 import { useSession } from '../state/SessionContext';
 import pageStyles from './pages.module.css';
@@ -17,12 +19,32 @@ import styles from './CollectionPage.module.css';
 export function CountryPage() {
   const { countryId = '' } = useParams();
   const country = getCountry(countryId);
-  const [regionId, setRegionId] = useState<string | undefined>(undefined);
-  const [filters, setFilters] = useState(defaultFilters);
   const { triedCount, isTried, isWishlisted } = useProgress();
   const { user } = useSession();
 
   const regions = useMemo(() => regionsForCountry(countryId), [countryId]);
+
+  // Filters AND the selected region live in the URL query string, so a filtered
+  // country view is a shareable, bookmarkable link that survives reload. The shared
+  // DishFilters use the same schema as the Popular page; `region` is an extra param
+  // validated against THIS country's regions (an unknown/foreign id falls back to
+  // "all of the country"). `replace: true` avoids history spam on every keystroke
+  // (tradeoff: individual filter tweaks aren't back-able).
+  const [searchParams, setSearchParams] = useSearchParams();
+  const filters = useMemo(() => searchParamsToFilters(searchParams), [searchParams]);
+  const regionId = useMemo(() => {
+    const raw = searchParams.get('region');
+    return raw && regions.some((r) => r.id === raw) ? raw : undefined;
+  }, [searchParams, regions]);
+
+  const writeParams = (next: DishFilters, region: string | undefined) => {
+    const params = filtersToSearchParams(next);
+    if (region) params.set('region', region);
+    setSearchParams(params, { replace: true });
+  };
+  const setFilters = (next: DishFilters) => writeParams(next, regionId);
+  const setRegionId = (region: string | undefined) => writeParams(filters, region);
+
   const countryDishes = useMemo(() => dishesForCountry(countryId), [countryId]);
   const visible = useMemo(
     () =>
