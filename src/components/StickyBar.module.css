@@ -9,23 +9,15 @@
   background: var(--c-bg);
   padding: 12px 0 0;
   border-radius: 0 0 var(--radius) var(--radius);
-  margin-bottom: 8px;
-  /* Drive the inner bar's chrome (see FilterBar .bar): a resting card when free,
-     a single stronger-elevation, condensed toolbar when pinned — never a
-     competing double shadow. */
+  margin-bottom: 12px;
+  /* Drive only the inner bar's SHADOW (see FilterBar .bar) — a resting card when
+     free, a single stronger directional shadow when pinned. Layout (size/margin)
+     is constant across the stick threshold so it never bounces. */
   --bar-shadow: var(--shadow);
-  --bar-pad-y: 14px;
-  --bar-gap: 12px;
 }
 
 .stuck {
-  /* One stronger directional shadow on the (rounded) bar itself — no second
-     ambient shadow — plus tighter padding and more room below, so the scrolling
-     cards read as passing cleanly beneath a toolbar. */
   --bar-shadow: 0 8px 16px -8px rgba(44, 38, 32, 0.38);
-  --bar-pad-y: 10px;
-  --bar-gap: 10px;
-  margin-bottom: 16px;
 }
 
 @media (prefers-color-scheme: dark) {
