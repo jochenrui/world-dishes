@@ -17,3 +17,7 @@
   display: block;
   margin-bottom: 10px;
 }
+
+.emptyText {
+  margin: 0;
+}

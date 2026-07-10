@@ -36,6 +36,7 @@ interface ProgressValue {
   toggleWishlist: (dishId: string) => void;
   setNote: (dishId: string, note: string) => void;
   setRating: (dishId: string, rating: Rating) => void;
+  clearRating: (dishId: string) => void;
 }
 
 const ProgressContext = createContext<ProgressValue | null>(null);
@@ -192,6 +193,11 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       setRating: (dishId, rating) => {
         if (!canWrite()) return;
         dispatch({ type: 'setRating', dishId, rating });
+        scheduleWrite(dishId);
+      },
+      clearRating: (dishId) => {
+        if (!canWrite()) return;
+        dispatch({ type: 'clearRating', dishId });
         scheduleWrite(dishId);
       },
     };

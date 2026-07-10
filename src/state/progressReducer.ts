@@ -6,6 +6,7 @@ export type ProgressAction =
   | { type: 'toggleWishlist'; dishId: string; now: string }
   | { type: 'setNote'; dishId: string; note: string }
   | { type: 'setRating'; dishId: string; rating: Rating }
+  | { type: 'clearRating'; dishId: string }
   | { type: 'reset' };
 
 function deleteKey(state: UserProgress, dishId: string): UserProgress {
@@ -81,6 +82,17 @@ export function progressReducer(state: UserProgress, action: ProgressAction): Us
         tried: true,
         rating: action.rating,
       }));
+
+    case 'clearRating': {
+      const existing = state.entries[action.dishId];
+      // No entry or no rating → nothing to clear.
+      if (!existing || existing.rating === undefined) return state;
+      // Drop only `rating`; keep tried:true and every other field (note/triedAt/
+      // wishlistedAt). tried stays true so the key survives (invariant: key present
+      // IFF (tried || wishlisted)); this never turns the entry into a tombstone.
+      const { rating: _drop, ...rest } = existing;
+      return withEntry(state, action.dishId, () => ({ ...rest, tried: true }));
+    }
 
     case 'reset':
       return { ...state, entries: {} };

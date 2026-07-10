@@ -32,6 +32,25 @@
   color: var(--c-primary);
 }
 
+.clearSearchBtn {
+  margin-top: 14px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  /* --nav-active-bg keeps white ink AA in both themes (--c-primary fails in dark). */
+  border: 1px solid var(--nav-active-bg);
+  background: var(--nav-active-bg);
+  color: var(--c-primary-ink);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.12s ease;
+}
+
+.clearSearchBtn:hover {
+  opacity: 0.9;
+}
+
 .backLink {
   display: inline-flex;
   align-items: center;

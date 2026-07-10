@@ -42,6 +42,34 @@ export function PopularPage() {
 
   const tried = triedCount(dishes.map((d) => d.id));
 
+  // Context-aware empty state: a PURE search (no diet/spice/category/avoid/tried
+  // filters) gets a "No dishes match <query>" message; anything else keeps the
+  // filter-oriented "loosen them" copy. Either way, offer a clear-search escape
+  // hatch whenever a query is present.
+  const query = filters.search.trim();
+  const otherFiltersActive =
+    filters.diet.length > 0 ||
+    filters.categories.length > 0 ||
+    filters.maxSpice < 3 ||
+    filters.avoidPork ||
+    filters.avoidBeef ||
+    filters.avoidAlcohol ||
+    filters.avoidAllergens.length > 0 ||
+    filters.triedFilter !== 'all';
+  const emptyMessage =
+    query && !otherFiltersActive
+      ? `No dishes match “${query}”. Try a different word, or browse them all.`
+      : 'No dishes match these filters. Try loosening them.';
+  const emptyAction = query ? (
+    <button
+      type="button"
+      className={styles.clearSearchBtn}
+      onClick={() => setFilters({ ...filters, search: '' })}
+    >
+      Clear search
+    </button>
+  ) : undefined;
+
   return (
     <>
       <div className={styles.hero}>
@@ -70,7 +98,13 @@ export function PopularPage() {
         />
       </StickyBar>
 
-      <DishGrid dishes={filtered} showRank showCountry />
+      <DishGrid
+        dishes={filtered}
+        showRank
+        showCountry
+        emptyMessage={emptyMessage}
+        emptyAction={emptyAction}
+      />
     </>
   );
 }
