@@ -4,6 +4,14 @@ import { signInMock, seedTried } from './fixtures';
 
 const PAGES = ['/', '/collection', '/passport', '/stats', '/about'];
 
+// Force entrance/fade animations + transitions to complete instantly. A mid-fade
+// element renders semi-transparent and blends toward its background, which trips
+// color-contrast spuriously; this makes the scan deterministic (vs a flaky sleep).
+const FREEZE_ANIM = `*, *::before, *::after {
+  animation-duration: 0s !important; animation-delay: 0s !important;
+  transition-duration: 0s !important; transition-delay: 0s !important;
+}`;
+
 test('key pages have no serious/critical axe violations (signed in, seeded)', async ({ page }) => {
   await signInMock(page);
   await seedTried(page, { count: 20, rated: 10 });
@@ -12,12 +20,9 @@ test('key pages have no serious/critical axe violations (signed in, seeded)', as
   for (const path of PAGES) {
     await page.goto(path);
     await page.getByRole('heading', { level: 1 }).first().waitFor();
+    await page.addStyleTag({ content: FREEZE_ANIM });
     const { violations } = await new AxeBuilder({ page })
       .withTags(['wcag2a', 'wcag2aa'])
-      // color-contrast is a pre-existing, theme-wide issue (cream palette + muted
-      // text/badges) that needs palette design decisions — out of scope for this
-      // structural a11y pass, tracked as a follow-up. Gate on every other rule.
-      .disableRules(['color-contrast'])
       .analyze();
     for (const v of violations) {
       if (v.impact === 'serious' || v.impact === 'critical') {

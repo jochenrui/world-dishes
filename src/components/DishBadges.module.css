@@ -87,6 +87,7 @@
 
 .allergenNone {
   font-size: 11px;
-  color: var(--diet-vegan);
+  /* AA-safe ink instead of the base dot color (3.42 -> 6.20 on white). */
+  color: var(--diet-vegan-ink);
   font-weight: 600;
 }

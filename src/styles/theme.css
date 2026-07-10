@@ -12,7 +12,7 @@
   --c-primary-ink: #ffffff;
   --c-accent: #e8a020;
   --c-accent-ink: #8a5410; /* AA-safe amber text/border on light surfaces */
-  --c-success: #4a8f3c;
+  --c-success: #3f7d34; /* darkened: white-on-fill 3.97 -> 5.01 for AA */
   --nav-active-bg: #c23d29; /* white text passes AA in both themes */
 
   /* Diet colors — base (dots/bars/rings) + AA-safe ink (pill text on tint) */
@@ -21,7 +21,7 @@
   --diet-pescatarian: #2f88c1;
   --diet-meat: #b23b2e;
   --diet-vegan-ink: #2b6e37;
-  --diet-vegetarian-ink: #4d7a26;
+  --diet-vegetarian-ink: #487222; /* darkened: on tint 4.46 -> 4.97 for AA */
   --diet-pescatarian-ink: #1d6396;
   --diet-meat-ink: #9e3327;
   --spice: #c23d29;
@@ -42,6 +42,13 @@ html {
   scroll-padding-top: calc(var(--header-h) + var(--filterbar-h, 0px) + 12px);
 }
 
+/* Placeholder text: use the AA-safe muted token instead of the browser default,
+   which fails contrast (esp. in dark mode). opacity:1 so Firefox doesn't dim it. */
+::placeholder {
+  color: var(--c-text-muted);
+  opacity: 1;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --c-bg: #191512;
@@ -50,7 +57,7 @@ html {
     --c-border: #38332c;
     --c-text: #f2ece2;
     --c-text-muted: #a89f90;
-    --c-primary: #e8624b;
+    --c-primary: #ee7059; /* brightened for AA as link/eyebrow text on dark surfaces */
     --c-accent: #edb04a;
     --c-accent-ink: #edb04a; /* amber reads fine on dark surfaces */
     --nav-active-bg: #c23d29;

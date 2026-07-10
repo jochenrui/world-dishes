@@ -162,7 +162,8 @@
 }
 
 .regionChipOn {
-  background: var(--c-primary);
-  border-color: var(--c-primary);
+  /* --nav-active-bg keeps white text AA in dark mode (--c-primary would fail). */
+  background: var(--nav-active-bg);
+  border-color: var(--nav-active-bg);
   color: var(--c-primary-ink);
 }
