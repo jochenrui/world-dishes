@@ -9,3 +9,6 @@ dist
 /e2e/.artifacts
 /playwright-report
 /test-results
+
+# TypeScript incremental build artifact
+tsconfig.tsbuildinfo
