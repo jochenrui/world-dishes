@@ -24,9 +24,21 @@ export function StickyBar({ children }: { children: ReactNode }) {
     update();
     window.addEventListener('scroll', update, { passive: true });
     window.addEventListener('resize', update);
+
+    // Publish the pinned bar's height so scrolled/anchored content can offset for
+    // it (see `scroll-padding-top` in theme.css). A ResizeObserver updates it only
+    // when the bar's height actually changes (e.g. condensing on stick, wrapping).
+    const root = document.documentElement;
+    const publishHeight = () => root.style.setProperty('--filterbar-h', `${el.offsetHeight}px`);
+    publishHeight();
+    const ro = new ResizeObserver(publishHeight);
+    ro.observe(el);
+
     return () => {
       window.removeEventListener('scroll', update);
       window.removeEventListener('resize', update);
+      ro.disconnect();
+      root.style.setProperty('--filterbar-h', '0px');
     };
   }, []);
 

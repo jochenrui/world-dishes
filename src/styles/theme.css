@@ -35,6 +35,13 @@
   --font: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 
+/* Keep anchored / scrolled-into-view / keyboard-focused content clear of the
+   fixed header + pinned filter bar. --filterbar-h is published at runtime by
+   StickyBar (0 when no sticky bar is mounted). */
+html {
+  scroll-padding-top: calc(var(--header-h) + var(--filterbar-h, 0px) + 12px);
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --c-bg: #191512;

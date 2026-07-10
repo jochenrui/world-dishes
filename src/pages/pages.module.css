@@ -32,13 +32,6 @@
   color: var(--c-primary);
 }
 
-.stickyFilters {
-  position: sticky;
-  top: calc(var(--header-h) + 6px);
-  z-index: 10;
-  margin-bottom: 20px;
-}
-
 .backLink {
   display: inline-flex;
   align-items: center;

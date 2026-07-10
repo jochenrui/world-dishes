@@ -2,11 +2,14 @@
   background: var(--c-surface);
   border: 1px solid var(--c-border);
   border-radius: var(--radius);
-  padding: 14px 16px;
-  box-shadow: var(--shadow);
+  /* Padding / gap / elevation are driven by StickyBar so the bar condenses and
+     gains a single cleaner shadow when pinned (falls back to the resting card). */
+  padding: var(--bar-pad-y, 14px) 16px;
+  box-shadow: var(--bar-shadow, var(--shadow));
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--bar-gap, 12px);
+  transition: box-shadow 0.2s ease, padding 0.15s ease, gap 0.15s ease;
 }
 
 .searchRow {
