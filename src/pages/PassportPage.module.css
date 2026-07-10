@@ -119,6 +119,31 @@
   gap: 14px;
 }
 
+/* Gentle fade + rise on mount, staggered/capped. Earned badges get a livelier little
+   pop (a touch more scale) than locked ones. transform/opacity only; fill-mode
+   `backwards` never leaves a badge stuck faded. Global reduced-motion block disables. */
+@keyframes badgeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes badgeInEarned {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 .badge {
   display: flex;
   gap: 12px;
@@ -127,11 +152,46 @@
   border-radius: var(--radius);
   border: 1px solid var(--c-border);
   background: var(--c-surface);
+  animation: badgeIn 0.28s ease-out backwards;
+  /* Cap: badges past the 10th share this max delay. */
+  animation-delay: 0.2s;
+}
+
+.badge:nth-child(1) {
+  animation-delay: 0s;
+}
+.badge:nth-child(2) {
+  animation-delay: 0.03s;
+}
+.badge:nth-child(3) {
+  animation-delay: 0.06s;
+}
+.badge:nth-child(4) {
+  animation-delay: 0.08s;
+}
+.badge:nth-child(5) {
+  animation-delay: 0.1s;
+}
+.badge:nth-child(6) {
+  animation-delay: 0.12s;
+}
+.badge:nth-child(7) {
+  animation-delay: 0.14s;
+}
+.badge:nth-child(8) {
+  animation-delay: 0.16s;
+}
+.badge:nth-child(9) {
+  animation-delay: 0.18s;
+}
+.badge:nth-child(10) {
+  animation-delay: 0.2s;
 }
 
 .badgeEarned {
   border-color: var(--c-accent);
   box-shadow: 0 0 0 1px var(--c-accent) inset;
+  animation-name: badgeInEarned;
 }
 
 .badgeIcon {
@@ -207,6 +267,22 @@
   gap: 16px;
 }
 
+/* "Stamp in" on render — a quick scale + fade with a hair of rotate so opening the
+   passport feels earned. fill-mode `backwards` hides each stamp during its delay,
+   then hands the transform back to the resting rotation / hover rules below (no snap
+   that matters — the settle glides via the existing transform transition). Disabled
+   automatically by the global prefers-reduced-motion block in theme.css. */
+@keyframes stampIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) rotate(-2deg);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0);
+  }
+}
+
 .stamp {
   position: relative;
   display: flex;
@@ -220,6 +296,40 @@
   color: var(--c-text);
   text-align: center;
   transition: transform 0.12s ease;
+  animation: stampIn 0.3s ease-out backwards;
+  /* Cap: stamps past the 10th share this max delay. */
+  animation-delay: 0.2s;
+}
+
+.stamp:nth-child(1) {
+  animation-delay: 0s;
+}
+.stamp:nth-child(2) {
+  animation-delay: 0.03s;
+}
+.stamp:nth-child(3) {
+  animation-delay: 0.06s;
+}
+.stamp:nth-child(4) {
+  animation-delay: 0.08s;
+}
+.stamp:nth-child(5) {
+  animation-delay: 0.1s;
+}
+.stamp:nth-child(6) {
+  animation-delay: 0.12s;
+}
+.stamp:nth-child(7) {
+  animation-delay: 0.14s;
+}
+.stamp:nth-child(8) {
+  animation-delay: 0.16s;
+}
+.stamp:nth-child(9) {
+  animation-delay: 0.18s;
+}
+.stamp:nth-child(10) {
+  animation-delay: 0.2s;
 }
 
 .stamp:nth-child(3n) {

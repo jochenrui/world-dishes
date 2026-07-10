@@ -6,6 +6,66 @@
   align-items: stretch;
 }
 
+/* Gentle staggered fade + rise on mount. GPU-friendly (opacity/transform only).
+   fill-mode `backwards` keeps cards hidden during their delay, then RELEASES the
+   transform back to the card's own rules so the hover lift still works and nothing
+   stays stuck faded. The global prefers-reduced-motion block (theme.css) neutralizes
+   this automatically. */
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.grid > * {
+  animation: cardIn 0.25s ease-out backwards;
+  /* Cap: cards past the 12th all share this max delay so a 400-card grid can't
+     animate for seconds. */
+  animation-delay: 0.28s;
+}
+
+.grid > *:nth-child(1) {
+  animation-delay: 0s;
+}
+.grid > *:nth-child(2) {
+  animation-delay: 0.025s;
+}
+.grid > *:nth-child(3) {
+  animation-delay: 0.05s;
+}
+.grid > *:nth-child(4) {
+  animation-delay: 0.075s;
+}
+.grid > *:nth-child(5) {
+  animation-delay: 0.1s;
+}
+.grid > *:nth-child(6) {
+  animation-delay: 0.125s;
+}
+.grid > *:nth-child(7) {
+  animation-delay: 0.15s;
+}
+.grid > *:nth-child(8) {
+  animation-delay: 0.175s;
+}
+.grid > *:nth-child(9) {
+  animation-delay: 0.2s;
+}
+.grid > *:nth-child(10) {
+  animation-delay: 0.225s;
+}
+.grid > *:nth-child(11) {
+  animation-delay: 0.25s;
+}
+.grid > *:nth-child(12) {
+  animation-delay: 0.275s;
+}
+
 .empty {
   text-align: center;
   padding: 60px 20px;
