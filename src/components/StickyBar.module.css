@@ -2,10 +2,13 @@
   position: sticky;
   top: var(--header-h);
   z-index: 10;
-  /* Opaque backdrop flush under the header so scrolling cards never peek through
-     a gap or around the bar's rounded corners. */
+  /* Opaque backdrop only in the header→bar gap (top padding), so scrolling cards
+     can't peek through above the bar. NO bottom padding — a bottom cream strip
+     would read as a square box under the rounded bar as content scrolls beneath.
+     Bottom corners are rounded to the bar so no cream nicks show at the corners. */
   background: var(--c-bg);
-  padding: 12px 0;
+  padding: 12px 0 0;
+  border-radius: 0 0 var(--radius) var(--radius);
   margin-bottom: 8px;
   /* Drive the inner bar's chrome (see FilterBar .bar): a resting card when free,
      a single stronger-elevation, condensed toolbar when pinned — never a
