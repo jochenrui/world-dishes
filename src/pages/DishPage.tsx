@@ -113,7 +113,19 @@ export function DishPage() {
         <div className={styles.headInfo}>
           <div className={styles.rank}>#{dish.popularityRank} most popular worldwide</div>
           <h1 className={styles.name}>{dish.name}</h1>
-          {dish.localName && <div className={styles.localName}>{dish.localName}</div>}
+          {(dish.localName || dish.pronunciation) && (
+            <div className={styles.localName}>
+              {dish.localName}
+              {dish.pronunciation && (
+                <span className={styles.pronunciation}>
+                  {dish.localName ? ' · ' : ''}/{dish.pronunciation}/
+                </span>
+              )}
+            </div>
+          )}
+          {dish.alsoKnownAs && dish.alsoKnownAs.length > 0 && (
+            <div className={styles.alsoKnownAs}>Also known as: {dish.alsoKnownAs.join(', ')}</div>
+          )}
           {country && (
             <Link to={`/collection/${country.id}`} className={styles.origin}>
               <Flag countryId={country.id} width={22} title={country.name} decorative />
@@ -140,9 +152,29 @@ export function DishPage() {
           </div>
         )}
 
+        {dish.tasteTags && dish.tasteTags.length > 0 && (
+          <div className={styles.ingredients}>
+            <span className={styles.ingredientsLabel}>Taste</span>
+            <div className={styles.ingredientChips}>
+              {dish.tasteTags.map((tag) => (
+                <span key={tag} className={styles.tasteChip}>
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+
         <p className={styles.originNote}>
           <strong>Origin:</strong> {dish.origin}
         </p>
+
+        {dish.howEaten && (
+          <div className={styles.history}>
+            <span className={styles.historyLabel}>How it's eaten</span>
+            <p className={styles.historyText}>{dish.howEaten}</p>
+          </div>
+        )}
 
         {dish.history && (
           <div className={styles.history}>

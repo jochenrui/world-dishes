@@ -42,6 +42,28 @@ export function validateDataset(): string[] {
       }
     }
     if (d.fame < 0 || d.fame > 100) errors.push(`Dish "${d.id}" has out-of-range fame ${d.fame}.`);
+
+    // Optional array fields, when present, must be non-empty arrays of non-empty strings.
+    const stringArrayFields = ['alsoKnownAs', 'tasteTags'] as const;
+    for (const field of stringArrayFields) {
+      const value = d[field];
+      if (value === undefined) continue;
+      if (!Array.isArray(value) || value.length === 0) {
+        errors.push(`Dish "${d.id}" ${field} must be a non-empty array when present.`);
+      } else if (!value.every((s) => typeof s === 'string' && s.trim().length > 0)) {
+        errors.push(`Dish "${d.id}" ${field} must contain only non-empty strings.`);
+      }
+    }
+
+    // Optional single-string fields, when present, must be non-empty.
+    const stringFields = ['pronunciation', 'howEaten'] as const;
+    for (const field of stringFields) {
+      const value = d[field];
+      if (value === undefined) continue;
+      if (typeof value !== 'string' || value.trim().length === 0) {
+        errors.push(`Dish "${d.id}" ${field} must be a non-empty string when present.`);
+      }
+    }
   }
 
   return errors;

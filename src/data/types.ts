@@ -82,6 +82,14 @@ export interface Dish {
   keyIngredients?: string[];
   /** 1-3 sentence history / cultural significance, curated where a real story exists. */
   history?: string;
+  /** Simple phonetic hint, e.g. "pad-EYE" / "NYOK-kee". */
+  pronunciation?: string;
+  /** Alternate names / spellings the dish is also known by. */
+  alsoKnownAs?: string[];
+  /** 1-2 sentences on how/where/when it's typically eaten (context, accompaniments, occasion). */
+  howEaten?: string;
+  /** A few short free-form flavor/texture descriptors, e.g. ["savory","rich","umami"]. */
+  tasteTags?: string[];
 }
 
 /**

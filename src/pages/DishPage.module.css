@@ -41,6 +41,17 @@
   margin-bottom: 8px;
 }
 
+.pronunciation {
+  color: var(--c-text-muted);
+  font-style: italic;
+}
+
+.alsoKnownAs {
+  font-size: 13px;
+  color: var(--c-text-muted);
+  margin-bottom: 8px;
+}
+
 .origin {
   display: inline-flex;
   align-items: center;
@@ -106,6 +117,17 @@
   border: 1px solid var(--c-border);
   font-size: 13px;
   color: var(--c-text);
+}
+
+/* Colored fill with light text -> use --nav-active-bg (AA-safe in both themes). */
+.tasteChip {
+  padding: 4px 11px;
+  border-radius: 999px;
+  background: var(--nav-active-bg);
+  border: 1px solid var(--nav-active-bg);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--c-primary-ink);
 }
 
 .history {
