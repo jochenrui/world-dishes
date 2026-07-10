@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 import { useSession } from '../state/SessionContext';
 import { useRouteFocus } from '../hooks/useRouteFocus';
+import { CommandPalette, CommandPaletteButton } from './CommandPalette';
 import styles from './AppShell.module.css';
 
 const NAV = [
@@ -81,6 +82,7 @@ export function AppShell() {
             ))}
           </nav>
           <div className={styles.spacer} />
+          <CommandPaletteButton />
           {initializing ? (
             <span className={styles.userName} aria-live="polite">
               …
@@ -118,6 +120,8 @@ export function AppShell() {
           </NavLink>
         </div>
       </footer>
+
+      <CommandPalette />
     </>
   );
 }
