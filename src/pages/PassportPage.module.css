@@ -37,6 +37,20 @@
   border-bottom: 1px solid var(--c-border);
 }
 
+.statsLink {
+  margin: -18px 0 4px;
+  font-size: 13px;
+}
+
+.statsLink a {
+  color: var(--c-primary);
+  font-weight: 600;
+}
+
+.statsLink a:hover {
+  text-decoration: underline;
+}
+
 /* Your Journey timeline */
 .journey {
   display: flex;

@@ -66,6 +66,23 @@ function monthOf(iso: string): { key: string; label: string } | null {
   return { key, label: `${MONTH_NAMES[month]} ${year}` };
 }
 
+/**
+ * Collapse a long count list into the top `n` plus a single `{ key: 'other' }` bucket
+ * summing the remainder. Input order is preserved (callers pass a count-desc list); the
+ * "Other" bucket is appended last, and omitted when the remainder is 0. Fewer than `n`
+ * items (or n <= 0) pass through unchanged. Pure — safe to unit-test in isolation.
+ */
+export function topNWithOther<K extends string>(
+  buckets: CountBucket<K>[],
+  n: number,
+): CountBucket<K | 'other'>[] {
+  if (n <= 0 || buckets.length <= n) return buckets;
+  const top = buckets.slice(0, n);
+  const remainder = buckets.slice(n).reduce((sum, b) => sum + b.count, 0);
+  if (remainder === 0) return top;
+  return [...top, { key: 'other', count: remainder }];
+}
+
 /** Build a count-desc `{ key, count }` list from a Map, tie-broken by key asc. */
 function toBuckets<K extends string>(counts: Map<K, number>): CountBucket<K>[] {
   return [...counts.entries()]

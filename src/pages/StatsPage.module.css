@@ -1,0 +1,63 @@
+.lead {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--c-text-muted);
+  margin: 4px 0 20px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+  align-items: start;
+}
+
+/* Empty state (signed in, nothing tried yet) */
+.empty {
+  text-align: center;
+  padding: 44px 20px;
+  border-radius: var(--radius);
+  background: var(--c-surface-2);
+  border: 1px dashed var(--c-border);
+  color: var(--c-text-muted);
+}
+
+.emptyLead {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--c-text);
+  margin-bottom: 6px;
+}
+
+.emptyLink {
+  color: var(--c-primary);
+  font-weight: 600;
+}
+
+/* Signed-out gate — mirrors the Passport gate. */
+.gate {
+  text-align: center;
+  padding: 48px 20px;
+  border-radius: var(--radius);
+  background: var(--c-surface-2);
+  border: 1px dashed var(--c-border);
+}
+
+.gateMark {
+  color: var(--c-primary);
+  margin-bottom: 12px;
+}
+
+.gateBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: none;
+  background: var(--c-primary);
+  color: var(--c-primary-ink);
+  font-weight: 600;
+  font-size: 14px;
+}

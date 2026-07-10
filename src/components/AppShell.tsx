@@ -6,6 +6,7 @@ const NAV = [
   { to: '/', label: 'Popular', end: true },
   { to: '/collection', label: 'Collection', end: false },
   { to: '/passport', label: 'Passport', end: false },
+  { to: '/stats', label: 'Stats', end: false },
   { to: '/about', label: 'About', end: false },
 ];
 

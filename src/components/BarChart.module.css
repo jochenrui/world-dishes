@@ -1,0 +1,54 @@
+.chart {
+  margin: 0;
+  padding: 16px 16px 14px;
+  border-radius: var(--radius);
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  box-shadow: var(--shadow);
+}
+
+.title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--c-text);
+  margin-bottom: 10px;
+}
+
+.svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* Recessive baseline axis. */
+.axis {
+  stroke: var(--c-border);
+  stroke-width: 1;
+}
+
+/* Faint full-length track behind each bar — anchors the common baseline. */
+.track {
+  fill: var(--c-surface-2);
+}
+
+/* The single accent hue carries magnitude only; never used for text. */
+.bar {
+  fill: var(--c-primary);
+}
+
+.label {
+  font-size: 12px;
+  fill: var(--c-text-muted);
+}
+
+.value {
+  font-size: 12px;
+  font-weight: 700;
+  fill: var(--c-text);
+}
+
+.empty {
+  font-size: 12.5px;
+  fill: var(--c-text-muted);
+}

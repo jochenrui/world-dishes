@@ -87,6 +87,12 @@ export function PassportPage() {
           </div>
 
           {stats.totalTried > 0 && (
+            <p className={styles.statsLink}>
+              <Link to="/stats">See your stats →</Link>
+            </p>
+          )}
+
+          {stats.totalTried > 0 && (
             <>
               <h2 className={styles.sectionTitle}>Share &amp; export</h2>
               <ShareExport data={data} entries={entries} userName={user.name ?? null} />
