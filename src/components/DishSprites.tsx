@@ -49,13 +49,13 @@ export function DishSpriteSheet() {
         <circle cx="22.8" cy="19.1" r="1.05" fill="currentColor" />
       </symbol>
 
-      {/* GRILLED — diagonal skewer threaded with 3 chunks (cube + rounds) over grill/flame ticks */}
+      {/* GRILLED — horizontal skewer threaded with 3 chunks (kebab) over grill flame ticks */}
       <symbol id="dish-grilled" viewBox="0 0 32 32">
-        <path d="M7 25L25 8" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-        <circle cx="12.4" cy="19.9" r="2.9" fill="currentColor" fillOpacity="0.16" stroke="currentColor" strokeWidth="2" />
-        <rect x="13.6" y="13.4" width="5.6" height="5.6" rx="1.4" transform="rotate(-43 16.4 16.2)" fill="currentColor" fillOpacity="0.16" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
-        <circle cx="20" cy="12.8" r="2.9" fill="currentColor" fillOpacity="0.16" stroke="currentColor" strokeWidth="2" />
-        <path d="M10 27.5v-2.5M14.5 28v-2.5M19 27.5v-2.5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+        <path d="M3.5 14.5h25" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+        <rect x="6.4" y="11.5" width="5.6" height="6" rx="1.6" fill="currentColor" fillOpacity="0.16" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+        <rect x="13.2" y="11.5" width="5.6" height="6" rx="1.6" fill="currentColor" fillOpacity="0.16" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+        <rect x="20" y="11.5" width="5.6" height="6" rx="1.6" fill="currentColor" fillOpacity="0.16" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+        <path d="M9 27v-3M16 27.5v-3M23 27v-3" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
       </symbol>
 
       {/* DUMPLING — pleated half-moon gyoza: plump crescent with a scalloped pinch-pleat seam on top */}

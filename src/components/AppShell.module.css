@@ -24,7 +24,15 @@
 }
 
 .brandMark {
-  font-size: 22px;
+  display: inline-flex;
+  align-items: center;
+  color: var(--c-primary);
+}
+
+.brandMark svg {
+  width: 22px;
+  height: 22px;
+  display: block;
 }
 
 .nav {

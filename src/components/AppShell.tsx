@@ -37,7 +37,12 @@ export function AppShell() {
         <div className={`container ${styles.headerInner}`}>
           <span className={styles.brand}>
             <span className={styles.brandMark} aria-hidden="true">
-              🌍
+              <svg viewBox="0 0 24 24" focusable="false">
+                <circle cx="12" cy="12" r="9.3" fill="currentColor" fillOpacity="0.14" stroke="currentColor" strokeWidth="1.8" />
+                <path d="M2.9 12h18.2" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+                <ellipse cx="12" cy="12" rx="4.1" ry="9.3" fill="none" stroke="currentColor" strokeWidth="1.8" />
+                <path d="M4.4 7.6c4.6 2 10.6 2 15.2 0M4.4 16.4c4.6-2 10.6-2 15.2 0" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+              </svg>
             </span>
             World Dishes
           </span>
