@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { Allergen, Category, DietBase } from '../data/types';
-import { allergenLabels, categoryLabels, dietLabels, spiceLabels } from '../data/labels';
+import { allergenGlyph, allergenLabels, categoryLabels, dietLabels, spiceLabels } from '../data/labels';
 import {
   type DishFilters,
   type SortKey,
@@ -46,6 +46,16 @@ export function FilterBar({
   const [showMore, setShowMore] = useState(false);
   const set = (patch: Partial<DishFilters>) => onChange({ ...filters, ...patch });
 
+  // How many of the advanced (collapsible) filters are active — categories plus
+  // each "avoid" toggle. Surfaced as a badge so active filters aren't invisible
+  // once the section is collapsed.
+  const advancedCount =
+    filters.categories.length +
+    (filters.avoidPork ? 1 : 0) +
+    (filters.avoidBeef ? 1 : 0) +
+    (filters.avoidAlcohol ? 1 : 0) +
+    filters.avoidAllergens.length;
+
   return (
     <div className={styles.bar}>
       <div className={styles.searchRow}>
@@ -81,7 +91,7 @@ export function FilterBar({
         <div className={styles.group}>
           <span className={styles.label}>Max spice</span>
           <input
-            className={styles.range}
+            className={`${styles.range} ${filters.maxSpice < 3 ? '' : styles.rangeOff}`}
             type="range"
             min={0}
             max={3}
@@ -131,6 +141,11 @@ export function FilterBar({
         <span className={styles.count}>{resultCount} dishes</span>
         <button type="button" className={styles.detailsToggle} onClick={() => setShowMore((v) => !v)}>
           {showMore ? 'Fewer filters' : 'More filters'}
+          {!showMore && advancedCount > 0 && (
+            <span className={styles.detailsBadge} aria-label={`${advancedCount} active`}>
+              {advancedCount}
+            </span>
+          )}
         </button>
         {isFilterActive(filters) && (
           <button
@@ -196,7 +211,7 @@ export function FilterBar({
                   aria-pressed={filters.avoidAllergens.includes(a)}
                   onClick={() => set({ avoidAllergens: toggleInArray(filters.avoidAllergens, a) })}
                 >
-                  {allergenLabels[a]}
+                  <span aria-hidden="true">{allergenGlyph[a]}</span> {allergenLabels[a]}
                 </button>
               ))}
             </div>

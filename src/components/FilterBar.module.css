@@ -116,6 +116,13 @@
   accent-color: var(--c-primary);
 }
 
+/* At the default "Any" (maxSpice === 3, no limit) the slider reads as neutral,
+   not an engaged filter — the terracotta accent only appears once a real
+   limit is set (maxSpice < 3). */
+.rangeOff {
+  accent-color: var(--c-text-muted);
+}
+
 .spacer {
   flex: 1 1 auto;
 }
@@ -136,12 +143,32 @@
 }
 
 .detailsToggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   background: none;
   border: none;
   color: var(--c-primary);
   font-weight: 600;
   font-size: 13px;
   padding: 2px 0;
+}
+
+/* Terracotta pill flagging how many advanced filters are active while the
+   "More filters" section is collapsed. */
+.detailsBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--c-primary);
+  color: var(--c-primary-ink);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
 }
 
 .count {
