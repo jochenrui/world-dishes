@@ -22,7 +22,7 @@ function CountryCard({ country }: { country: Country }) {
   return (
     <Link to={`/collection/${country.id}`} className={styles.card}>
       <span className={styles.flag}>
-        <Flag countryId={country.id} width={34} title={country.name} />
+        <Flag countryId={country.id} width={34} title={country.name} decorative />
       </span>
       <div className={styles.info}>
         <div className={styles.name}>{country.name}</div>
@@ -59,7 +59,8 @@ export function CollectionPage() {
 
       {!user && (
         <div className={styles.signInBanner}>
-          👋 Sign in with Google (mock) to start checking off dishes and saving notes. You can
+          <span aria-hidden="true">👋</span> Sign in with Google (mock) to start checking off dishes
+          and saving notes. You can
           still browse everything without signing in.
         </div>
       )}

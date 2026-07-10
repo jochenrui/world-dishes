@@ -1,4 +1,4 @@
-import type { ComponentType, CSSProperties } from 'react';
+import type { AriaAttributes, ComponentType, CSSProperties } from 'react';
 import {
   JP, CN, IN, TH, VN, KR, ID, MY, TR, LB, IR,
   IT, FR, ES, GR, DE, GB, PT, PL, RU,
@@ -9,7 +9,9 @@ import {
 } from 'country-flag-icons/react/3x2';
 import styles from './Flag.module.css';
 
-type FlagComponent = ComponentType<{ className?: string; style?: CSSProperties; title?: string }>;
+type FlagComponent = ComponentType<
+  { className?: string; style?: CSSProperties; title?: string; role?: string } & AriaAttributes
+>;
 
 // Explicit map (not a namespace import) so only the 35 flags we use are bundled.
 const FLAG_BY_ID: Record<string, FlagComponent> = {
@@ -26,14 +28,32 @@ interface Props {
   /** Rendered width in px; height follows the 3:2 aspect ratio. */
   width?: number;
   title?: string;
+  /**
+   * When the country name is already shown as adjacent visible text, the flag is
+   * purely decorative — set this so it's hidden from assistive tech (avoids the
+   * country being announced twice). Leave false where the flag is the only
+   * country indicator, so it keeps an accessible name.
+   */
+  decorative?: boolean;
 }
 
 /**
  * Real SVG country flag (self-hosted, inline). Replaces emoji flags, which render
  * as bare ISO letters on Windows/Chrome. Falls back to nothing if a code is unknown.
  */
-export function Flag({ countryId, width = 22, title }: Props) {
+export function Flag({ countryId, width = 22, title, decorative = false }: Props) {
   const F = FLAG_BY_ID[countryId];
   if (!F) return null;
-  return <F className={styles.flag} style={{ width }} title={title} />;
+  if (decorative) {
+    return <F className={styles.flag} style={{ width }} aria-hidden="true" />;
+  }
+  return (
+    <F
+      className={styles.flag}
+      style={{ width }}
+      title={title}
+      role="img"
+      aria-label={title}
+    />
+  );
 }

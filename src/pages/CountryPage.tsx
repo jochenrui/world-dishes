@@ -94,7 +94,7 @@ export function CountryPage() {
 
       <div className={styles.detailHead}>
         <span className={styles.detailFlag}>
-          <Flag countryId={country.id} width={46} title={country.name} />
+          <Flag countryId={country.id} width={46} title={country.name} decorative />
         </span>
         <div style={{ flex: 1 }}>
           <h1 className={styles.detailTitle}>{country.name}</h1>

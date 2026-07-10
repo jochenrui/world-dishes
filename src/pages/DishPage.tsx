@@ -116,7 +116,7 @@ export function DishPage() {
           {dish.localName && <div className={styles.localName}>{dish.localName}</div>}
           {country && (
             <Link to={`/collection/${country.id}`} className={styles.origin}>
-              <Flag countryId={country.id} width={22} title={country.name} />
+              <Flag countryId={country.id} width={22} title={country.name} decorative />
               {country.name}
               {region && ` · ${region.name}`}
             </Link>

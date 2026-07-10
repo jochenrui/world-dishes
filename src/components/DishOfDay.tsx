@@ -24,11 +24,13 @@ export function DishOfDay() {
         <DishSprite category={dish.category} size={34} />
       </div>
       <div className={styles.text}>
-        <div className={styles.eyebrow}>🍽️ Dish of the day</div>
+        <div className={styles.eyebrow}>
+          <span aria-hidden="true">🍽️</span> Dish of the day
+        </div>
         <div className={styles.name}>{dish.name}</div>
         {country && (
           <div className={styles.origin}>
-            <Flag countryId={country.id} width={16} title={country.name} />
+            <Flag countryId={country.id} width={16} title={country.name} decorative />
             {country.name}
           </div>
         )}

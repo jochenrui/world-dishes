@@ -1,5 +1,7 @@
+import { useRef } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 import { useSession } from '../state/SessionContext';
+import { useRouteFocus } from '../hooks/useRouteFocus';
 import styles from './AppShell.module.css';
 
 const NAV = [
@@ -23,9 +25,14 @@ function GoogleG() {
 
 export function AppShell() {
   const { user, mode, initializing, signIn, signOut } = useSession();
+  const mainRef = useRef<HTMLElement>(null);
+  useRouteFocus(mainRef);
 
   return (
     <>
+      <a className="skip-link" href="#main-content">
+        Skip to main content
+      </a>
       <header className={styles.header}>
         <div className={`container ${styles.headerInner}`}>
           <span className={styles.brand}>
@@ -72,7 +79,7 @@ export function AppShell() {
         </div>
       </header>
 
-      <main className={styles.main}>
+      <main className={styles.main} id="main-content" tabIndex={-1} ref={mainRef}>
         <div className="container">
           <Outlet />
         </div>

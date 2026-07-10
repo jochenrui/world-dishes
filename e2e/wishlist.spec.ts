@@ -31,10 +31,14 @@ test('wishlist: add on detail, appears in filter, mark-tried consumes it', async
   await page.goto('/');
   await page.screenshot({ path: `${SHOTS}/popular-signedin.png` });
 
-  // Grab a real dish id from the grid.
-  const firstDish = page.locator('a[href*="/dish/"]').first();
-  const href = await firstDish.getAttribute('href');
-  const dishId = href!.match(/\/dish\/([^/?#]+)/)![1];
+  // Grab a real dish id from the grid — NOT the "Dish of the day" banner (which is
+  // the first /dish/ link on the page and would duplicate its href in later locators).
+  const hrefs = await page
+    .locator('a[href*="/dish/"]')
+    .evaluateAll((as) => as.map((a) => a.getAttribute('href') || ''));
+  const bannerHref = hrefs[0];
+  const gridHref = hrefs.find((h) => h && h !== bannerHref)!;
+  const dishId = gridHref.match(/\/dish\/([^/?#]+)/)![1];
 
   // Detail page → add to wishlist.
   await page.goto(`/dish/${dishId}`);

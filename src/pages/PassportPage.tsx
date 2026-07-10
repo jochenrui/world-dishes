@@ -181,7 +181,7 @@ export function PassportPage() {
                     to={`/collection/${s.countryId}`}
                     className={`${styles.stamp} ${s.complete ? styles.stampComplete : ''}`}
                   >
-                    <Flag countryId={s.flagId} width={40} title={s.name} />
+                    <Flag countryId={s.flagId} width={40} title={s.name} decorative />
                     <span className={styles.stampName}>{s.name}</span>
                     <span className={styles.stampCount}>
                       {s.tried}/{s.total} tried

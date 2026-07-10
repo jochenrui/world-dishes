@@ -71,7 +71,7 @@ export function DishCard({ dish, showRank = false, showCountry = true }: Props) 
           {dish.localName && <div className={styles.localName}>{dish.localName}</div>}
           {showCountry && country && (
             <div className={styles.origin}>
-              <Flag countryId={country.id} width={18} title={country.name} />
+              <Flag countryId={country.id} width={18} title={country.name} decorative />
               {country.name}
               {region && ` · ${region.name}`}
             </div>

@@ -18,8 +18,10 @@ export function CountryProgressRing({ tried, total, size = 46 }: Props) {
       height={size}
       viewBox={`0 0 ${size} ${size}`}
       role="img"
-      aria-label={`${tried} of ${total} tried`}
+      aria-label={`${tried} of ${total} dishes tried`}
+      focusable="false"
     >
+      <g aria-hidden="true">
       <circle
         cx={size / 2}
         cy={size / 2}
@@ -52,6 +54,7 @@ export function CountryProgressRing({ tried, total, size = 46 }: Props) {
       >
         {complete ? '✓' : `${tried}/${total}`}
       </text>
+      </g>
     </svg>
   );
 }
