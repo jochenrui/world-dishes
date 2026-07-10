@@ -4,6 +4,7 @@ import { dishes } from '../data/dishes';
 import type { Category } from '../data/types';
 import type { DishFilters } from '../lib/filters';
 import { DishGrid } from '../components/DishGrid';
+import { DishOfDay } from '../components/DishOfDay';
 import { FilterBar } from '../components/FilterBar';
 import { StickyBar } from '../components/StickyBar';
 import { applyFilters, filterByTried } from '../lib/filters';
@@ -56,6 +57,8 @@ export function PopularPage() {
           </div>
         )}
       </div>
+
+      <DishOfDay />
 
       <StickyBar>
         <FilterBar

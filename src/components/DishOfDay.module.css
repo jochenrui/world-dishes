@@ -1,0 +1,75 @@
+/* Feature strip: lighter than the grid cards (cream fill, no drop shadow) so it
+   reads as a highlight banner, not a result. Terracotta accent on the left. */
+.banner {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  margin: 18px 0 20px;
+  padding: 14px 16px;
+  border-radius: var(--radius);
+  background: var(--c-surface-2);
+  border: 1px solid var(--c-border);
+  border-left: 4px solid var(--c-primary);
+  color: var(--c-text);
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.banner:hover {
+  border-color: var(--c-primary);
+  border-left-color: var(--c-primary);
+  background: var(--c-surface-2);
+}
+
+.sprite {
+  flex: 0 0 auto;
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: var(--c-surface);
+  color: var(--c-primary);
+}
+
+.text {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.eyebrow {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--c-primary);
+  margin-bottom: 2px;
+}
+
+.name {
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.banner:hover .name {
+  text-decoration: underline;
+}
+
+.origin {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12.5px;
+  color: var(--c-text-muted);
+  margin-top: 2px;
+}
+
+.desc {
+  font-size: 13px;
+  color: var(--c-text-muted);
+  margin-top: 5px;
+  /* One-line clamp so the strip stays compact. */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
