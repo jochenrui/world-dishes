@@ -57,7 +57,7 @@ test('wishlist: add on detail, appears in filter, mark-tried consumes it', async
   await page.goto('/');
   await page.getByRole('button', { name: 'Want to try' }).first().click();
   await expect(page.locator(`a[href*="/dish/${dishId}"]`)).toBeVisible();
-  await expect(page.getByText('1 dishes')).toBeVisible();
+  await expect(page.getByText('1 dishes', { exact: true })).toBeVisible();
   await page.screenshot({ path: `${SHOTS}/popular-wishlist.png` });
 
   // Mark tried on the detail page (main panel button = first "Mark as tried").
