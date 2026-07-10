@@ -1,0 +1,5 @@
+# Supabase CLI config. Only `project_id` (a local label) is needed for the
+# `supabase link` + `supabase db push` flow used by CI to apply migrations.
+# The remote project is selected at link time via --project-ref, not from here.
+# Local-dev sections (`supabase start`) are intentionally omitted.
+project_id = "world-dishes"

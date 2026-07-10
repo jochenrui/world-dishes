@@ -11,7 +11,7 @@ cd world-dishes && npm install && npm run dev        # http://localhost:5173
 npm run build   # tsc -b + vite build      npm run test   # vitest (34 tests)
 ```
 - Runs fully in **mock mode** with no config (mock login, localStorage). For real Google login + DB + community stats, create `.env.local` with `VITE_SUPABASE_URL` / `VITE_SUPABASE_ANON_KEY` — see `docs/SETUP-SUPABASE.md`. `.env.local` is gitignored, so it does NOT sync between machines; recreate it (values are also stored as repo Actions Variables for CI).
-- Supabase migrations live in `supabase/migrations/` (`0001` progress table + RLS, `0002` dish_stats view). Run them in the Supabase SQL editor.
+- Supabase migrations live in `supabase/migrations/` (`0001` progress table + RLS, `0002` dish_stats view). Apply by hand in the Supabase SQL editor, or auto-apply via the `Deploy Supabase migrations` GitHub Action (`supabase db push` on changes under `supabase/migrations/**`; needs `SUPABASE_ACCESS_TOKEN` + `SUPABASE_DB_PASSWORD` secrets — see `docs/SETUP-SUPABASE.md` §8). Migrations are idempotent, so both paths are safe.
 
 ## What's built
 - **Pages:** Popular (search + filters), Collection (countries by continent, progress rings), Country detail (region drill-down), Dish detail (`/dish/:id`), Culinary Passport (stamps + achievements), About.

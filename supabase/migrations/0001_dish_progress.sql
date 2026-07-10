@@ -17,17 +17,23 @@ alter table public.dish_progress enable row level security;
 
 -- Each user can only see and modify their own rows. Unauthenticated (anon)
 -- requests have auth.uid() = null and therefore match nothing.
+-- (drop-then-create so this migration is idempotent / safe to re-apply.)
+drop policy if exists "select own" on public.dish_progress;
 create policy "select own" on public.dish_progress
   for select using (auth.uid() = user_id);
+drop policy if exists "insert own" on public.dish_progress;
 create policy "insert own" on public.dish_progress
   for insert with check (auth.uid() = user_id);
+drop policy if exists "update own" on public.dish_progress;
 create policy "update own" on public.dish_progress
   for update using (auth.uid() = user_id) with check (auth.uid() = user_id);
+drop policy if exists "delete own" on public.dish_progress;
 create policy "delete own" on public.dish_progress
   for delete using (auth.uid() = user_id);
 
 -- Keep updated_at fresh on UPDATE (audit column; not used for conflict resolution in v1).
 create extension if not exists moddatetime schema extensions;
+drop trigger if exists dish_progress_moddatetime on public.dish_progress;
 create trigger dish_progress_moddatetime
   before update on public.dish_progress
   for each row execute procedure extensions.moddatetime(updated_at);

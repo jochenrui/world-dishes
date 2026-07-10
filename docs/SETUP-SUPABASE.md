@@ -22,6 +22,8 @@ you deploy elsewhere. Note the **trailing slash** — it matters for the OAuth a
 3. Run [`supabase/migrations/0002_dish_stats.sql`](../supabase/migrations/0002_dish_stats.sql) — the aggregate `dish_stats` view that powers the "X tried · ★ rating" community stats on each dish page. (Until you run it, dish pages just omit the stats line — nothing breaks.)
 4. Confirm under **Table Editor** that `dish_progress` exists and shows the shield icon (RLS enabled).
 
+> **Or apply them automatically via CI** — see [§8](#8-optional-auto-apply-migrations-from-ci). Even if you enable that, running these two once by hand now is fine: the migrations are idempotent, so CI re-applying them is a safe no-op.
+
 ## 3. Create a Google OAuth client
 1. Go to <https://console.cloud.google.com/apis/credentials> (create/select a project).
 2. **Create Credentials → OAuth client ID → Web application**.
@@ -60,6 +62,35 @@ public-safe), so the GitHub Actions build includes them:
 - GitHub repo → **Settings → Secrets and variables → Actions → Variables → New repository variable**
 - Add `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`.
 - Re-run the deploy workflow (or push) to rebuild with them.
+
+---
+
+## 8. (Optional) Auto-apply migrations from CI
+The [`Deploy Supabase migrations`](../.github/workflows/deploy-migrations.yml) workflow runs
+`supabase db push` whenever a file under `supabase/migrations/**` changes on `main` (or when you
+trigger it manually from the Actions tab). This keeps the database schema in lockstep with the
+repo — no more pasting SQL by hand.
+
+**One-time setup** — add these under **Settings → Secrets and variables → Actions → _Secrets_**
+(these are genuinely sensitive, unlike the anon key/URL, which stay as _Variables_):
+
+| Secret | Where to get it |
+| --- | --- |
+| `SUPABASE_ACCESS_TOKEN` | Supabase dashboard → **Account → Access Tokens** → generate one. |
+| `SUPABASE_DB_PASSWORD` | The database password (**Settings → Database**; reset it there if unknown). |
+
+The workflow derives the project ref from the existing `VITE_SUPABASE_URL` **Variable**, so
+there's nothing else to add. On the first run it applies `0001` + `0002`; because both are
+idempotent it's safe even though you already ran them by hand — and afterwards the CLI records
+them in `supabase_migrations.schema_migrations` and skips already-applied ones.
+
+**Notes**
+- Migrations are **immutable history** once this is on: to change the schema, add a new
+  `000N_*.sql` file rather than editing an applied one.
+- Write new migrations to be idempotent (`create table if not exists`, `create or replace view`,
+  `drop policy if exists` before `create policy`, etc.) so a re-run can never half-fail.
+- This workflow is independent of the site deploy — a bad migration won't block a Pages deploy,
+  and vice versa.
 
 ---
 
