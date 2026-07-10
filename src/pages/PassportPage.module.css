@@ -37,6 +37,67 @@
   border-bottom: 1px solid var(--c-border);
 }
 
+/* Your Journey timeline */
+.journey {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.journeyMonth {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.journeyHeading {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--c-text);
+  margin: 0;
+}
+
+.journeyCount {
+  font-weight: 500;
+  color: var(--c-text-muted);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 11px 5px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--c-border);
+  background: var(--c-surface);
+  color: var(--c-text);
+  font-size: 13px;
+  line-height: 1;
+  text-decoration: none;
+  transition: border-color 0.12s ease, transform 0.12s ease;
+}
+
+.chip:hover {
+  border-color: var(--c-primary);
+  transform: translateY(-1px);
+}
+
+.chipSprite {
+  flex: 0 0 auto;
+  display: inline-flex;
+  color: var(--c-primary);
+}
+
+.chipName {
+  font-weight: 600;
+}
+
 /* Achievements */
 .achievements {
   display: grid;

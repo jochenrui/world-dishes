@@ -1,16 +1,34 @@
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { computePassport } from '../lib/passport';
+import { deriveStats } from '../lib/deriveStats';
+import type { Dish } from '../data/types';
+import { getCountry } from '../data/countries';
+import { DishSprite } from '../components/DishSprites';
 import { Flag } from '../components/Flag';
 import { useProgress } from '../state/ProgressContext';
 import { useSession } from '../state/SessionContext';
 import pageStyles from './pages.module.css';
 import styles from './PassportPage.module.css';
 
+function JourneyChip({ dish }: { dish: Dish }) {
+  const country = getCountry(dish.countryId);
+  return (
+    <Link to={`/dish/${dish.id}`} className={styles.chip}>
+      <span className={styles.chipSprite} aria-hidden="true">
+        <DishSprite category={dish.category} size={22} />
+      </span>
+      <span className={styles.chipName}>{dish.name}</span>
+      {country && <Flag countryId={country.id} width={18} title={country.name} />}
+    </Link>
+  );
+}
+
 export function PassportPage() {
   const { user, signIn } = useSession();
   const { entries } = useProgress();
   const data = useMemo(() => computePassport(entries), [entries]);
+  const stats = useMemo(() => deriveStats(entries), [entries]);
 
   const earned = data.achievements.filter((a) => a.earned).length;
 
@@ -66,6 +84,39 @@ export function PassportPage() {
               <div className={styles.statSub}>achievements earned</div>
             </div>
           </div>
+
+          {stats.totalTried > 0 && (
+            <>
+              <h2 className={styles.sectionTitle}>Your Journey</h2>
+              <div className={styles.journey}>
+                {stats.timeline.map((month) => (
+                  <div key={month.key} className={styles.journeyMonth}>
+                    <h3 className={styles.journeyHeading}>
+                      {month.label} <span className={styles.journeyCount}>· {month.dishes.length} {month.dishes.length === 1 ? 'dish' : 'dishes'}</span>
+                    </h3>
+                    <div className={styles.chips}>
+                      {month.dishes.map(({ dish }) => (
+                        <JourneyChip key={dish.id} dish={dish} />
+                      ))}
+                    </div>
+                  </div>
+                ))}
+                {stats.undated.length > 0 && (
+                  <div className={styles.journeyMonth}>
+                    <h3 className={styles.journeyHeading}>
+                      Earlier / undated{' '}
+                      <span className={styles.journeyCount}>· {stats.undated.length} {stats.undated.length === 1 ? 'dish' : 'dishes'}</span>
+                    </h3>
+                    <div className={styles.chips}>
+                      {stats.undated.map((dish) => (
+                        <JourneyChip key={dish.id} dish={dish} />
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </>
+          )}
 
           <h2 className={styles.sectionTitle}>Achievements</h2>
           <div className={styles.achievements}>

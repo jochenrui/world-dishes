@@ -1,5 +1,6 @@
 /// <reference types="vitest" />
 import { defineConfig } from 'vite';
+import { configDefaults } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 
 // Served from https://<user>.github.io/world-dishes/ in production; root in dev.
@@ -11,6 +12,9 @@ export default defineConfig(({ mode }) => ({
     environment: 'jsdom',
     setupFiles: './tests/setup.ts',
     css: false,
+    // Playwright specs under e2e/ are run by Playwright, not Vitest; excluding them
+    // keeps the two runners from colliding (Vitest can't collect a Playwright spec).
+    exclude: [...configDefaults.exclude, 'e2e/**'],
     // Force mock auth in tests regardless of a local .env.local, so the suite is
     // deterministic and never hits real Supabase/OAuth (which can't run in jsdom).
     env: {
