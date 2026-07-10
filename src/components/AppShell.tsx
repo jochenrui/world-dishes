@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 import { useSession } from '../state/SessionContext';
 import { useRouteFocus } from '../hooks/useRouteFocus';
@@ -26,14 +26,34 @@ function GoogleG() {
 export function AppShell() {
   const { user, mode, initializing, signIn, signOut } = useSession();
   const mainRef = useRef<HTMLElement>(null);
+  const headerRef = useRef<HTMLElement>(null);
   useRouteFocus(mainRef);
+
+  // Publish the header's measured height to --header-h so everything anchored to
+  // it (the sticky filter bar's `top`, scroll-padding-top) tracks the real header
+  // instead of hand-tuned magic numbers. A ResizeObserver keeps it in sync when the
+  // header reflows (viewport resize, nav wrapping to a taller row, font changes).
+  useEffect(() => {
+    const header = headerRef.current;
+    if (!header) return;
+    const root = document.documentElement;
+    const publish = () => {
+      const h = header.getBoundingClientRect().height;
+      // Guard against a transient 0 (never overwrite the CSS fallback with 0px).
+      if (h > 0) root.style.setProperty('--header-h', `${h}px`);
+    };
+    publish();
+    const ro = new ResizeObserver(publish);
+    ro.observe(header);
+    return () => ro.disconnect();
+  }, []);
 
   return (
     <>
       <a className="skip-link" href="#main-content">
         Skip to main content
       </a>
-      <header className={styles.header}>
+      <header ref={headerRef} className={styles.header}>
         <div className={`container ${styles.headerInner}`}>
           <span className={styles.brand}>
             <span className={styles.brandMark} aria-hidden="true">

@@ -1,3 +1,12 @@
+/* Zero-height, zero-margin marker in normal flow just above the sticky bar; it
+   tracks where the bar's top edge sits so an IntersectionObserver can detect the
+   stick point. Must not affect layout or paint anything. */
+.sentinel {
+  height: 0;
+  margin: 0;
+  visibility: hidden;
+}
+
 .sticky {
   position: sticky;
   top: var(--header-h);

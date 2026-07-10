@@ -26,7 +26,9 @@
   --diet-meat-ink: #9e3327;
   --spice: #c23d29;
 
-  --header-h: 62px; /* 1px under the real header so the sticky bar tucks beneath it (no sliver) */
+  /* First-paint fallback only: AppShell overwrites this at runtime with the header's
+     measured height (ResizeObserver), so it stays correct if the header reflows. */
+  --header-h: 62px;
   --radius: 14px;
   --radius-sm: 8px;
   --shadow: 0 1px 3px rgba(44, 38, 32, 0.08), 0 8px 24px rgba(44, 38, 32, 0.06);
@@ -176,13 +178,9 @@ textarea:focus-visible,
   outline: none;
 }
 
-/* The header wraps to a taller two-row layout on small screens; keep the sticky
-   filter bar (top: var(--header-h)) from hiding behind it. */
-@media (max-width: 620px) {
-  :root {
-    --header-h: 118px; /* 1px under the taller wrapped mobile header */
-  }
-}
+/* The header wraps to a taller two-row layout on small screens; the runtime
+   ResizeObserver in AppShell measures that taller header and updates --header-h,
+   so no hardcoded mobile override is needed here. */
 
 @media (prefers-reduced-motion: reduce) {
   *,
