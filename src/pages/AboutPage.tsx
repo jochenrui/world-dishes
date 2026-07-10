@@ -35,7 +35,7 @@ export function AboutPage() {
   const regionalCountries = countries.filter((c) => c.hasRegions).length;
 
   return (
-    <>
+    <div className={styles.page}>
       <div className={pageStyles.hero}>
         <h1 className={pageStyles.title}>About the Data</h1>
         <p className={pageStyles.subtitle}>
@@ -177,6 +177,6 @@ export function AboutPage() {
           anonymous “tried” counts and average ratings are ever shared — never anything personal.
         </p>
       </div>
-    </>
+    </div>
   );
 }

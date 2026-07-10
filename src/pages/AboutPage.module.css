@@ -1,3 +1,11 @@
+/* Centered article column: keeps the About page from collapsing into a narrow
+   left strip inside the wide shared .container. The hero, stats and prose all
+   share this comfortable, balanced measure instead of leaving the right side empty. */
+.page {
+  max-width: 880px;
+  margin-inline: auto;
+}
+
 .stats {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -27,8 +35,14 @@
 }
 
 .prose {
-  max-width: 68ch;
   font-size: 15px;
+}
+
+/* Running text keeps a readable measure; the data blocks (stats, bars, legend
+   grids) below are free to use the fuller width of the article column. */
+.prose p,
+.prose > h2 {
+  max-width: 68ch;
 }
 
 .prose h2 {
