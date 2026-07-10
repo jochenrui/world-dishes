@@ -206,6 +206,25 @@
   color: var(--c-accent-ink);
 }
 
+.findRow {
+  margin-top: 16px;
+}
+
+.findLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--c-text-muted);
+  transition: color 0.12s ease;
+}
+
+.findLink:hover {
+  color: var(--c-primary);
+  text-decoration: underline;
+}
+
 .signInHint {
   font-size: 13px;
   color: var(--c-text-muted);

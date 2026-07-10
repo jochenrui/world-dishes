@@ -5,6 +5,7 @@ import {
   overlayPending,
   rowToEntry,
   rowsToEntries,
+  toDishStats,
 } from '../src/data/progressRepo';
 import type { ProgressEntry } from '../src/data/types';
 
@@ -65,6 +66,32 @@ describe('progressRepo mapping', () => {
     ]);
     expect(Object.keys(entries)).toEqual(['a', 'b']);
     expect(entries.b).toEqual({ tried: true, note: 'x', rating: 3 });
+  });
+});
+
+describe('toDishStats (community stats mapping)', () => {
+  it('maps a full row incl. wishlist_count', () => {
+    expect(
+      toDishStats({ tried_count: 12, rating_count: 8, avg_rating: 4.2, wishlist_count: 5 }),
+    ).toEqual({ triedCount: 12, ratingCount: 8, avgRating: 4.2, wishlistCount: 5 });
+  });
+
+  it('coerces a string avg_rating (numeric from the view) to a number', () => {
+    expect(
+      toDishStats({ tried_count: 3, rating_count: 2, avg_rating: '3.5', wishlist_count: 1 }),
+    ).toEqual({ triedCount: 3, ratingCount: 2, avgRating: 3.5, wishlistCount: 1 });
+  });
+
+  it('maps null counts to 0 and null avg_rating to null', () => {
+    expect(
+      toDishStats({ tried_count: null, rating_count: null, avg_rating: null, wishlist_count: null }),
+    ).toEqual({ triedCount: 0, ratingCount: 0, avgRating: null, wishlistCount: 0 });
+  });
+
+  it('handles a wishlist-only dish (no tries/ratings yet)', () => {
+    expect(
+      toDishStats({ tried_count: 0, rating_count: 0, avg_rating: null, wishlist_count: 7 }),
+    ).toEqual({ triedCount: 0, ratingCount: 0, avgRating: null, wishlistCount: 7 });
   });
 });
 

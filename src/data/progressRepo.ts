@@ -113,6 +113,25 @@ export interface DishStats {
   triedCount: number;
   ratingCount: number;
   avgRating: number | null;
+  wishlistCount: number;
+}
+
+/** Raw `dish_stats` view row (all columns nullable from the aggregate). */
+export interface DishStatsRow {
+  tried_count: number | null;
+  rating_count: number | null;
+  avg_rating: number | string | null;
+  wishlist_count: number | null;
+}
+
+/** Pure row→DishStats mapping (unit-tested, no network). Nulls → 0 / null avg. */
+export function toDishStats(row: DishStatsRow): DishStats {
+  return {
+    triedCount: row.tried_count ?? 0,
+    ratingCount: row.rating_count ?? 0,
+    avgRating: row.avg_rating != null ? Number(row.avg_rating) : null,
+    wishlistCount: row.wishlist_count ?? 0,
+  };
 }
 
 /** Aggregate community stats for one dish (null if unavailable / none yet). */
@@ -122,15 +141,11 @@ export async function fetchDishStats(
 ): Promise<DishStats | null> {
   const { data, error } = await client
     .from('dish_stats')
-    .select('tried_count, rating_count, avg_rating')
+    .select('tried_count, rating_count, avg_rating, wishlist_count')
     .eq('dish_id', dishId)
     .maybeSingle();
   if (error || !data) return null;
-  return {
-    triedCount: data.tried_count ?? 0,
-    ratingCount: data.rating_count ?? 0,
-    avgRating: data.avg_rating != null ? Number(data.avg_rating) : null,
-  };
+  return toDishStats(data as DishStatsRow);
 }
 
 /** Bulk insert-if-absent for migration — never clobbers an existing server row. */

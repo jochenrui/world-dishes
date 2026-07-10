@@ -167,6 +167,7 @@ export function DishPage() {
                 <span className={styles.statsMuted}> ({stats.ratingCount})</span>
               </span>
             )}
+            {stats.wishlistCount > 0 && <span>🔖 {stats.wishlistCount} want to try</span>}
           </div>
         )}
 
@@ -193,6 +194,22 @@ export function DishPage() {
         )}
 
         {user && tried && <NoteEditor dishId={dish.id} />}
+
+        <div className={styles.findRow}>
+          <a
+            className={styles.findLink}
+            href={`https://www.google.com/search?q=${encodeURIComponent(
+              `${dish.name}${country ? ` ${country.name}` : ''} restaurant near me`,
+            )}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`Find ${dish.name} at a restaurant near you (opens a web search in a new tab)`}
+          >
+            <span aria-hidden="true">📍</span>
+            Find {dish.name} near you
+            <span aria-hidden="true"> ↗</span>
+          </a>
+        </div>
       </div>
 
       {related.length > 0 && country && (
