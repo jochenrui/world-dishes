@@ -1,8 +1,21 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import { loadProgress, saveProgress, PROGRESS_VERSION } from '../src/state/storage';
+import {
+  isWelcomed,
+  loadProgress,
+  saveProgress,
+  setWelcomed,
+  PROGRESS_VERSION,
+} from '../src/state/storage';
 
 describe('storage', () => {
   beforeEach(() => localStorage.clear());
+
+  it('tracks the first-run welcome flag', () => {
+    expect(isWelcomed()).toBe(false);
+    setWelcomed();
+    expect(isWelcomed()).toBe(true);
+    expect(localStorage.getItem('world-dishes:welcomed')).toBe('1');
+  });
 
   it('returns empty progress for an unknown user', () => {
     expect(loadProgress('nobody')).toEqual({ version: PROGRESS_VERSION, entries: {} });

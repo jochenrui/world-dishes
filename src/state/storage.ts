@@ -5,6 +5,7 @@ export const PROGRESS_VERSION = 1;
 const KEY_PREFIX = 'world-dishes:progress:';
 const MIGRATED_PREFIX = 'world-dishes:migrated:';
 const MOCK_CONSUMED_KEY = 'world-dishes:mock-consumed';
+const WELCOMED_KEY = 'world-dishes:welcomed';
 
 /** Cache key used by the mock auth session; its data is migrated on first real sign-in. */
 export const MOCK_USER_ID = 'mock-user-1';
@@ -69,6 +70,25 @@ export function isMigrated(userId: string): boolean {
 export function setMigrated(userId: string): void {
   try {
     localStorage.setItem(MIGRATED_PREFIX + userId, '1');
+  } catch {
+    /* ignore */
+  }
+}
+
+// ── First-run onboarding flag ───────────────────────────────────────────────
+
+/** True once the visitor has dismissed the first-run welcome strip. */
+export function isWelcomed(): boolean {
+  try {
+    return localStorage.getItem(WELCOMED_KEY) === '1';
+  } catch {
+    return false;
+  }
+}
+
+export function setWelcomed(): void {
+  try {
+    localStorage.setItem(WELCOMED_KEY, '1');
   } catch {
     /* ignore */
   }

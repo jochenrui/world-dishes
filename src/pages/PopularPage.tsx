@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { dishes } from '../data/dishes';
 import type { Category } from '../data/types';
@@ -11,7 +11,49 @@ import { applyFilters, filterByTried } from '../lib/filters';
 import { filtersToSearchParams, searchParamsToFilters } from '../lib/filterParams';
 import { useProgress } from '../state/ProgressContext';
 import { useSession } from '../state/SessionContext';
+import { isWelcomed, setWelcomed } from '../state/storage';
 import styles from './pages.module.css';
+
+/**
+ * First-run welcome strip: a compact, dismissible onboarding banner shown once
+ * to new (signed-out) visitors. Dismissal persists in localStorage
+ * (`world-dishes:welcomed`) so it never returns. Signed-in users skip it — a
+ * returning cook doesn't need the tour.
+ */
+function WelcomeStrip() {
+  const { user } = useSession();
+  const [dismissed, setDismissed] = useState(() => isWelcomed());
+
+  if (user || dismissed) return null;
+
+  const dismiss = () => {
+    setWelcomed();
+    setDismissed(true);
+  };
+
+  return (
+    <div className={styles.welcome} role="note">
+      <span className={styles.welcomeEmoji} aria-hidden="true">
+        👋
+      </span>
+      <div className={styles.welcomeBody}>
+        <strong className={styles.welcomeTitle}>Welcome to World Dishes!</strong>
+        <p className={styles.welcomeText}>
+          Browse and filter the planet's most-loved dishes by diet, spice, or country. Sign in to
+          tick off the ones you've tried and build your passport — then watch your stats fill in.
+        </p>
+      </div>
+      <button
+        type="button"
+        className={styles.welcomeDismiss}
+        onClick={dismiss}
+        aria-label="Dismiss"
+      >
+        <span aria-hidden="true">✕</span>
+      </button>
+    </div>
+  );
+}
 
 const CATEGORY_ORDER: Category[] = [
   'noodles', 'pasta', 'rice', 'curry', 'stew', 'soup',
@@ -85,6 +127,8 @@ export function PopularPage() {
           </div>
         )}
       </div>
+
+      <WelcomeStrip />
 
       <DishOfDay />
 
